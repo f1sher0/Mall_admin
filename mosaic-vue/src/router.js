@@ -78,183 +78,227 @@ const router = createRouter({
     },
     {
       path: '/dashboard/analytics',
-      component: Analytics
+      component: Analytics,
+      meta: { requiresAuth: true }
     },
     {
       path: '/dashboard/fintech',
-      component: Fintech
+      component: Fintech,
+      meta: { requiresAuth: true }
     },    
     {
       path: '/ecommerce/customers',
-      component: Customers
+      component: Customers,
+      meta: { requiresAuth: true }
     },
     {
       path: '/ecommerce/orders',
-      component: Orders
+      component: Orders,
+      meta: { requiresAuth: true }
     },
     {
       path: '/ecommerce/invoices',
-      component: Invoices
+      component: Invoices,
+      meta: { requiresAuth: true }
     },
     {
       path: '/ecommerce/shop',
-      component: Shop
+      component: Shop,
+      meta: { requiresAuth: true }
     },
     {
       path: '/ecommerce/shop-2',
-      component: Shop2
+      component: Shop2,
+      meta: { requiresAuth: true }
     },
     {
       path: '/ecommerce/product',
-      component: Product
+      component: Product,
+      meta: { requiresAuth: true }
     },
     {
       path: '/ecommerce/cart',
-      component: Cart
+      component: Cart,
+      meta: { requiresAuth: true }
     },
     {
       path: '/ecommerce/cart-2',
-      component: Cart2
+      component: Cart2,
+      meta: { requiresAuth: true }
     },
     {
       path: '/ecommerce/cart-3',
-      component: Cart3
+      component: Cart3,
+      meta: { requiresAuth: true }
     },
     {
       path: '/ecommerce/pay',
-      component: Pay
+      component: Pay,
+      meta: { requiresAuth: true }
     },
     {
       path: '/campaigns',
-      component: Campaigns
+      component: Campaigns,
+      meta: { requiresAuth: true }
     },
     {
       path: '/community/users-tabs',
-      component: UsersTabs
+      component: UsersTabs,
+      meta: { requiresAuth: true }
     },
     {
       path: '/community/users-tiles',
-      component: UsersTiles
+      component: UsersTiles,
+      meta: { requiresAuth: true }
     },
     {
       path: '/community/profile',
-      component: Profile
+      component: Profile,
+      meta: { requiresAuth: true }
     },
     {
       path: '/community/feed',
-      component: Feed
+      component: Feed,
+      meta: { requiresAuth: true }
     },
     {
       path: '/community/forum',
-      component: Forum
+      component: Forum,
+      meta: { requiresAuth: true }
     },
     {
       path: '/community/forum-post',
-      component: ForumPost
+      component: ForumPost,
+      meta: { requiresAuth: true }
     },    
     {
       path: '/community/meetups',
-      component: Meetups
+      component: Meetups,
+      meta: { requiresAuth: true }
     },
     {
       path: '/community/meetups-post',
-      component: MeetupsPost
+      component: MeetupsPost,
+      meta: { requiresAuth: true }
     },
     {
       path: '/finance/cards',
-      component: CreditCards
+      component: CreditCards,
+      meta: { requiresAuth: true }
     }, 
     {
       path: '/finance/transactions',
-      component: Transactions
+      component: Transactions,
+      meta: { requiresAuth: true }
     },
     {
       path: '/finance/transaction-details',
-      component: TransactionDetails
+      component: TransactionDetails,
+      meta: { requiresAuth: true }
     },
     {
       path: '/job/job-listing',
-      component: JobListing
+      component: JobListing,
+      meta: { requiresAuth: true }
     },
     {
       path: '/job/job-post',
-      component: JobPost
+      component: JobPost,
+      meta: { requiresAuth: true }
     },
     {
       path: '/job/company-profile',
-      component: CompanyProfile
+      component: CompanyProfile,
+      meta: { requiresAuth: true }
     },            
     {
       path: '/messages',
-      component: Messages
+      component: Messages,
+      meta: { requiresAuth: true }
     },
     {
       path: '/tasks/kanban',
-      component: TasksKanban
+      component: TasksKanban,
+      meta: { requiresAuth: true }
     },
     {
       path: '/tasks/list',
-      component: TasksList
+      component: TasksList,
+      meta: { requiresAuth: true }
     },    
     {
       path: '/inbox',
-      component: Inbox
+      component: Inbox,
+      meta: { requiresAuth: true }
     },
     {
       path: '/calendar',
-      component: Calendar
+      component: Calendar,
+      meta: { requiresAuth: true }
     },
     {
       path: '/settings/account',
-      component: Account
+      component: Account,
+      meta: { requiresAuth: true }
     },
     {
       path: '/settings/notifications',
-      component: Notifications
+      component: Notifications,
+      meta: { requiresAuth: true }
     },
     {
       path: '/settings/apps',
-      component: Apps
+      component: Apps,
+      meta: { requiresAuth: true }
     },
     {
       path: '/settings/plans',
-      component: Plans
+      component: Plans,
+      meta: { requiresAuth: true }
     },
     {
       path: '/settings/billing',
-      component: Billing
+      component: Billing,
+      meta: { requiresAuth: true }
     },
     {
       path: '/settings/feedback',
-      component: Feedback
+      component: Feedback,
+      meta: { requiresAuth: true }
     },
     {
       path: '/utility/changelog',
-      component: Changelog
+      component: Changelog,
+      meta: { requiresAuth: true }
     },
     {
       path: '/utility/roadmap',
-      component: Roadmap
+      component: Roadmap,
+      meta: { requiresAuth: true }
     },
     {
       path: '/utility/faqs',
-      component: Faqs
+      component: Faqs,
+      meta: { requiresAuth: true }
     },
     {
       path: '/utility/empty-state',
-      component: EmptyState
+      component: EmptyState,
+      meta: { requiresAuth: true }
     },
     {
       path: '/utility/404',
-      component: PageNotFound
+      component: PageNotFound,
+      meta: { requiresAuth: true }
     },
     {
       path: '/utility/knowledge-base',
-      component: KnowledgeBase
+      component: KnowledgeBase,
+      meta: { requiresAuth: true }
     },
     {
       path: '/signin',
-      component: Signin
+      component: Signin,
     },
     {
       path: '/signup',
@@ -266,71 +310,88 @@ const router = createRouter({
     },
     {
       path: '/onboarding-01',
-      component: Onboarding01
+      component: Onboarding01,
+      meta: { requiresAuth: true }
     },
     {
       path: '/onboarding-02',
-      component: Onboarding02
+      component: Onboarding02,
+      meta: { requiresAuth: true }
     },
     {
       path: '/onboarding-03',
-      component: Onboarding03
+      component: Onboarding03,
+      meta: { requiresAuth: true }
     },
     {
       path: '/onboarding-04',
-      component: Onboarding04
+      component: Onboarding04,
+      meta: { requiresAuth: true }
     },
     {
       path: '/component/button',
-      component: ButtonPage
+      component: ButtonPage,
+      meta: { requiresAuth: true }
     },
     {
       path: '/component/form',
-      component: FormPage
+      component: FormPage,
+      meta: { requiresAuth: true }
     },
     {
       path: '/component/dropdown',
-      component: DropdownPage
+      component: DropdownPage,
+      meta: { requiresAuth: true }
     },
     {
       path: '/component/alert',
-      component: AlertPage
+      component: AlertPage,
+      meta: { requiresAuth: true }
     },
     {
       path: '/component/modal',
-      component: ModalPage
+      component: ModalPage,
+      meta: { requiresAuth: true }
     },
     {
       path: '/component/pagination',
-      component: PaginationPage
+      component: PaginationPage,
+      meta: { requiresAuth: true }
     },
     {
       path: '/component/tabs',
-      component: TabsPage
+      component: TabsPage,
+      meta: { requiresAuth: true }
     },
     {
       path: '/component/breadcrumb',
-      component: BreadcrumbPage
+      component: BreadcrumbPage,
+      meta: { requiresAuth: true }
     },
     {
       path: '/component/badge',
-      component: BadgePage
+      component: BadgePage,
+      meta: { requiresAuth: true }
     },
     {
       path: '/component/avatar',
-      component: AvatarPage
+      component: AvatarPage,
+      meta: { requiresAuth: true }
     },
     {
       path: '/component/tooltip',
-      component: TooltipPage
+      component: TooltipPage,
+      meta: { requiresAuth: true }
     },
     {
       path: '/component/accordion',
-      component: AccordionPage
+      component: AccordionPage,
+      meta: { requiresAuth: true }
     },
     {
       path: '/component/icons',
-      component: IconsPage
+      component: IconsPage,
+      meta: { requiresAuth: true }
     },
     {
       path: '/:pathMatch(.*)*',
@@ -344,6 +405,8 @@ router.beforeEach((to, from, next) => {
   const authRequired = to.matched.some(record => record.meta.requiresAuth);
   const userLoggedIn = authStore.isAuthenticated;
 
+  console.log(authRequired);
+  console.log(userLoggedIn);
   if (authRequired && !userLoggedIn) {
     next('/signin');
   } else if (to.path === '/signin' && userLoggedIn) {

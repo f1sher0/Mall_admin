@@ -11,7 +11,7 @@ export const useAuthStore = defineStore('auth', () => {
       //const response = await axios.post('/api/user/login', { email, password });
       //const token = response.data.token;
       const token = "jwtTokenTest"; 
-      localStorage.setItem('jwtToken', token);
+      localStorage.setItem('authToken', token);
       isAuthenticated.value = true;
       router.push('/');  // Redirect to the Dashboard
     } catch (error) {
@@ -21,8 +21,9 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   function logout() {
-    localStorage.removeItem('jwtToken');
+    localStorage.removeItem('authToken');
     isAuthenticated.value = false;
+    router.push('/signin'); // 跳转到登录页面
   }
 
   return { isAuthenticated, login, logout };
