@@ -64,6 +64,7 @@ import AvatarPage from './pages/component/AvatarPage.vue'
 import TooltipPage from './pages/component/TooltipPage.vue'
 import AccordionPage from './pages/component/AccordionPage.vue'
 import IconsPage from './pages/component/IconsPage.vue'
+import { useAuthStore } from './stores/auth';
 
 const routerHistory = createWebHistory()
 
@@ -72,7 +73,8 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      component: Dashboard
+      component: Dashboard,
+      meta: { requiresAuth: true }
     },
     {
       path: '/dashboard/analytics',
@@ -336,5 +338,19 @@ const router = createRouter({
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  const authStore = useAuthStore();
+  const authRequired = to.matched.some(record => record.meta.requiresAuth);
+  const userLoggedIn = authStore.isAuthenticated;
+
+  if (authRequired && !userLoggedIn) {
+    next('/signin');
+  } else if (to.path === '/signin' && userLoggedIn) {
+    next('/');
+  } else {
+    next();
+  }
+});
 
 export default router

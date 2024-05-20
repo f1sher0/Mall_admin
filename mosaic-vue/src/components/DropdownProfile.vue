@@ -37,7 +37,7 @@
             <router-link class="font-medium text-sm text-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center py-1 px-3" to="/settings/account" @click="dropdownOpen = false">Settings</router-link>
           </li>
           <li>
-            <router-link class="font-medium text-sm text-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center py-1 px-3" to="/signin" @click="dropdownOpen = false">Sign Out</router-link>
+            <router-link class="font-medium text-sm text-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center py-1 px-3" to="/signin" @click="dropdownOpen = false, loginOut">Sign Out</router-link>
           </li>
         </ul>
       </div> 
@@ -48,6 +48,7 @@
 <script>
 import { ref, onMounted, onUnmounted } from 'vue'
 import UserAvatar from '../images/user-avatar-32.png'
+import { useAuthStore } from '../stores/auth';
 
 export default {
   name: 'DropdownProfile',
@@ -59,10 +60,14 @@ export default {
   },  
   setup() {
 
-    const dropdownOpen = ref(false)
-    const trigger = ref(null)
-    const dropdown = ref(null)
+    const dropdownOpen = ref(false);
+    const trigger = ref(null);
+    const dropdown = ref(null);
+    const authStore = useAuthStore();
 
+    const loginOut = () => {
+      authStore.logout();
+    }
     // close on click outside
     const clickHandler = ({ target }) => {
       if (!dropdownOpen.value || dropdown.value.contains(target) || trigger.value.contains(target)) return
@@ -89,6 +94,7 @@ export default {
       dropdownOpen,
       trigger,
       dropdown,
+      loginOut,
     }
   }
 }

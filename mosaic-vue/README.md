@@ -1,3 +1,7 @@
+## Requirements
+```
+node version >= 18.7
+```
 ## Project setup
 ```
 npm install
