@@ -149,7 +149,6 @@
             <version>1.5.1.RELEASE</version>
         </dependency>
 
-
         <dependency>
             <groupId>xin.altitude.cms</groupId>
             <artifactId>ucode-cms-ui</artifactId>
