@@ -17,7 +17,7 @@ import java.io.Serializable;
 @ApiModel(value = "Purchaser", description = "采购商信息")
 public class Purchaser implements Serializable {
     private static final long serialVersionUID = 1L;
-
+    @TableField("purchaserId")
     @TableId(value = "purchaserId", type = IdType.AUTO)
     @ApiModelProperty(value = "采购商ID")
     private Integer purchaserId;
