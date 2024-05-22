@@ -24,7 +24,7 @@ public class SwaggerConfig {
     private ApiInfo apiInfo(){
         return new ApiInfoBuilder()
                 .title("演示项目API")
-                .description("")
+                .description("外贸管理系统 made by T13  冯金科 胡洋 王嘉乐")
                 .version("1.0")
                 .build();
     }

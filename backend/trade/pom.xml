@@ -183,6 +183,11 @@
 <!--            <artifactId>faker-java</artifactId>-->
 <!--            <version>0.1.6</version> &lt;!&ndash; 使用最新版本 &ndash;&gt;-->
 <!--        </dependency>-->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
 
     </dependencies>
 
