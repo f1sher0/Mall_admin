@@ -26,7 +26,7 @@ public class WarehouseGoodsController {
     }
 
     @GetMapping("/get")
-    public Result getWarehouseGoodsById(@RequestParam Integer id) {
+    public Result getWarehouseGoodsById( Integer id) {
         WarehouseGoods warehouseGoods = warehouseGoodsService.getById(id);
         if (warehouseGoods != null) {
             return Result.success(warehouseGoods);

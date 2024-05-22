@@ -3,6 +3,7 @@ package com.trade.demo.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -16,6 +17,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@TableName(value = "goodsin")
 @ApiModel(value = "GoodsIn", description = "商品入库")
 public class GoodsIn implements Serializable {
     private static final long serialVersionUID = 1L;

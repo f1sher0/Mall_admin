@@ -46,9 +46,11 @@ public class User implements Serializable {
 
     @ApiModelProperty(value = "状态")
     private String status;
+
     @TableField("createTime")
     @ApiModelProperty(value = "创建时间")
     private Date createTime;
+
     @TableField("updateTime")
     @ApiModelProperty(value = "更新时间")
     private Date updateTime;
