@@ -1,6 +1,7 @@
 package com.trade.demo.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -21,15 +22,19 @@ public class Supplier implements Serializable {
     @ApiModelProperty(value = "供应商ID")
     private Integer supplierId;
 
+    @TableField("supplierNo")
     @ApiModelProperty(value = "供应商编号")
     private String supplierNo;
 
+    @TableField("supplierName")
     @ApiModelProperty(value = "供应商名称")
     private String supplierName;
 
+    @TableField("supplierDesc")
     @ApiModelProperty(value = "供应商描述")
     private String supplierDesc;
 
+    @TableField("loginName")
     @ApiModelProperty(value = "登录名")
     private String loginName;
 

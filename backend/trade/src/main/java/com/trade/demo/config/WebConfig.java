@@ -11,7 +11,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
               //  .allowedOrigins("*") // 允许访问的前端域名
-          .allowedOrigins("http://localhost:8081") // 允许访问的前端域名
+          .allowedOrigins("http://localhost:5173") // 允许访问的前端域名
                 // 是否允许证书 配置是否允许发送Cookie，用于凭证请求， 默认不发送cookie。
                 .allowCredentials(true)
                 // 设置允许的方法
