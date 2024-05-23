@@ -7,6 +7,7 @@ import axios from 'axios';
 
 const app = createApp(App)
 const pinia = createPinia();
+ 
 const token = localStorage.getItem("authToken");
     if (token) {
       // alert(token);
@@ -28,5 +29,6 @@ const token = localStorage.getItem("authToken");
     }
 app.use(router);
 app.use(axios);
+ 
 app.use(pinia);
 app.mount('#app')

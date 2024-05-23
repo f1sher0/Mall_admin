@@ -13,6 +13,8 @@ File Encoding         : 65001
 Date: 2024-05-19 15:52:24
 */
 
+create database mamba;
+use mamba;
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
