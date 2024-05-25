@@ -4,11 +4,15 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.trade.demo.common.Result;
 import com.trade.demo.entity.User;
+import com.trade.demo.entity.Warehouse;
 import com.trade.demo.service.UserService;
+import com.trade.demo.service.WarehouseService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -19,14 +23,17 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+
+
+    @Autowired
+    private WarehouseService warehouseService;
     @PostMapping("/login")
     public Result login(@RequestBody User loginUser) {
         User user = userService.findByEmail(loginUser.getEmail());
         if (user == null || !user.getPassword().equals(loginUser.getPassword())) {
             return Result.error("Invalid email or password");
         }
-
-
 
         String JWTtoken = JWT.create()
                 .withSubject(user.getEmail().toString()+user.getPassword())
@@ -35,12 +42,6 @@ public class UserController {
 
         System.out.println(JWTtoken);
 
-        // 将token发送给客户端
-//        HashMap<String, Object> data = new HashMap<>();
-//        data.put("user", user);
-//        data.put("token", JWTtoken);
-
-//        result.setMsg("登录成功");
         return Result.success(JWTtoken);
 
     }
@@ -53,15 +54,13 @@ public class UserController {
         if (user.getEmail() == null || user.getPassword() == null || user.getRole() == null) {
             return Result.error("Email, Password, and Role are required.");
         }
-
         // Check if the email is already in use
         if (userService.isEmailTaken(user.getEmail())) {
             return Result.error("Email is already in use.");
         }
-
         // Setting default values for other fields
-        user.setUsername(user.getUsername());
-        user.setStatus("A");  // Assuming 'A' stands for Active
+        user.setEmail(user.getEmail());
+//        user.setStatus('0');  // Assuming 'A' stands for Active
         user.setCreateTime(new Date( ));
         user.setUpdateTime(new Date());
 
@@ -117,4 +116,49 @@ public class UserController {
             return Result.error("Failed to delete user");
         }
     }
+
+    @GetMapping("/unreviewed/users")
+    @ApiOperation(value = "获取所有未审核的用户")
+    public List<User> getUnreviewedUsers() {
+        return userService.getUnreviewedUsers();
+    }
+
+    @GetMapping("/unreviewed/warehouses")
+    @ApiOperation(value = "获取所有未审核的仓库")
+    public List<Warehouse> getUnreviewedWarehouses() {
+        return warehouseService.getUnreviewedWarehouses();
+    }
+    @GetMapping("/unreviewed")
+    @ApiOperation(value = "获取所有未审核的用户和仓库")
+    public Result  getUnreviewedEntities() {
+        List<Object> unreviewedEntities = new ArrayList<>();
+        unreviewedEntities.addAll(userService.getUnreviewedUsers());
+        unreviewedEntities.addAll(warehouseService.getUnreviewedWarehouses());
+        return Result.success(unreviewedEntities);
+    }
+
+    @PutMapping("/approve/user")
+    @ApiOperation(value = "审核通过用户")
+    public Result  approveUser(@RequestParam Integer userId) {
+        User user = userService.getById(userId);
+        if (user != null) {
+            user.setStatus('1');
+            return Result.success(userService.updateById(user));
+        }
+        return Result.error("User not found");
+    }
+
+    @PutMapping("/approve/warehouse")
+    @ApiOperation(value = "审核通过仓库")
+    public Result  approveWarehouse(@RequestParam Integer warehouseId) {
+        Warehouse warehouse = warehouseService.getById(warehouseId);
+        if (warehouse != null) {
+            warehouse.setStatus('1');
+            return Result.success(warehouseService.updateById(warehouse));
+        }
+        return Result.error("Warehouse not found");
+    }
+
+
+
 }

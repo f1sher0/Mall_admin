@@ -53,8 +53,8 @@ public class Supplier implements Serializable {
     @ApiModelProperty(value = "邮箱")
     private String email;
 
-    @ApiModelProperty(value = "状态")
-    private String status;
+    @ApiModelProperty(value = "审核状态")
+    private char status;
 
     @ApiModelProperty(value = "头像")
     private String avatar;
