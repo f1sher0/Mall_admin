@@ -44,9 +44,8 @@ public class User implements Serializable {
     @ApiModelProperty(value = "角色")
     private String role;
 
-    @ApiModelProperty(value = "审核状态")
+    @ApiModelProperty(value = "审核状态", dataType = "char", example = "0",required = false) // 明确指定数据类型为 char
     private char status;
-
     @TableField("createTime")
     @ApiModelProperty(value = "创建时间")
     private Date createTime;

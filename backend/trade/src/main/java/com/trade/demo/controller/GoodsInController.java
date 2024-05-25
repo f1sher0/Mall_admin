@@ -60,4 +60,6 @@ public class GoodsInController {
             return Result.error("Failed to delete goods in");
         }
     }
+
+
 }
