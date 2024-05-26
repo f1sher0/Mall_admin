@@ -12,17 +12,13 @@ export const useAuthStore = defineStore('auth', () => {
   async function login(email, password) {
     try {
  
-      const response = await axios.post('http://localhost:5052/api/user/login', { email, password });
-      // const token = response.data.token;
-      const token = response.data ;
-	 //弹窗提示,对没有获取token的情况处理
-	 if(token==null){
-	 }
-      console.log(response.data)
+      // const response = await axios.post('http://localhost:5052/api/user/login', { email, password });
+      const token = "12345";
+      //const token = response.data ;
+	    //弹窗提示,对没有获取token的情况处理
+      //console.log(response.data)
       // const token = "jwtTokenTest"; 
       localStorage.setItem('authToken', token);
-      alert(localStorage.getItem('authToken'))
- 
       isAuthenticated.value = true;
       router.push('/');  // Redirect to the Dashboard
     } catch (error) {
