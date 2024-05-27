@@ -11,11 +11,11 @@ public class DatabaseService {
     public void backup() throws IOException, InterruptedException {
         String username = "root";
         String password = "198455";
-        String dbName = "store_manager";
+        String dbName = "mamba";
         String projectPath = System.getProperty("user.dir");
         String adjustedPath = projectPath.replace("\\", "/");
 
-        String backupPath = adjustedPath+"/src/main/resources/mybackup/"+  "store_manager_backup.sql"; // 保存备份的文件路径
+        String backupPath = adjustedPath+"/src/main/resources/mybackup/"+  "backup.sql"; // 保存备份的文件路径
 
         String command = String.format(
             "mysqldump -u %s -p%s %s -r %s",
@@ -35,7 +35,7 @@ public class DatabaseService {
         String host = "localhost";
 
         String password = "198455";
-        String database = "store_manager";
+        String database = "mamba";
 
 //        String command = String.format(
 //            "mysql -u %s -p%s %s < %s",
