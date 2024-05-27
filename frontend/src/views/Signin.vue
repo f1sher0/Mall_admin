@@ -49,7 +49,7 @@
                 <div class="mr-1">
                   <router-link class="text-sm underline hover:no-underline" to="/reset-password">Forgot Password?</router-link>
                 </div>
-                <router-link class="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-3" to="/">Sign In</router-link>
+                <router-link class="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-3" to="/admin/dashboard/main">Sign In</router-link>
               </div>
             </form>
             <!-- Footer -->

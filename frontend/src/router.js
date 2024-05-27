@@ -10,12 +10,14 @@ import Userinfo_warehouse from './views/admin/userinfo_warehouse.vue';
 import Userinfo_supplier from './views/admin/userinfo_supplier.vue';
 import Admin_analytics from './views/admin/admin_analytics.vue';
 import Announcement from "./views/admin/Announcement.vue";
+import Admin_account from "./views/admin/admin_account.vue";
+import Admin_feedback from "./views/admin/admin_feedback.vue";
 
 const routes = [
     {
         path: '/',
         name: 'home',
-        component: Admin_dashboard,
+        component: Signin,
     },
     {
         path: '/signin',
@@ -28,7 +30,7 @@ const routes = [
         component: Signup,
     },
     {
-        path: '/admin',
+        path: '/admin/dashboard/main',
         name: 'admin_dashboard',
         component: Admin_dashboard,
     },
@@ -58,7 +60,7 @@ const routes = [
         component: Userinfo_purchaser,
     },
     {
-        path: '/admin/analytics',
+        path: '/admin/dashboard/analytics',
         name: "admin_analytics",
         component: Admin_analytics,
     },
@@ -66,6 +68,16 @@ const routes = [
         path: '/admin/announcement',
         name: 'admin_announcement',
         component: Announcement,
+    },
+    {
+        path: '/admin/settings/account',
+        name: 'admin_account',
+        component: Admin_account,
+    },
+    {
+        path: '/admin/settings/feedback',
+        name: 'admin_feedback',
+        component: Admin_feedback,
     },
 ];
 
