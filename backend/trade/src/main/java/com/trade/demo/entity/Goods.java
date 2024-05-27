@@ -41,4 +41,9 @@ public class Goods implements Serializable {
     @TableField("updateTime")
     @ApiModelProperty(value = "更新时间")
     private Date updateTime;
+    @TableField("onShelf")
+    @ApiModelProperty(value = "是否在货架", allowableValues = "range[0,1]", example = "1")
+    private Integer onShelf;
+
+
 }

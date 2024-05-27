@@ -34,4 +34,6 @@ public class Warehouse implements Serializable {
     @TableField("availableCapacity")
     @ApiModelProperty(value = "可用容量")
     private BigDecimal availableCapacity;
+    @ApiModelProperty(value = "审核状态")
+    private char status;
 }

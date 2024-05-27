@@ -29,4 +29,7 @@ public class InListGoods implements Serializable {
     @TableField("goodsId")
     @ApiModelProperty(value = "商品ID")
     private Integer goodsId;
+    @TableField("isReturned")
+    @ApiModelProperty(value = "是否退货")
+    private IsReturned isReturned;
 }
