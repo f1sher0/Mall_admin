@@ -1,107 +1,110 @@
 <template>
-    <div class="flex h-[100dvh] overflow-hidden">
-  
-      <!-- Sidebar -->
-      <Sidebar_admin :sidebarOpen="sidebarOpen" @close-sidebar="sidebarOpen = false" />
-  
-      <!-- Content area -->
-      <div class="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden bg-white dark:bg-slate-900">
-        
-        <!-- Site header -->
-        <Header :sidebarOpen="sidebarOpen" @toggle-sidebar="sidebarOpen = !sidebarOpen" />
-  
-        <main class="grow dark:bg-slate-900">
-          <div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
-  
-            <!-- Page header -->
-            <div class="sm:flex sm:justify-between sm:items-center mb-4 md:mb-2">
-  
-              <!-- Left: Title -->
-              <div class="mb-4 sm:mb-0">
-                <h1 class="text-2xl md:text-3xl text-slate-800 dark:text-slate-100 font-bold">Audit Warehouse</h1>
-              </div>
-  
-              <!-- Right: Actions  -->
-              <div class="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2">
-  
-                <!-- Delete button -->
-                <DeleteButton :selectedItems="selectedItems" />
-  
-                <!-- Search form -->
-                <div class="hidden sm:block">
-                  <SearchForm class="hidden sm:block" />
-                </div>
-  
-                <!-- Export button -->
-                <button class="btn bg-indigo-500 hover:bg-indigo-600 text-white">Export Transactions</button>
-  
-              </div>
-  
+  <div class="flex h-[100dvh] overflow-hidden">
+
+    <!-- Sidebar -->
+    <Sidebar_admin :sidebarOpen="sidebarOpen" @close-sidebar="sidebarOpen = false" />
+
+    <!-- Content area -->
+    <div class="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden bg-white dark:bg-slate-900">
+
+      <!-- Site header -->
+      <Header :sidebarOpen="sidebarOpen" @toggle-sidebar="sidebarOpen = !sidebarOpen" />
+
+      <main class="grow dark:bg-slate-900">
+        <div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
+
+          <!-- Page header -->
+          <div class="sm:flex sm:justify-between sm:items-center mb-4 md:mb-2">
+
+            <!-- Left: Title -->
+            <div class="mb-4 sm:mb-0">
+              <h1 class="text-2xl md:text-3xl text-slate-800 dark:text-slate-100 font-bold">Audit Warehouse</h1>
             </div>
-  
-            
-            <!-- Filters -->
-            <div class="mb-5">
-              <ul class="flex flex-wrap -m-1">
-                <li class="m-1">
-                  <button class="inline-flex items-center justify-center text-sm font-medium leading-5 rounded-full px-3 py-1 border border-transparent shadow-sm bg-indigo-500 text-white duration-150 ease-in-out">View All</button>
-                </li>
-                <li class="m-1">
-                  <button class="inline-flex items-center justify-center text-sm font-medium leading-5 rounded-full px-3 py-1 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 shadow-sm bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 duration-150 ease-in-out">Approved</button>
-                </li>
-                <li class="m-1">
-                  <button class="inline-flex items-center justify-center text-sm font-medium leading-5 rounded-full px-3 py-1 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 shadow-sm bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 duration-150 ease-in-out">Pending</button>
-                </li>
-                <li class="m-1">
-                  <button class="inline-flex items-center justify-center text-sm font-medium leading-5 rounded-full px-3 py-1 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 shadow-sm bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 duration-150 ease-in-out">Rejected</button>
-                </li>
-              </ul>
+
+            <!-- Right: Actions  -->
+            <div class="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2">
+
+              <!-- Delete button -->
+              <DeleteButton :selectedItems="selectedItems" />
+
+              <!-- Search form -->
+              <div class="hidden sm:block">
+                <SearchForm class="hidden sm:block" />
+              </div>
+
+              <!-- Export button -->
+              <button class="btn bg-indigo-500 hover:bg-indigo-600 text-white">Export Transactions</button>
+
             </div>
-  
-            <!-- Table -->
-            <TransactionsTable @change-selection="updateSelectedItems($event)" />
-  
-            <!-- Pagination -->
-            <div class="mt-8">
-              <PaginationClassic />
-            </div>          
-  
+
           </div>
-        </main>
-  
-      </div> 
-  
+
+
+          <!-- Filters -->
+          <div class="mb-5">
+            <ul class="flex flex-wrap -m-1">
+              <li class="m-1">
+                <button
+                  class="inline-flex items-center justify-center text-sm font-medium leading-5 rounded-full px-3 py-1 border border-transparent shadow-sm bg-indigo-500 text-white duration-150 ease-in-out">View
+                  All</button>
+              </li>
+              <li class="m-1">
+                <button
+                  class="inline-flex items-center justify-center text-sm font-medium leading-5 rounded-full px-3 py-1 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 shadow-sm bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 duration-150 ease-in-out">Approved</button>
+              </li>
+              <li class="m-1">
+                <button
+                  class="inline-flex items-center justify-center text-sm font-medium leading-5 rounded-full px-3 py-1 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 shadow-sm bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 duration-150 ease-in-out">Pending</button>
+              </li>
+              <li class="m-1">
+                <button
+                  class="inline-flex items-center justify-center text-sm font-medium leading-5 rounded-full px-3 py-1 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 shadow-sm bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 duration-150 ease-in-out">Rejected</button>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Table -->
+          <TransactionsTable @change-selection="updateSelectedItems($event)" />
+
+          <!-- Pagination -->
+          <div class="mt-8">
+            <PaginationClassic />
+          </div>
+
+        </div>
+      </main>
+
     </div>
-  </template>
-  
-  <script>
-  import { ref, reactive, onMounted } from 'vue';
-  import Sidebar_admin from '../../partials/Sidebar_admin.vue'
-  import Header from '../../partials/Header.vue'
-  import DeleteButton from '../../partials/actions/DeleteButton.vue'
-  import SearchForm from '../../components/SearchForm.vue'
-  import DropdownTransaction from '../../components/DropdownTransaction.vue'
-  import TransactionsTable from '../../partials/finance/TransactionsTable.vue'
-  import PaginationClassic from '../../components/PaginationClassic.vue'
-  import axios from 'axios';
-  export default {
-    name: 'Transactions',
-    components: {
-      Sidebar_admin,
-      Header,
-      DeleteButton,
-      SearchForm,
-      DropdownTransaction,
-      TransactionsTable,
-      PaginationClassic,
-    },
-    setup() {
-  
-      const sidebarOpen = ref(false)
-      const selectedItems = ref([])
-  
- 
-      const form = reactive({
+
+  </div>
+</template>
+
+<script>
+import { ref, reactive, onMounted, inject} from 'vue';
+import Sidebar_admin from '../../partials/Sidebar_admin.vue'
+import Header from '../../partials/Header.vue'
+import DeleteButton from '../../partials/actions/DeleteButton.vue'
+import SearchForm from '../../components/SearchForm.vue'
+import DropdownTransaction from '../../components/DropdownTransaction.vue'
+import TransactionsTable from '../../partials/finance/TransactionsTable.vue'
+import PaginationClassic from '../../components/PaginationClassic.vue'
+export default {
+  name: 'Transactions',
+  components: {
+    Sidebar_admin,
+    Header,
+    DeleteButton,
+    SearchForm,
+    DropdownTransaction,
+    TransactionsTable,
+    PaginationClassic,
+  },
+  setup() {
+
+    const sidebarOpen = ref(false)
+    const selectedItems = ref([])
+    const axios = inject('$axios');
+    const form = reactive({
       id: "",
       typeNo: "",
       name: "",
@@ -109,7 +112,6 @@
       price: "",
       selling: "",
       storageId: "",
- 
     });
     const updateSelectedItems = (selected) => {
       selectedItems.value = selected;
@@ -117,28 +119,8 @@
 
     const fetchUnreviewedWarehouses = async () => {
       try {
-        const response = await axios.get('http://localhost:5052/api/user/unreviewed/warehouses');
+        const response = await axios.get('/user/unreviewed/warehouses');
         console.log('Data fetched successfully:', response.data);
-
-        // Assuming response.data is an array and we want to fill the form with the first item
-        if (response.data.length > 0) {
-          const warehouse = response.data[0];
-          this.form = warehouse.data;
-          alert(this.form.typeNo);
-          form.id = warehouse.id || "";
-          form.typeNo = warehouse.typeNo || "";
-          form.name = warehouse.name || "";
-          form.supplierName = warehouse.supplierName || "";
-          form.price = warehouse.price || "";
-          form.selling = warehouse.selling || "";
-          form.storageId = warehouse.storageId || "";
-
-          // Log the entire form to verify the data
-          console.log('Form data:', form);
-
-          // Optionally alert a specific field to verify
-          alert(`TypeNo: ${form.typeNo}`);
-        }
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -147,14 +129,14 @@
     onMounted(() => {
       fetchUnreviewedWarehouses();
     });
- 
-      return {
-        form,
+
+    return {
+      form,
       sidebarOpen,
       selectedItems,
       updateSelectedItems,
       fetchUnreviewedWarehouses,
-      }  
     }
   }
-  </script>
+}
+</script>
