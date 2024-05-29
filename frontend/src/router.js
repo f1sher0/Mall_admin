@@ -12,6 +12,17 @@ import Admin_analytics from './views/admin/admin_analytics.vue';
 import Announcement from "./views/admin/Announcement.vue";
 import Admin_account from "./views/admin/admin_account.vue";
 import Admin_feedback from "./views/admin/admin_feedback.vue";
+import Supplier_dashboard from "./views/supplier/supplier_dashboard.vue";
+import Supplier_analytics from "./views/supplier/supplier_analytics.vue";
+import Supplier_goodslist from "./views/supplier/supplier_goodslist.vue";
+import Supplier_newgoods from "./views/supplier/supplier_newgoods.vue";
+import Supplier_orderlist from "./views/supplier/supplier_orderlist.vue";
+import Supplier_returngoods from "./views/supplier/supplier_returngoods.vue";
+import Supplier_shipgoods from "./views/supplier/supplier_shipgoods.vue";
+import Supplier_feedback from "./views/supplier/supplier_feedback.vue";
+import Supplier_account from "./views/supplier/supplier_account.vue";
+import Supplier_announcement from "./views/supplier/supplier_announcement.vue";
+
 
 const routes = [
     {
@@ -79,6 +90,56 @@ const routes = [
         name: 'admin_feedback',
         component: Admin_feedback,
     },
+    {
+        path: '/supplier/dashboard/main',
+        name: 'supplier_dashboard',
+        component: Supplier_dashboard,
+    },
+    {
+        path: '/supplier/dashboard/analytics',
+        name: 'supplier_analytics',
+        component: Supplier_analytics,
+    },
+    {
+        path: '/supplier/goods/newgoods',
+        name: 'supplier_newgoods',
+        component: Supplier_newgoods,
+    },
+    {
+        path: '/supplier/goods/goodslist',
+        name: 'supplier_goodslist',
+        component: Supplier_goodslist,
+    },
+    {
+        path: '/supplier/order/list',
+        name: 'supplier_orderlist',
+        component: Supplier_orderlist,
+    },
+    {
+        path: '/supplier/order/return',
+        name: 'supplier_returngoods',
+        component: Supplier_returngoods,
+    },
+    {
+        path: '/supplier/order/ship',
+        name: 'supplier_shipgoods',
+        component: Supplier_shipgoods,
+    },
+    {
+        path: '/supplier/settings/account',
+        name: 'supplier_account',
+        component: Supplier_account,
+    },
+    {
+        path: '/supplier/settings/feedback',
+        name: 'supplier_feedback',
+        component: Supplier_feedback,
+    },
+    {
+        path: '/supplier/announcement',
+        name: 'supplier_announcement',
+        component: Supplier_announcement,
+    }
 ];
 
 const router = createRouter({
