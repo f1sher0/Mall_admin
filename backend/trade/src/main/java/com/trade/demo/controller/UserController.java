@@ -5,10 +5,10 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.trade.demo.common.Result;
 import com.trade.demo.entity.*;
 import com.trade.demo.service.*;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,6 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
+@Api(tags = "用户管理")
 public class UserController {
 
     @Autowired
@@ -34,7 +35,9 @@ public class UserController {
 
     @Autowired
     private WarehouseService warehouseService;
+
     @PostMapping("/login")
+    @ApiOperation(value = "用户登录")
     public Result login(@RequestBody User loginUser) {
         User user = userService.findByEmail(loginUser.getEmail());
         if (user == null || !user.getPassword().equals(loginUser.getPassword())) {
@@ -42,20 +45,17 @@ public class UserController {
         }
 
         String JWTtoken = JWT.create()
-                .withSubject(user.getEmail().toString()+user.getPassword())
+                .withSubject(user.getEmail().toString() + user.getPassword())
                 .withExpiresAt(new java.sql.Date(System.currentTimeMillis() + 60 * 60 * 1000)) // 设置过期时间
                 .sign(Algorithm.HMAC256("secret")); // 使用秘钥签名
 
         System.out.println(JWTtoken);
 
         return Result.success(JWTtoken);
-
     }
 
-
-
-
     @PostMapping("/register")
+    @ApiOperation(value = "用户注册")
     public Result registerUser(@RequestBody User user) {
         if (user.getEmail() == null || user.getPassword() == null || user.getRole() == null) {
             return Result.error("Email, Password, and Role are required.");
@@ -67,7 +67,7 @@ public class UserController {
         // Setting default values for other fields
         user.setEmail(user.getEmail());
 //        user.setStatus('0');  // Assuming 'A' stands for Active
-        user.setCreateTime(new Date( ));
+        user.setCreateTime(new Date());
         user.setUpdateTime(new Date());
 
         boolean isSaved = userService.save(user);
@@ -77,7 +77,9 @@ public class UserController {
             return Result.error("Failed to register user.");
         }
     }
+
     @GetMapping("/get")
+    @ApiOperation(value = "根据ID获取用户信息")
     public Result getUserById(@RequestParam Integer id) {
         User user = userService.getById(id);
         if (user != null) {
@@ -88,6 +90,7 @@ public class UserController {
     }
 
     @PostMapping("/add")
+    @ApiOperation(value = "添加用户")
     public Result addUser(@RequestBody User user) {
         boolean isSaved = userService.save(user);
         if (isSaved) {
@@ -98,12 +101,14 @@ public class UserController {
     }
 
     @GetMapping("/list")
+    @ApiOperation(value = "获取所有用户信息")
     public Result listUsers() {
         List<User> userList = userService.list();
         return Result.success(userList);
     }
 
     @PutMapping("/update")
+    @ApiOperation(value = "更新用户信息")
     public Result updateUser(@RequestBody User user) {
         boolean isUpdated = userService.updateById(user);
         if (isUpdated) {
@@ -114,6 +119,7 @@ public class UserController {
     }
 
     @DeleteMapping("/delete")
+    @ApiOperation(value = "删除用户")
     public Result deleteUser(@RequestParam Integer id) {
         boolean isRemoved = userService.removeById(id);
         if (isRemoved) {
@@ -134,9 +140,10 @@ public class UserController {
     public List<Warehouse> getUnreviewedWarehouses() {
         return warehouseService.getUnreviewedWarehouses();
     }
+
     @GetMapping("/unreviewed")
     @ApiOperation(value = "获取所有未审核的用户和仓库")
-    public Result  getUnreviewedEntities() {
+    public Result getUnreviewedEntities() {
         List<Object> unreviewedEntities = new ArrayList<>();
         unreviewedEntities.addAll(userService.getUnreviewedUsers());
         unreviewedEntities.addAll(warehouseService.getUnreviewedWarehouses());
@@ -145,7 +152,7 @@ public class UserController {
 
     @PutMapping("/approve/user")
     @ApiOperation(value = "审核通过用户")
-    public Result  approveUser(@RequestParam Integer userId) {
+    public Result approveUser(@RequestParam Integer userId) {
         User user = userService.getById(userId);
         if (user != null) {
             user.setStatus('1');
@@ -157,64 +164,26 @@ public class UserController {
 
     @PutMapping("/approve/warehouse")
     @ApiOperation(value = "审核通过仓库")
-    public Result  approveWarehouse(@RequestParam Integer warehouseId) {
+    public Result approveWarehouse(@RequestParam Integer warehouseId) {
         Warehouse warehouse = warehouseService.getById(warehouseId);
         if (warehouse != null) {
             warehouse.setStatus('1');
-
             return Result.success(warehouseService.updateById(warehouse));
         }
         return Result.error("Warehouse not found");
     }
-//<<<<<<<<<<<<<<<<<<<<<<<<<采购商
-    //能够进行购买的商品信息获取 执行步骤如下，大伙可以检查下逻辑
-    // 1:从inlistgoods表中查询所有isReturned值未No的数据.
-    //2:将1中获取的数据中的goodsinid与goodsin表中的goodsinid进行链接匹配
-    //3: 根据goodsin表中属性 `goodsInNo` 为varchar(200) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '入库单的编号,
-    // 可以含有多个商品的id,以逗号分隔'。以逗号为单位进行解析substr后面三位字符，这三位字符对应的int值即goods表的主键id，
-    //4: 将3中解析获取的主键id与goods表进行匹配查询，选取数据中onShelf为1的数据。将将相应goods信息返回
+
     @GetMapping("/purchasable")
     @ApiOperation(value = "获取可购买的商品信息")
     public Result getPurchasableGoods() {
-        // 1: 从inlistgoods表中查询所有isReturned值为No的数据.
-//        List<InListGoods> inListGoods = inListGoodsService.lambdaQuery().eq(InListGoods::getIsReturned, "No").list();
-//        与下一行等价，但下一行安全
         List<InListGoods> inListGoods = inListGoodsService.lambdaQuery().eq(InListGoods::getIsReturned, IsReturned.NO).list();
-
         List<Goods> purchasableGoods = new ArrayList<>();
-// 实现一，没利用入库记录的特点
-//        for (InListGoods item : inListGoods) {
-//            // 2: 根据goodsinid与goodsin表进行链接匹配.
-//            GoodsIn goodsIn = goodsInService.getById(item.getGoodsInId());
-//
-//            if (goodsIn != null) {
-//                // 3: 解析goodsInNo获取goods表的主键id.
-//                String[] goodsInNos = goodsIn.getGoodsInNo().split(",");
-//                for (String goodsInNo : goodsInNos) {
-//                    String goodsIdStr = goodsInNo.substring(goodsInNo.length() - 3);  // 获取后三位字符
-//                    Integer goodsId = Integer.parseInt(goodsIdStr);  // 转换为整型
-//
-//                    // 4: 根据goodsId查询goods表中onShelf为1的数据.
-//                    Goods goods = goodsService.lambdaQuery().eq(Goods::getGoodsId, goodsId).eq(Goods::getOnShelf, 1).one();
-//
-//                    if (goods != null) {
-//                        purchasableGoods.add(goods);
-//                    }
-//                }
-//            }
-//
-//        }
-        //实现二，可以避免重查
         for (InListGoods item : inListGoods) {
             Goods goods = goodsService.lambdaQuery().eq(Goods::getGoodsId, item.getGoodsId()).eq(Goods::getOnShelf, 1).one();
-
             if (goods != null) {
                 purchasableGoods.add(goods);
             }
         }
-
         return Result.success(purchasableGoods);
     }
-
-//>>>>>>>>>>>>>>>>>>>>>采购商
 }
