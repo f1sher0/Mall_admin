@@ -17,11 +17,17 @@ public class GoodsInController {
 
     @PostMapping("/add")
     public Result addGoodsIn(@RequestBody GoodsIn goodsIn) {
-        boolean isSaved = goodsInService.save(goodsIn);
+//        boolean isSaved = goodsInService.save(goodsIn);
+//        if (isSaved) {
+//            return Result.success(goodsIn);
+//        } else {
+//            return Result.error("Failed to add goods in");
+//        }
+        boolean isSaved = goodsInService.saveAndSyncGoods(goodsIn);
         if (isSaved) {
             return Result.success(goodsIn);
         } else {
-            return Result.error("Failed to add goods in");
+            return Result.error("Failed to add goods in,检查是否有无效的商品价格、商品信息数组长度不一致");
         }
     }
 

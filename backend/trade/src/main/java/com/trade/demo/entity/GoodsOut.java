@@ -41,7 +41,7 @@ public class GoodsOut implements Serializable {
 
     @TableField("goodsPrice")
     @ApiModelProperty(value = "销售商品单价")
-    private Double goodsPrice;
+    private String goodsPrice;
 
     @TableField("goodsAmount")
     @ApiModelProperty(value = "销售商品总金额")
@@ -53,7 +53,7 @@ public class GoodsOut implements Serializable {
 
     @TableField("warehouseId")
     @ApiModelProperty(value = "仓库ID")
-    private Integer warehouseId;
+    private String warehouseId;
 
     @TableField("warehouseName")
     @ApiModelProperty(value = "仓库名称")

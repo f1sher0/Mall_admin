@@ -42,7 +42,7 @@ public class ReturnRequest implements Serializable {
     private Integer goodsId;
 
     @TableField("status")
-    @ApiModelProperty(value = "审核状态")
+    @ApiModelProperty(value = "审核状态,'待审核','已批准','已拒绝'")
     private String status;
 
     @TableField("reviewerName")

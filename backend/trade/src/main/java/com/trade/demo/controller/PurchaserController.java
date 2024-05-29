@@ -49,6 +49,8 @@ public class PurchaserController {
         } else {
             return Result.error("Failed to update purchaser");
         }
+        //to do set 一下时间的更新
+
     }
 
     @DeleteMapping("/delete")

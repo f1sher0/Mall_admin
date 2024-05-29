@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -148,6 +149,7 @@ public class UserController {
         User user = userService.getById(userId);
         if (user != null) {
             user.setStatus('1');
+            user.setUpdateTime(new Date());
             return Result.success(userService.updateById(user));
         }
         return Result.error("User not found");
@@ -159,6 +161,7 @@ public class UserController {
         Warehouse warehouse = warehouseService.getById(warehouseId);
         if (warehouse != null) {
             warehouse.setStatus('1');
+
             return Result.success(warehouseService.updateById(warehouse));
         }
         return Result.error("Warehouse not found");
@@ -179,25 +182,34 @@ public class UserController {
         List<InListGoods> inListGoods = inListGoodsService.lambdaQuery().eq(InListGoods::getIsReturned, IsReturned.NO).list();
 
         List<Goods> purchasableGoods = new ArrayList<>();
-
+// 实现一，没利用入库记录的特点
+//        for (InListGoods item : inListGoods) {
+//            // 2: 根据goodsinid与goodsin表进行链接匹配.
+//            GoodsIn goodsIn = goodsInService.getById(item.getGoodsInId());
+//
+//            if (goodsIn != null) {
+//                // 3: 解析goodsInNo获取goods表的主键id.
+//                String[] goodsInNos = goodsIn.getGoodsInNo().split(",");
+//                for (String goodsInNo : goodsInNos) {
+//                    String goodsIdStr = goodsInNo.substring(goodsInNo.length() - 3);  // 获取后三位字符
+//                    Integer goodsId = Integer.parseInt(goodsIdStr);  // 转换为整型
+//
+//                    // 4: 根据goodsId查询goods表中onShelf为1的数据.
+//                    Goods goods = goodsService.lambdaQuery().eq(Goods::getGoodsId, goodsId).eq(Goods::getOnShelf, 1).one();
+//
+//                    if (goods != null) {
+//                        purchasableGoods.add(goods);
+//                    }
+//                }
+//            }
+//
+//        }
+        //实现二，可以避免重查
         for (InListGoods item : inListGoods) {
-            // 2: 根据goodsinid与goodsin表进行链接匹配.
-            GoodsIn goodsIn = goodsInService.getById(item.getGoodsInId());
+            Goods goods = goodsService.lambdaQuery().eq(Goods::getGoodsId, item.getGoodsId()).eq(Goods::getOnShelf, 1).one();
 
-            if (goodsIn != null) {
-                // 3: 解析goodsInNo获取goods表的主键id.
-                String[] goodsInNos = goodsIn.getGoodsInNo().split(",");
-                for (String goodsInNo : goodsInNos) {
-                    String goodsIdStr = goodsInNo.substring(goodsInNo.length() - 3);  // 获取后三位字符
-                    Integer goodsId = Integer.parseInt(goodsIdStr);  // 转换为整型
-
-                    // 4: 根据goodsId查询goods表中onShelf为1的数据.
-                    Goods goods = goodsService.lambdaQuery().eq(Goods::getGoodsId, goodsId).eq(Goods::getOnShelf, 1).one();
-
-                    if (goods != null) {
-                        purchasableGoods.add(goods);
-                    }
-                }
+            if (goods != null) {
+                purchasableGoods.add(goods);
             }
         }
 

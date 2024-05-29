@@ -15,7 +15,7 @@ public class Result {
     private static final String ERROR_CODE = "500";
     private static final String SC_UNAUTHORIZED="401";
     private String code;   // 返回的状态码。告诉前端这次请求成功还是失败
-    private String msg;    // 错误信息
+    private String msg;    // 信息
     private Object data;   // 包装的数据
 
     public Result(String code, String msg, Object data) {

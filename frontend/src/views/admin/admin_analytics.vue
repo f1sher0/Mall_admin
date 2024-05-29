@@ -69,6 +69,7 @@
   
   <script>
   import { ref } from 'vue'
+  import { reactive } from 'vue';
   import Sidebar_admin from '../../partials/Sidebar_admin.vue'
   import Header from '../../partials/Header.vue'
   import Datepicker from '../../components/Datepicker.vue'
@@ -105,10 +106,20 @@
     setup() {
   
       const sidebarOpen = ref(false)
-  
+      const form = reactive({
+      id: "",
+      typeNo: "",
+      name: "",
+      supplierName: "",
+      price: "",
+      selling: "",
+      storageId: "",
+    });
       return {
         sidebarOpen,
       }  
-    }
+    },
+    
+
   }
   </script>

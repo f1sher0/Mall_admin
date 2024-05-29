@@ -76,6 +76,7 @@
   
   <script>
   import { ref } from 'vue'
+  import { reactive } from 'vue';
   import Sidebar_admin from '../../partials/Sidebar_admin.vue'
   import Header from '../../partials/Header.vue'
   import DeleteButton from '../../partials/actions/DeleteButton.vue'
@@ -102,9 +103,28 @@
   
       const updateSelectedItems = (selected) => {
         selectedItems.value = selected
+      };
+      const form = reactive({
+      id: "",
+      typeNo: "",
+      name: "",
+      supplierName: "",
+      price: "",
+      selling: "",
+      storageId: "",
+ 
+    });
+    const submitForm = async () => {
+      try {
+        const response = await axios.post('http://your-backend-api-url.com/endpoint', form);
+        console.log('Form submitted successfully:', response.data);
+      } catch (error) {
+        console.error('Error submitting form:', error);
       }
-  
+    };
       return {
+        form,
+        submitForm,
         sidebarOpen,
         selectedItems,
         updateSelectedItems,

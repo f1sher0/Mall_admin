@@ -31,10 +31,10 @@ public class Goods implements Serializable {
     private String goodsCategory;
     @TableField("purchasePrice")
     @ApiModelProperty(value = "进货价格")
-    private BigDecimal purchasePrice;
+    private Double purchasePrice;
     @TableField("sellingPrice")
     @ApiModelProperty(value = "销售价格")
-    private BigDecimal sellingPrice;
+    private Double sellingPrice;
     @TableField("createTime")
     @ApiModelProperty(value = "创建时间")
     private Date createTime;
@@ -44,6 +44,10 @@ public class Goods implements Serializable {
     @TableField("onShelf")
     @ApiModelProperty(value = "是否在货架", allowableValues = "range[0,1]", example = "1")
     private Integer onShelf;
+
+    @TableField("warehouseId")
+    @ApiModelProperty(value = "仓库ID", example = "1")
+    private Integer warehouseId = 1;
 
 
 }
