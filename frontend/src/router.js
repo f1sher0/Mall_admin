@@ -22,7 +22,14 @@ import Supplier_shipgoods from "./views/supplier/supplier_shipgoods.vue";
 import Supplier_feedback from "./views/supplier/supplier_feedback.vue";
 import Supplier_account from "./views/supplier/supplier_account.vue";
 import Supplier_announcement from "./views/supplier/supplier_announcement.vue";
-
+import Warehouse_account from "./views/warehouse/warehouse_account.vue";
+import Warehouse_analytics from "./views/warehouse/warehouse_analytics.vue";
+import Warehouse_announcement from "./views/warehouse/warehouse_announcement.vue";
+import Warehouse_dashboard from "./views/warehouse/warehouse_dashboard.vue";
+import Warehouse_feedback from "./views/warehouse/warehouse_feedback.vue";
+import Warehouse_goodslist from "./views/warehouse/warehouse_feedback.vue";
+import Warehouse_input from "./views/warehouse/warehouse_input.vue";
+import Warehouse_output from "./views/warehouse/warehouse_output.vue";
 
 const routes = [
     {
@@ -139,7 +146,48 @@ const routes = [
         path: '/supplier/announcement',
         name: 'supplier_announcement',
         component: Supplier_announcement,
-    }
+    },
+    {
+        path: '/warehouse/dashboard/main',
+        name: 'warehouse_main',
+        component: Warehouse_dashboard,
+    },
+    {
+        path: '/warehouse/dashboard/analytics',
+        name: 'warehouse_analytics',
+        component: Warehouse_analytics,
+    },
+    {
+        path: '/warehouse/goods/goodslist',
+        name: 'warehouse_goodslist',
+        component: Warehouse_goodslist,
+    },
+    {
+        path: '/warehouse/InOut/in',
+        name: 'warehouse_input',
+        component: Warehouse_input,
+    },
+    {
+        path: '/warehouse/InOut/out',
+        name: 'warehouse_output',
+        component: Warehouse_output,
+    },
+    {
+        path: '/warehouse/announcement',
+        name: 'warehouse_announcement',
+        component: Warehouse_announcement,
+    },
+    {
+        path: '/warehouse/settings/account',
+        name: 'warehouse_account',
+        component: Warehouse_account,
+    },
+    {
+        path: '/warehouse/settings/feedback',
+        name: 'warehouse_feedback',
+        component: Warehouse_feedback,
+    },
+
 ];
 
 const router = createRouter({
