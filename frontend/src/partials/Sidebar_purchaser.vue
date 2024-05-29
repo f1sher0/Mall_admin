@@ -27,7 +27,7 @@
           </svg>
         </button>
         <!-- Logo -->
-        <router-link class="block" to="/warehouse/dashboard/main">
+        <router-link class="block" to="/purchaser/dashboard/main">
           <svg width="32" height="32" viewBox="0 0 32 32">
             <defs>
               <linearGradient x1="28.538%" y1="20.229%" x2="100%" y2="108.156%" id="logo-a">
@@ -78,14 +78,14 @@
               </a>
               <div class="lg:hidden lg:sidebar-expanded:block 2xl:block">
                 <ul class="pl-9 mt-1" :class="!parentLink.expanded && 'hidden'">
-                  <router-link to="/warehouse/dashboard/main" custom v-slot="{ href, navigate, isExactActive }">
+                  <router-link to="/purchaser/dashboard/main" custom v-slot="{ href, navigate, isExactActive }">
                     <li class="mb-1 last:mb-0">
                       <a class="block transition duration-150 truncate" :class="isExactActive ? 'text-indigo-500' : 'text-slate-400 hover:text-slate-200'" :href="href" @click="navigate">
                         <span class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Main</span>
                       </a>
                     </li>
                   </router-link>
-                  <router-link to="/warehouse/dashboard/analytics" custom v-slot="{ href, navigate, isExactActive }">
+                  <router-link to="/purchaser/dashboard/analytics" custom v-slot="{ href, navigate, isExactActive }">
                     <li class="mb-1 last:mb-0">
                       <a class="block transition duration-150 truncate" :class="isExactActive ? 'text-indigo-500' : 'text-slate-400 hover:text-slate-200'" :href="href" @click="navigate">
                         <span class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Analytics</span>
@@ -105,7 +105,7 @@
                       <path class="fill-current" :class="currentRoute.fullPath.includes('goods') ? 'text-indigo-500' : 'text-slate-600'" d="M18.974 8H22a2 2 0 012 2v6h-2v5a1 1 0 01-1 1h-2a1 1 0 01-1-1v-5h-2v-6a2 2 0 012-2h.974zM20 7a2 2 0 11-.001-3.999A2 2 0 0120 7zM2.974 8H6a2 2 0 012 2v6H6v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5H0v-6a2 2 0 012-2h.974zM4 7a2 2 0 11-.001-3.999A2 2 0 014 7z" />
                       <path class="fill-current" :class="currentRoute.fullPath.includes('goods') ? 'text-indigo-300' : 'text-slate-400'" d="M12 6a3 3 0 110-6 3 3 0 010 6zm2 18h-4a1 1 0 01-1-1v-6H6v-6a3 3 0 013-3h6a3 3 0 013 3v6h-3v6a1 1 0 01-1 1z" />
                     </svg>
-                    <span class="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Goods Management</span>
+                    <span class="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"> Purchase Management</span>
                   </div>
                   <!-- Icon -->
                   <div class="flex shrink-0 ml-2">
@@ -117,7 +117,7 @@
               </a>
               <div class="lg:hidden lg:sidebar-expanded:block 2xl:block">
                 <ul class="pl-9 mt-1" :class="!parentLink.expanded && 'hidden'">
-                  <router-link to="/warehouse/goods/goodslist" custom v-slot="{ href, navigate, isExactActive }">
+                  <router-link to="/purchaser/purchase/goodslist" custom v-slot="{ href, navigate, isExactActive }">
                     <li class="mb-1 last:mb-0">
                       <a class="block transition duration-150 truncate" :class="isExactActive ? 'text-indigo-500' : 'text-slate-400 hover:text-slate-200'" :href="href" @click="navigate">
                         <span class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Goods List</span>
@@ -129,16 +129,16 @@
             </SidebarLinkGroup>
               
             <!-- User Audit -->
-            <SidebarLinkGroup v-slot="parentLink" :activeCondition="currentRoute.fullPath.includes('InOut')">
-              <a class="block text-slate-200 truncate transition duration-150" :class="currentRoute.fullPath.includes('InOut') ? 'hover:text-slate-200' : 'hover:text-white'" href="#0" @click.prevent="parentLink.handleClick(); sidebarExpanded = true">
+            <SidebarLinkGroup v-slot="parentLink" :activeCondition="currentRoute.fullPath.includes('order')">
+              <a class="block text-slate-200 truncate transition duration-150" :class="currentRoute.fullPath.includes('order') ? 'hover:text-slate-200' : 'hover:text-white'" href="#0" @click.prevent="parentLink.handleClick(); sidebarExpanded = true">
                 <div class="flex items-center justify-between">
                   <div class="flex items-center">
                     <svg class="shrink-0 h-6 w-6" viewBox="0 0 24 24">
-                      <path class="fill-current" :class="currentRoute.fullPath.includes('InOut') ? 'text-indigo-500' : 'text-slate-600'" d="M8 1v2H3v19h18V3h-5V1h7v23H1V1z" />
-                      <path class="fill-current" :class="currentRoute.fullPath.includes('InOut') ? 'text-indigo-500' : 'text-slate-600'" d="M1 1h22v23H1z" />
-                      <path class="fill-current" :class="currentRoute.fullPath.includes('InOut') ? 'text-indigo-300' : 'text-slate-400'" d="M15 10.586L16.414 12 11 17.414 7.586 14 9 12.586l2 2zM5 0h14v4H5z" />                      
+                      <path class="fill-current" :class="currentRoute.fullPath.includes('order') ? 'text-indigo-500' : 'text-slate-600'" d="M8 1v2H3v19h18V3h-5V1h7v23H1V1z" />
+                      <path class="fill-current" :class="currentRoute.fullPath.includes('order') ? 'text-indigo-500' : 'text-slate-600'" d="M1 1h22v23H1z" />
+                      <path class="fill-current" :class="currentRoute.fullPath.includes('order') ? 'text-indigo-300' : 'text-slate-400'" d="M15 10.586L16.414 12 11 17.414 7.586 14 9 12.586l2 2zM5 0h14v4H5z" />                      
                     </svg>
-                    <span class="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">InOut Management</span>
+                    <span class="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Order Management</span>
                   </div>
                   <!-- Icon -->
                   <div class="flex shrink-0 ml-2">
@@ -150,17 +150,17 @@
               </a>
               <div class="lg:hidden lg:sidebar-expanded:block 2xl:block">
                 <ul class="pl-9 mt-1" :class="!parentLink.expanded && 'hidden'">
-                  <router-link to="/warehouse/InOut/in" custom v-slot="{ href, navigate, isExactActive }">
+                  <router-link to="/purchaser/order/list" custom v-slot="{ href, navigate, isExactActive }">
                     <li class="mb-1 last:mb-0">
                       <a class="block transition duration-150 truncate" :class="isExactActive ? 'text-indigo-500' : 'text-slate-400 hover:text-slate-200'" :href="href" @click="navigate">
-                        <span class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Goods Input Management</span>
+                        <span class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Order List</span>
                       </a>
                     </li>
                   </router-link>
-                  <router-link to="/warehouse/InOut/out" custom v-slot="{ href, navigate, isExactActive }">
+                  <router-link to="/purchaser/order/return" custom v-slot="{ href, navigate, isExactActive }">
                     <li class="mb-1 last:mb-0">
                       <a class="block transition duration-150 truncate" :class="isExactActive ? 'text-indigo-500' : 'text-slate-400 hover:text-slate-200'" :href="href" @click="navigate">
-                        <span class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Goods Output Management</span>
+                        <span class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Return Management</span>
                       </a>
                     </li>
                   </router-link>                
@@ -168,7 +168,7 @@
               </div>
             </SidebarLinkGroup>                  
             <!-- Announcement -->
-            <router-link to="/warehouse/announcement" custom v-slot="{ href, navigate, isExactActive }">
+            <router-link to="/purchaser/announcement" custom v-slot="{ href, navigate, isExactActive }">
               <li class="px-3 py-2 rounded-sm mb-0.5 last:mb-0" :class="isExactActive && 'bg-slate-900'">
                 <a class="block text-slate-200 truncate transition duration-150" :class="isExactActive ? 'hover:text-slate-200' : 'hover:text-white'" :href="href" @click="navigate">
                   <div class="flex items-center">
@@ -204,14 +204,14 @@
               </a>
               <div class="lg:hidden lg:sidebar-expanded:block 2xl:block">
                 <ul class="pl-9 mt-1" :class="!parentLink.expanded && 'hidden'">
-                  <router-link to="/warehouse/settings/account" custom v-slot="{ href, navigate, isExactActive }">
+                  <router-link to="/purchaser/settings/account" custom v-slot="{ href, navigate, isExactActive }">
                     <li class="mb-1 last:mb-0">
                       <a class="block transition duration-150 truncate" :class="isExactActive ? 'text-indigo-500' : 'text-slate-400 hover:text-slate-200'" :href="href" @click="navigate">
                         <span class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">My Account</span>
                       </a>
                     </li>
                   </router-link>
-                  <router-link to="/warehouse/settings/feedback" custom v-slot="{ href, navigate, isExactActive }">
+                  <router-link to="/purchaser/settings/feedback" custom v-slot="{ href, navigate, isExactActive }">
                     <li class="mb-1 last:mb-0">
                       <a class="block transition duration-150 truncate" :class="isExactActive ? 'text-indigo-500' : 'text-slate-400 hover:text-slate-200'" :href="href" @click="navigate">
                         <span class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Give Feedback</span>
