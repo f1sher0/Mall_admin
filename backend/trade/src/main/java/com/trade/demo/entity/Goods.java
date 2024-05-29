@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
@@ -20,33 +21,26 @@ public class Goods implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "goodsId", type = IdType.AUTO)
-    @ApiModelProperty(value = "商品ID", example = "1")
+    @ApiModelProperty(value = "商品ID")
     private Integer goodsId;
-
     @TableField("goodsName")
-    @ApiModelProperty(value = "商品名称", example = "智能手机")
+    @ApiModelProperty(value = "商品名称")
     private String goodsName;
-
     @TableField("goodsCategory")
-    @ApiModelProperty(value = "商品分类", example = "电子产品")
+    @ApiModelProperty(value = "商品分类")
     private String goodsCategory;
-
     @TableField("purchasePrice")
-    @ApiModelProperty(value = "进货价格", example = "3000.00")
+    @ApiModelProperty(value = "进货价格")
     private Double purchasePrice;
-
     @TableField("sellingPrice")
-    @ApiModelProperty(value = "销售价格", example = "3500.00")
+    @ApiModelProperty(value = "销售价格")
     private Double sellingPrice;
-
     @TableField("createTime")
-    @ApiModelProperty(value = "创建时间", example = "2024-05-23 10:00:00")
+    @ApiModelProperty(value = "创建时间")
     private Date createTime;
-
     @TableField("updateTime")
-    @ApiModelProperty(value = "更新时间", example = "2024-05-24 15:00:00")
+    @ApiModelProperty(value = "更新时间")
     private Date updateTime;
-
     @TableField("onShelf")
     @ApiModelProperty(value = "是否在货架", allowableValues = "range[0,1]", example = "1")
     private Integer onShelf;
@@ -54,4 +48,6 @@ public class Goods implements Serializable {
     @TableField("warehouseId")
     @ApiModelProperty(value = "仓库ID", example = "1")
     private Integer warehouseId = 1;
+
+
 }

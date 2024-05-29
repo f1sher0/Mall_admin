@@ -19,43 +19,43 @@ public class Supplier implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "supplierId", type = IdType.AUTO)
-    @ApiModelProperty(value = "供应商ID", example = "1")
+    @ApiModelProperty(value = "供应商ID")
     private Integer supplierId;
 
     @TableField("supplierNo")
-    @ApiModelProperty(value = "供应商编号", example = "SUP001")
+    @ApiModelProperty(value = "供应商编号")
     private String supplierNo;
 
     @TableField("supplierName")
-    @ApiModelProperty(value = "供应商名称", example = "华纳电子信息公司")
+    @ApiModelProperty(value = "供应商名称")
     private String supplierName;
 
     @TableField("supplierDesc")
-    @ApiModelProperty(value = "供应商描述", example = "提供电子元器件的供应商")
+    @ApiModelProperty(value = "供应商描述")
     private String supplierDesc;
 
     @TableField("loginName")
-    @ApiModelProperty(value = "登录名", example = "supplier_user")
+    @ApiModelProperty(value = "登录名")
     private String loginName;
 
-    @ApiModelProperty(value = "密码", example = "password123")
+    @ApiModelProperty(value = "密码")
     private String password;
 
-    @ApiModelProperty(value = "联系电话", example = "12345678901")
+    @ApiModelProperty(value = "联系电话")
     private String telephone;
 
-    @ApiModelProperty(value = "邮编", example = "100000")
+    @ApiModelProperty(value = "邮编")
     private String zip;
 
-    @ApiModelProperty(value = "地址", example = "北京市海淀区中关村")
+    @ApiModelProperty(value = "地址")
     private String address;
 
-    @ApiModelProperty(value = "邮箱", example = "supplier@example.com")
+    @ApiModelProperty(value = "邮箱")
     private String email;
 
-    @ApiModelProperty(value = "审核状态", example = "1")
+    @ApiModelProperty(value = "审核状态")
     private char status;
 
-    @ApiModelProperty(value = "头像", example = "http://example.com/avatar.jpg")
+    @ApiModelProperty(value = "头像")
     private String avatar;
 }

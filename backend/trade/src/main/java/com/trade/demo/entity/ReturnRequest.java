@@ -22,34 +22,34 @@ public class ReturnRequest implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "requestId", type = IdType.AUTO)
-    @ApiModelProperty(value = "退货申请ID", example = "1")
+    @ApiModelProperty(value = "退货申请ID")
     private Integer requestId;
 
     @TableField("submitterName")
-    @ApiModelProperty(value = "提交人姓名", example = "张三")
+    @ApiModelProperty(value = "提交人姓名")
     private String submitterName;
 
     @TableField("submitTime")
-    @ApiModelProperty(value = "提交时间", example = "2024-05-23 10:00:00")
+    @ApiModelProperty(value = "提交时间")
     private Date submitTime;
 
     @TableField("reason")
-    @ApiModelProperty(value = "申请理由", example = "商品有损坏")
+    @ApiModelProperty(value = "申请理由")
     private String reason;
 
     @TableField("goodsId")
-    @ApiModelProperty(value = "退货商品ID", example = "1001")
+    @ApiModelProperty(value = "退货商品ID")
     private Integer goodsId;
 
     @TableField("status")
-    @ApiModelProperty(value = "审核状态", example = "待审核")
+    @ApiModelProperty(value = "审核状态,'待审核','已批准','已拒绝'")
     private String status;
 
     @TableField("reviewerName")
-    @ApiModelProperty(value = "审核人姓名", example = "李四")
+    @ApiModelProperty(value = "审核人姓名")
     private String reviewerName;
 
     @TableField("reviewTime")
-    @ApiModelProperty(value = "审核时间", example = "2024-05-24 15:00:00")
+    @ApiModelProperty(value = "审核时间")
     private Date reviewTime;
 }

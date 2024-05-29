@@ -18,21 +18,18 @@ import java.io.Serializable;
 @ApiModel(value = "SalesListGoods", description = "销售单商品")
 @TableName(value = "saleslistgoods")
 public class SalesListGoods implements Serializable {
- private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
+   @TableId(value="salesListGoodsId" , type = IdType.AUTO)
 
- @TableId(value = "salesListGoodsId", type = IdType.AUTO)
- @ApiModelProperty(value = "销售单ID", example = "1")
- private Integer salesListGoodsId;
-
- @TableField("salesId")
- @ApiModelProperty(value = "销售ID", example = "1")
- private Integer salesId;
-
- @TableField("goodsId")
- @ApiModelProperty(value = "商品ID", example = "1001")
- private Integer goodsId;
-
- @TableField("isReturned")
- @ApiModelProperty(value = "是否退货", example = "0")
- private Integer isReturned;
+    @ApiModelProperty(value = "销售单ID")
+    private Integer salesListGoodsId;
+    @TableField("salesId")
+    @ApiModelProperty(value = "销售ID")
+    private Integer salesId;
+    @TableField("goodsId")
+    @ApiModelProperty(value = "商品ID")
+    private Integer goodsId;
+    @TableField("isReturned")
+    @ApiModelProperty(value = "是否退货")
+    private IsReturned isReturned;
 }
