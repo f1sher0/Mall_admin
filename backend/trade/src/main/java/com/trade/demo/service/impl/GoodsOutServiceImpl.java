@@ -1,7 +1,8 @@
 package com.trade.demo.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.trade.demo.entity.*;
+import com.trade.demo.entity.Goods;
+import com.trade.demo.entity.GoodsOut;
 
 import com.trade.demo.mapper.*;
 import com.trade.demo.service.GoodsOutService;
@@ -21,8 +22,7 @@ public class GoodsOutServiceImpl extends ServiceImpl<GoodsOutMapper, GoodsOut> i
     private GoodsMapper goodsMapper;
     @Autowired
     private SalesListGoodsMapper salesListGoodsMapper;
-    @Autowired
-    private WarehouseMapper warehouseMapper;
+
 
     @Transactional // Spring 提供的一个用于声明式事务管理的注解, 事务操作确保数据库的完整性和一致性
     @Override
@@ -32,27 +32,25 @@ public class GoodsOutServiceImpl extends ServiceImpl<GoodsOutMapper, GoodsOut> i
         }
 
         double total = 0;
-        List<Integer> goodsIdList = new ArrayList<>();
+//        List<Integer> goodsIdList = new ArrayList<>();
         List<Integer> goodsWareIdList = new ArrayList<>();
-        List<String> goodsWareNameList = new ArrayList<>();
         StringBuilder salesNoBuilder = new StringBuilder();
         StringBuilder salesPriceBuilder = new StringBuilder();
         StringBuilder salesWarehouseIdBuilder = new StringBuilder();
-        StringBuilder salesWarehouseNameBuilder = new StringBuilder();
         // 解析销售单中的商品信息
         String[] goodsIdsStr = goodsOut.getSalesNo().split(",");
         for (String goodsIdStr : goodsIdsStr) {
             // 获取后三位字符作为商品ID
             String idStr = goodsIdStr ;
             int goodsId = Integer.parseInt(idStr);
-            goodsIdList.add(goodsId);
+
             // 查询商品信息
             Goods goods = goodsMapper.selectById(goodsId);
             if (goods == null) {
                 throw new IllegalArgumentException("无效的商品ID: " + goodsId);
             }
             goodsWareIdList.add(goods.getWarehouseId());
-            goodsWareNameList.add(warehouseMapper.getWarehouseNameById(goods.getWarehouseId()));
+
             // 累加销售价格
             total += goods.getSellingPrice();
 
@@ -73,13 +71,9 @@ public class GoodsOutServiceImpl extends ServiceImpl<GoodsOutMapper, GoodsOut> i
             if(  salesWarehouseIdBuilder.length()>0){
                 salesWarehouseIdBuilder.append(",");
             }
-            if(salesWarehouseNameBuilder.length()>0){
-                salesWarehouseNameBuilder.append(",");
-            }
             salesNoBuilder.append("SOUT").append(String.format("%03d", goodsId));
             salesPriceBuilder.append(goods.getSellingPrice().toString());
             salesWarehouseIdBuilder.append(goods.getWarehouseId());
-            salesWarehouseNameBuilder.append(warehouseMapper.getWarehouseNameById(goods.getWarehouseId()));
         }
 
         // 更新销售单信息
@@ -88,16 +82,8 @@ public class GoodsOutServiceImpl extends ServiceImpl<GoodsOutMapper, GoodsOut> i
         goodsOut.setSalesTime(new Date());
         goodsOut.setSalesNo(salesNoBuilder.toString());
         goodsOut.setWarehouseId(salesWarehouseIdBuilder.toString());
-        goodsOut.setWarehouseName(salesWarehouseNameBuilder.toString());
+
         int result = goodsOutMapper.insertGoodsOut(goodsOut);
-        for(Integer id:goodsIdList){
-            SalesListGoods salesListGoods = new SalesListGoods();
-            salesListGoods.setGoodsId(id);
-            salesListGoods.setSalesId(goodsOut.getSalesId());
-
-            salesListGoodsMapper.insert(salesListGoods); // 再次插入以确保更新
-        }
-
         return result > 0;
     }
 
