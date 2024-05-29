@@ -30,6 +30,14 @@ import Warehouse_feedback from "./views/warehouse/warehouse_feedback.vue";
 import Warehouse_goodslist from "./views/warehouse/warehouse_feedback.vue";
 import Warehouse_input from "./views/warehouse/warehouse_input.vue";
 import Warehouse_output from "./views/warehouse/warehouse_output.vue";
+import Purchaser_account from "./views/purchaser/purchaser_account.vue";
+import Purchaser_analytics from "./views/purchaser/purchaser_analytics.vue";
+import Purchaser_dashboard from "./views/purchaser/purchaser_dashboard.vue";
+import Purchaser_feedback from "./views/purchaser/purchaser_feedback.vue";
+import Purchaser_orderlist from "./views/purchaser/purchaser_orderlist.vue";
+import Purchaser_purchase from "./views/purchaser/purchaser_purchase.vue";
+import Purchaser_return from "./views/purchaser/purchaser_return.vue";
+import Purchaser_announcement from "./views/purchaser/purchaser_announcement.vue";
 
 const routes = [
     {
@@ -187,7 +195,46 @@ const routes = [
         name: 'warehouse_feedback',
         component: Warehouse_feedback,
     },
-
+    {
+        path: '/purchaser/dashboard/main',
+        name: 'purchaser_dashboard',
+        component: Purchaser_dashboard,
+    },
+    {
+        path: '/purchaser/dashboard/analytics',
+        name: 'purchaser_analytics',
+        component: Purchaser_analytics,
+    },
+    {
+        path: '/purchaser/purchase/goodslist',
+        name: 'purchaser_goodslist',
+        component: Purchaser_purchase,
+    },
+    {
+        path: '/purchaser/order/list',
+        name: 'purchaser_orderlist',
+        component: Purchaser_orderlist,
+    },
+    {
+        path: '/purchaser/order/return',
+        name: 'purchaser_return',
+        component: Purchaser_return,
+    },
+    {
+        path: '/purchaser/settings/account',
+        name: 'purchaser_account',
+        component: Purchaser_account,
+    },
+    {
+        path: '/purchaser/settings/feedback',
+        name: 'purchaser_feedback',
+        component: Purchaser_feedback,
+    },
+    {
+        path: '/purchaser/announcement',
+        name: 'purchaser_announcement',
+        component: Purchaser_announcement,
+    },
 ];
 
 const router = createRouter({
