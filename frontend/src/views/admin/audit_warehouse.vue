@@ -75,8 +75,7 @@
   </template>
   
   <script>
-  import { ref } from 'vue'
-  import { reactive } from 'vue';
+  import { ref, reactive, onMounted } from 'vue';
   import Sidebar_admin from '../../partials/Sidebar_admin.vue'
   import Header from '../../partials/Header.vue'
   import DeleteButton from '../../partials/actions/DeleteButton.vue'
@@ -84,7 +83,7 @@
   import DropdownTransaction from '../../components/DropdownTransaction.vue'
   import TransactionsTable from '../../partials/finance/TransactionsTable.vue'
   import PaginationClassic from '../../components/PaginationClassic.vue'
-  
+  import axios from 'axios';
   export default {
     name: 'Transactions',
     components: {
@@ -101,9 +100,7 @@
       const sidebarOpen = ref(false)
       const selectedItems = ref([])
   
-      const updateSelectedItems = (selected) => {
-        selectedItems.value = selected
-      };
+ 
       const form = reactive({
       id: "",
       typeNo: "",
@@ -114,20 +111,49 @@
       storageId: "",
  
     });
-    const submitForm = async () => {
+    const updateSelectedItems = (selected) => {
+      selectedItems.value = selected;
+    };
+
+    const fetchUnreviewedWarehouses = async () => {
       try {
-        const response = await axios.post('http://your-backend-api-url.com/endpoint', form);
-        console.log('Form submitted successfully:', response.data);
+        const response = await axios.get('http://localhost:5052/api/user/unreviewed/warehouses');
+        console.log('Data fetched successfully:', response.data);
+
+        // Assuming response.data is an array and we want to fill the form with the first item
+        if (response.data.length > 0) {
+          const warehouse = response.data[0];
+          this.form = warehouse.data;
+          alert(this.form.typeNo);
+          form.id = warehouse.id || "";
+          form.typeNo = warehouse.typeNo || "";
+          form.name = warehouse.name || "";
+          form.supplierName = warehouse.supplierName || "";
+          form.price = warehouse.price || "";
+          form.selling = warehouse.selling || "";
+          form.storageId = warehouse.storageId || "";
+
+          // Log the entire form to verify the data
+          console.log('Form data:', form);
+
+          // Optionally alert a specific field to verify
+          alert(`TypeNo: ${form.typeNo}`);
+        }
       } catch (error) {
-        console.error('Error submitting form:', error);
+        console.error('Error fetching data:', error);
       }
     };
+
+    onMounted(() => {
+      fetchUnreviewedWarehouses();
+    });
+ 
       return {
         form,
-        submitForm,
-        sidebarOpen,
-        selectedItems,
-        updateSelectedItems,
+      sidebarOpen,
+      selectedItems,
+      updateSelectedItems,
+      fetchUnreviewedWarehouses,
       }  
     }
   }
