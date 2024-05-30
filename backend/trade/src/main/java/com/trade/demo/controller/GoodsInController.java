@@ -21,13 +21,25 @@ public class GoodsInController {
     @PostMapping("/add")
     @ApiOperation(value = "添加商品入库")
     public Result addGoodsIn(@RequestBody GoodsIn goodsIn) {
-        boolean isSaved = goodsInService.saveAndSyncGoods(goodsIn);
-        if (isSaved) {
-            return Result.success(goodsIn);
-        } else {
-            return Result.error("Failed to add goods in, please check for invalid product prices or inconsistent lengths in product information arrays");
+        Integer isSaved = goodsInService.saveAndSyncGoods(goodsIn);
+        switch (isSaved) {
+            case 200:
+                return Result.success(goodsIn);
+            case 500:
+                return Result.error("GoodsIn 对象为空。");
+            case 501:
+                return Result.error("商品信息数组长度不一致。");
+            case 502:
+                return Result.error("仓库容量不足。");
+            case 503:
+                return Result.error("无效的商品价格。");
+            case 504:
+                return Result.error("发生未知错误。");
+            default:
+                return Result.error("发生意外错误。");
         }
     }
+
 
     @GetMapping("/get")
     @ApiOperation(value = "根据ID获取商品入库")

@@ -19,16 +19,27 @@ public class GoodsOutController {
     private GoodsOutService goodsOutService;
 
     @PostMapping("/add")
-
     @ApiOperation(value = "添加出库单")
     public Result addGoodsOut(@RequestBody GoodsOut goodsOut) {
-        boolean isSaved = goodsOutService.saveAndSyncGoods(goodsOut);
-        if (isSaved) {
-            return Result.success(goodsOut);
-        } else {
-            return Result.error("Failed to add goods out,检查是否有无效的商品价格、商品信息数组长度不一致");
+        Integer isSaved = goodsOutService.saveAndSyncGoods(goodsOut);
+        switch (isSaved) {
+            case 200:
+                return Result.success(goodsOut);
+            case 500:
+                return Result.error("GoodsOut 对象为空。");
+            case 503:
+                return Result.error("无效的商品ID格式。");
+            case 504:
+                return Result.error("无效的商品ID。");
+            case 505:
+                return Result.error("数据库插入失败。");
+            case 506:
+                return Result.error("存在商品已下架");
+            default:
+                return Result.error("发生未知错误。");
         }
     }
+
     @GetMapping("/get")
     @ApiOperation(value = "根据ID获取出库单")
     public Result getGoodsOutById(@RequestParam Integer id) {

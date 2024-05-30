@@ -32,12 +32,12 @@ public class Warehouse implements Serializable {
     private String warehouseLocation;
 
     @TableField("totalCapacity")
-    @ApiModelProperty(value = "总容量", example = "10000.00")
-    private BigDecimal totalCapacity;
+    @ApiModelProperty(value = "总容量", example = "10.00")
+    private Double totalCapacity;
 
     @TableField("availableCapacity")
-    @ApiModelProperty(value = "可用容量", example = "5000.00")
-    private BigDecimal availableCapacity;
+    @ApiModelProperty(value = "可用容量", example = "10.00")
+    private Double availableCapacity;
 
     @ApiModelProperty(value = "审核状态", example = "1")
     private char status;
