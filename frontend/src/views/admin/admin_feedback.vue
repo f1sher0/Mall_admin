@@ -22,7 +22,7 @@
           <!-- Content --> 
           <div class="bg-white dark:bg-slate-800 shadow-lg rounded-sm mb-8">
             <div class="flex flex-col md:flex-row md:-mr-px">
-              <SettingsSidebar />
+              <SettingsSidebar_admin />
               <FeedbackPanel />
             </div>
           </div>
@@ -39,7 +39,7 @@
 import { ref } from 'vue'
 import Sidebar_admin from '../../partials/Sidebar_admin.vue'
 import Header from '../../partials/Header.vue'
-import SettingsSidebar from '../../partials/settings/SettingsSidebar.vue'
+import SettingsSidebar_admin from '../../partials/settings/SettingsSidebar_admin.vue'
 import FeedbackPanel from '../../partials/settings/FeedbackPanel.vue'
 
 export default {
@@ -47,7 +47,7 @@ export default {
   components: {
     Sidebar_admin,
     Header,
-    SettingsSidebar,
+    SettingsSidebar_admin,
     FeedbackPanel,
   },
   setup() {

@@ -2,7 +2,7 @@
   <div class="flex h-[100dvh] overflow-hidden">
 
     <!-- Sidebar -->
-    <Sidebar_admin :sidebarOpen="sidebarOpen" @close-sidebar="sidebarOpen = false" />
+    <Sidebar_supplier :sidebarOpen="sidebarOpen" @close-sidebar="sidebarOpen = false" />
 
     <!-- Content area -->
     <div class="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
@@ -10,7 +10,7 @@
       <!-- Site header -->
       <Header :sidebarOpen="sidebarOpen" @toggle-sidebar="sidebarOpen = !sidebarOpen" />
 
-      <main class="grow">
+      <main class="grow dark:bg-slate-900">
         <div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
 
           <!-- Page header -->
@@ -22,7 +22,7 @@
           <!-- Content --> 
           <div class="bg-white dark:bg-slate-800 shadow-lg rounded-sm mb-8">
             <div class="flex flex-col md:flex-row md:-mr-px">
-              <SettingsSidebar />
+              <SettingsSidebar_supplier />
               <AccountPanel />
             </div>
           </div>
@@ -37,17 +37,17 @@
 
 <script>
 import { ref } from 'vue'
-import Sidebar_admin from '../../partials/Sidebar_admin.vue'
+import Sidebar_supplier from '../../partials/Sidebar_supplier.vue'
 import Header from '../../partials/Header.vue'
-import SettingsSidebar from '../../partials/settings/SettingsSidebar.vue'
+import SettingsSidebar_supplier from '../../partials/settings/SettingsSidebar_supplier.vue'
 import AccountPanel from '../../partials/settings/AccountPanel.vue'
 
 export default {
   name: 'Account',
   components: {
-    Sidebar_admin,
+    Sidebar_supplier,
     Header,
-    SettingsSidebar,
+    SettingsSidebar_supplier,
     AccountPanel,
   },
   setup() {

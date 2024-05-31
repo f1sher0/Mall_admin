@@ -27,7 +27,7 @@ import Warehouse_analytics from "./views/warehouse/warehouse_analytics.vue";
 import Warehouse_announcement from "./views/warehouse/warehouse_announcement.vue";
 import Warehouse_dashboard from "./views/warehouse/warehouse_dashboard.vue";
 import Warehouse_feedback from "./views/warehouse/warehouse_feedback.vue";
-import Warehouse_goodslist from "./views/warehouse/warehouse_feedback.vue";
+import Warehouse_goodslist from "./views/warehouse/warehouse_goodslist.vue";
 import Warehouse_input from "./views/warehouse/warehouse_input.vue";
 import Warehouse_output from "./views/warehouse/warehouse_output.vue";
 import Purchaser_account from "./views/purchaser/purchaser_account.vue";

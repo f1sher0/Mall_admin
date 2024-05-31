@@ -32,9 +32,6 @@
                 <SearchForm class="hidden sm:block" />
               </div>
 
-              <!-- Export button -->
-              <button class="btn bg-indigo-500 hover:bg-indigo-600 text-white">Export Transactions</button>
-
             </div>
 
           </div>

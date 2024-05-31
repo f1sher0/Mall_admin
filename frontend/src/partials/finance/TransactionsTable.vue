@@ -28,6 +28,9 @@
               <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                 <div class="font-semibold text-right">Location</div>
               </th>
+              <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                <div class="font-semibold text-right">Manipulate</div>
+              </th>
             </tr>
           </thead>
           <!-- Table body -->
@@ -54,12 +57,7 @@ import TransactionItem from './TransactionsTableItem.vue'
 import Image01 from '../../images/transactions-image-01.svg'
 import Image02 from '../../images/transactions-image-02.svg'
 import Image03 from '../../images/user-36-05.jpg'
-import Image04 from '../../images/transactions-image-03.svg'
-import Image05 from '../../images/transactions-image-04.svg'
-import Image06 from '../../images/transactions-image-05.svg'
-import Image07 from '../../images/transactions-image-06.svg'
-import Image08 from '../../images/transactions-image-07.svg'
-import Image09 from '../../images/transactions-image-08.svg'
+
 
 export default {
   name: 'TransactionsTable',
@@ -108,63 +106,7 @@ export default {
         date: '22/01/2022',
         status: 'Pending',
         amount: '+$499.99',
-      },   
-      {
-        id: '3',
-        image: Image04,
-        name: 'Google Limited UK',
-        date: '22/01/2022',
-        status: 'Completed',
-        amount: '-$1,029.77',
-      },   
-      {
-        id: '4',
-        image: Image05,
-        name: 'Acme LTD UK',
-        date: '22/01/2022',
-        status: 'Pending',
-        amount: '+$2,179.36',
-      },   
-      {
-        id: '5',
-        image: Image04,
-        name: 'Google Limited UK',
-        date: '22/01/2022',
-        status: 'Canceled',
-        amount: '-$1,029.77',
-      },   
-      {
-        id: '6',
-        image: Image06,
-        name: 'Uber',
-        date: '22/01/2022',
-        status: 'Completed',
-        amount: '-$272.88',
-      },   
-      {
-        id: '7',
-        image: Image07,
-        name: 'PublicOne Inc.',
-        date: '22/01/2022',
-        status: 'Completed',
-        amount: '-$199.87',
-      },   
-      {
-        id: '8',
-        image: Image08,
-        name: 'Github Inc.',
-        date: '22/01/2022',
-        status: 'Completed',
-        amount: '-$42.87',
-      },   
-      {
-        id: '9',
-        image: Image09,
-        name: 'Form Builder PRO',
-        date: '22/01/2022',
-        status: 'Completed',
-        amount: '-$112.44',
-      },                                                      
+      },                                                
     ])
 
     return {
