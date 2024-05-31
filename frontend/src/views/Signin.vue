@@ -34,22 +34,22 @@
           <div class="max-w-sm mx-auto w-full px-4 py-8">
             <h1 class="text-3xl text-slate-800 dark:text-slate-100 font-bold mb-6">Welcome back! ✨</h1>
             <!-- Form -->
-            <form>
+            <form @submit.prevent="handleSubmit">
               <div class="space-y-4">
                 <div>
                   <label class="block text-sm font-medium mb-1" for="email">Email Address</label>
-                  <input id="email" class="form-input w-full" type="email" />
+                  <input id="email" v-model="email" class="form-input w-full" type="email" required />
                 </div>
                 <div>
                   <label class="block text-sm font-medium mb-1" for="password">Password</label>
-                  <input id="password" class="form-input w-full" type="password" autoComplete="on" />
+                  <input id="password" v-model="password" class="form-input w-full" type="password" autoComplete="on" required />
                 </div>
               </div>
               <div class="flex items-center justify-between mt-6">
                 <div class="mr-1">
                   <router-link class="text-sm underline hover:no-underline" to="/reset-password">Forgot Password?</router-link>
                 </div>
-                <router-link class="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-3" to="/admin/dashboard/main">Sign In</router-link>
+                <button type="submit" class="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-3">Sign In</button>
               </div>
             </form>
             <!-- Footer -->
@@ -86,8 +86,48 @@
 </template>
 
 <script>
+import axios from 'axios';
+import { useRouter } from 'vue-router';
 
 export default {
   name: 'Signin',
-}
+  data() {
+    return {
+      email: '',
+      password: '',
+      loading: false,
+    };
+  },
+  setup() {
+    const router = useRouter();
+    return { router };
+  },
+  methods: {
+    async handleSubmit() {
+      this.loading = true;
+      try {
+        const response = await axios.post('http://localhost:5052/api/user/login', {
+          email: this.email,
+          password: this.password,
+        });
+        const data = response.data;
+        if (data.code === '200') { // 登录成功
+          localStorage.setItem('token', data.data);  
+          this.router.push('/admin/dashboard/main');
+        } else if (data.code === '401') { // 未通过审核
+          alert(data.msg);
+        } else if(data.code === '500') { // 其他错误
+          alert(data.msg);
+        }
+      } catch (error) {
+        alert('未知错误');
+      } finally {
+        this.loading = false;
+      }
+        
+       
+      
+    },
+  },
+};
 </script>

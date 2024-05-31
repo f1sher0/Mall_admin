@@ -43,6 +43,9 @@ public class UserController {
         if (user == null || !user.getPassword().equals(loginUser.getPassword())) {
             return Result.error("Invalid email or password");
         }
+        if(user.getStatus()=='0'){
+            return  Result.unauthorized("该用户暂没有通过审核,无法使用");
+        }
 
         String JWTtoken = JWT.create()
                 .withSubject(user.getEmail().toString() + user.getPassword())
