@@ -67,4 +67,5 @@ public class Result {
     public static Result error(String msg) {
         return new Result(ERROR_CODE, msg);
     }
+    public static  Result unauthorized(String msg){return new Result(SC_UNAUTHORIZED,msg);}
 }

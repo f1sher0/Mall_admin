@@ -29,9 +29,13 @@ public class WarehouseGoods implements Serializable {
 
     @TableField("goodsId")
     @ApiModelProperty(value = "商品ID", example = "1001")
-    private String goodsId;
+    private Integer goodsId;
 
     @TableField("goodsQuantity")
     @ApiModelProperty(value = "商品数量", example = "100")
-    private String goodsQuantity;
+    private Integer goodsQuantity;
+
+    @TableField("quantityByName")
+    @ApiModelProperty(value = "按商品名称分组的数量, 该属性可以弃用,以后端操作实现", example = "1")
+    private  Integer quantityByName;
 }
