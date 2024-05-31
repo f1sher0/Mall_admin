@@ -35,6 +35,8 @@ public class GoodsInController {
                 return Result.error("无效的商品价格。");
             case 504:
                 return Result.error("发生未知错误。");
+            case 505:
+                return  Result.error("申请存放的仓库状态为0,没有开放");
             default:
                 return Result.error("发生意外错误。");
         }

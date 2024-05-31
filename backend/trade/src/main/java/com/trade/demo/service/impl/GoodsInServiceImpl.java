@@ -1,15 +1,10 @@
 package com.trade.demo.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.trade.demo.entity.Goods;
-import com.trade.demo.entity.GoodsIn;
-import com.trade.demo.entity.InListGoods;
-import com.trade.demo.entity.Warehouse;
-import com.trade.demo.mapper.GoodsInMapper;
-import com.trade.demo.mapper.GoodsMapper;
-import com.trade.demo.mapper.InListGoodsMapper;
-import com.trade.demo.mapper.WarehouseMapper;
+import com.trade.demo.entity.*;
+import com.trade.demo.mapper.*;
 import com.trade.demo.service.GoodsInService;
+import com.trade.demo.service.WarehouseGoodsService;
 import com.trade.demo.service.WarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +25,10 @@ public class GoodsInServiceImpl extends ServiceImpl<GoodsInMapper, GoodsIn> impl
     private WarehouseService warehouseService;
     @Autowired
     private WarehouseMapper warehouseMapper;
+    @Autowired
+    private WarehouseGoodsService warehousegoodsService;
+    @Autowired
+    private WarehouseGoodsMapper warehouseGoodsMapper;
     @Override
     @Transactional // Spring 提供的一个用于声明式事务管理的注解, 事务操作确保数据库的完整性和一致性
     public Integer saveAndSyncGoods(GoodsIn goodsIn) {
@@ -52,29 +51,51 @@ public class GoodsInServiceImpl extends ServiceImpl<GoodsInMapper, GoodsIn> impl
         Integer goodsNum = goodsCategories.length;
         Warehouse warehouse = warehouseService.getById(goodsIn.getWarehouseId());
         warehouseMapper.selectById(goodsIn.getWarehouseId());
+        if(warehouse.getStatus()=='0'){//  检查仓库status
+            System.out.println("空");
+            return 505;
+        }
         //检查是否有容量
         if (goodsNum > warehouse.getAvailableCapacity() ) {
             return 502;
+        }
+
+
+        for (int i = 0; i < goodsCategories.length; i++) {
+        try {
+            double price = Double.parseDouble(goodsPrices[i]);
+
+        } catch (NumberFormatException e) {
+            return 503;
+        }
         }
         try {
             for (int i = 0; i < goodsCategories.length; i++) {
                 Goods goods = new Goods();
                 goods.setGoodsName(goodsNames[i]);
                 goods.setGoodsCategory(goodsCategories[i]);
-                try {
+                //这里的解析不会出现错误,因为上面503的返回语句没执行的话,说明数字有效
                     double price = Double.parseDouble(goodsPrices[i]);
                     goods.setPurchasePrice(price);
                     goods.setSellingPrice(price * 1.5);
                     total += price;
-                } catch (NumberFormatException e) {
-                    return 503;
-                }
+
 
                 goods.setOnShelf(1); // 默认上架
+                goods.setWarehouseId(goodsIn.getWarehouseId());
                 goodsMapper.insertGoods(goods); // 插入 Goods 表并获取自动生成的 goodsId
+                //<<<<<<<<<<<<同步WarehouseGoods表
+                WarehouseGoods warehouseGoods = new WarehouseGoods();
+                warehouseGoods.setGoodsId(goods.getGoodsId());
+                warehouseGoods.setWarehouseId(goodsIn.getWarehouseId());
+                warehouseGoods.setGoodsQuantity(1);
+                warehouseGoodsMapper.insertWarehouseGoods(warehouseGoods);
+                //>>>>>>>>>>>>>同步WarehouseGoods表
+
                 goodsIdList.add(goods.getGoodsId());
                 InListGoods inListGoods = new InListGoods();
-                inListGoods.setGoodsId(goods.getGoodsId());
+//                inListGoods.setGoodsId(goods.getGoodsId());
+//
                 String formattedGoodsId = String.format("%03d", goods.getGoodsId());
 
                 if (goodsInNoBuilder.length() > 0) {
