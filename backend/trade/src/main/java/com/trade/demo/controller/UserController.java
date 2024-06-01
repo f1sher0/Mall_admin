@@ -60,19 +60,26 @@ public class UserController {
     @PostMapping("/register")
     @ApiOperation(value = "用户注册")
     public Result registerUser(@RequestBody User user) {
+        user.setEmail(user.getEmail());
+        user.setStatus('0');
+        user.setCreateTime(new Date());
+        user.setUpdateTime(new Date());
+        System.out.println(user.getEmail());
+        user.setPassword(user.getPassword());
+        System.out.println(user.getRole());
         if (user.getEmail() == null || user.getPassword() == null || user.getRole() == null) {
             return Result.error("Email, Password, and Role are required.");
         }
-        // Check if the email is already in use
-        if (userService.isEmailTaken(user.getEmail())) {
+         if (userService.isEmailTaken(user.getEmail())) {
             return Result.error("Email is already in use.");
         }
-        // Setting default values for other fields
-        user.setEmail(user.getEmail());
-//        user.setStatus('0');  // Assuming 'A' stands for Active
-        user.setCreateTime(new Date());
-        user.setUpdateTime(new Date());
 
+//        user.setEmail(user.getEmail());
+//        user.setStatus('0');
+//        user.setCreateTime(new Date());
+//        user.setUpdateTime(new Date());
+//        user.setPassword(user.getPassword());
+//        System.out.println(user.getRole());
         boolean isSaved = userService.save(user);
         if (isSaved) {
             return Result.success(user);
