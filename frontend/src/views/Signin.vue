@@ -111,8 +111,10 @@ export default {
           password: this.password,
         });
         const data = response.data;
+        console.log("后端返回: "+ data )
         if (data.code === '200') { // 登录成功
           localStorage.setItem('token', data.data);  
+          console.log(localStorage.getItem('token'));
           this.router.push('/admin/dashboard/main');
         } else if (data.code === '401') { // 未通过审核
           alert(data.msg);

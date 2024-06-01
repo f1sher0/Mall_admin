@@ -1,12 +1,9 @@
 <template>
   <main class="bg-white dark:bg-slate-900">
-
     <div class="relative flex">
-
       <!-- Content -->
       <div class="w-full md:w-1/2">
         <div class="min-h-[100dvh] h-full flex flex-col after:flex-1">
-
           <div class="flex-1">
             <div class="flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
               <!-- Logo -->
@@ -34,43 +31,43 @@
           <div class="max-w-sm mx-auto w-full px-4 py-8">
             <h1 class="text-3xl text-slate-800 dark:text-slate-100 font-bold mb-6">Create your Account ✨</h1>
             <!-- Form -->
-            <form>
+            <form @submit.prevent="handleSubmit">
               <div class="space-y-4">
                 <div>
-                  <label class="block text-sm font-medium mb-1" for="email">Email Address <span class="text-rose-500">*</span></label>
-                  <input id="email" class="form-input w-full" type="email" />
+                  <label class="block text-sm font-medium mb-1" for="email">邮箱地址 <span class="text-rose-500">*</span></label>
+                  <input id="email" v-model="email" class="form-input w-full" type="email" required />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium mb-1" for="name">Full Name <span class="text-rose-500">*</span></label>
-                  <input id="name" class="form-input w-full" type="text" />
+                  <label class="block text-sm font-medium mb-1" for="name">全名 <span class="text-rose-500">*</span></label>
+                  <input id="name" v-model="name" class="form-input w-full" type="text" required />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium mb-1" for="role">Your Role <span class="text-rose-500">*</span></label>
-                  <select id="role" class="form-select w-full">
-                    <option>Purchaser</option>
-                    <option>Supplier</option>
-                    <option>Warehouse Admin</option>
+                  <label class="block text-sm font-medium mb-1" for="role">您的角色 <span class="text-rose-500">*</span></label>
+                  <select id="role" v-model="role" class="form-select w-full" required>
+                    <option value="采购商">采购商</option>
+                    <option value="供应商">供应商</option>
+                    <option value="仓库管理员">仓库管理员</option>
                   </select>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium mb-1" for="password">Password</label>
-                  <input id="password" class="form-input w-full" type="password" autoComplete="on" />
+                  <label class="block text-sm font-medium mb-1" for="password">密码 <span class="text-rose-500">*</span></label>
+                  <input id="password" v-model="password" class="form-input w-full" type="password" autocomplete="on" required />
                 </div>
               </div>
               <div class="flex items-center justify-between mt-6">
                 <div class="mr-1">
                   <label class="flex items-center">
-                    <input type="checkbox" class="form-checkbox" />
-                    <span class="text-sm ml-2">Email me about product news.</span>
+                    <input type="checkbox" class="form-checkbox" v-model="subscribe" />
+                    <span class="text-sm ml-2">订阅产品新闻邮件</span>
                   </label>
                 </div>
-                <router-link class="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-3 whitespace-nowrap" to="/">Sign Up</router-link>
+                <button type="submit" class="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-3 whitespace-nowrap">注册</button>
               </div>
             </form>
             <!-- Footer -->
             <div class="pt-5 mt-6 border-t border-slate-200 dark:border-slate-700">
               <div class="text-sm">
-                Have an account? <router-link class="font-medium text-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400" to="/signin">Sign In</router-link>
+                已有账号？ <router-link class="font-medium text-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400" to="/signin">登录</router-link>
               </div>
             </div>
           </div>
@@ -90,8 +87,67 @@
 </template>
 
 <script>
-
+import axios from 'axios'
+import { ref } from 'vue'
+import { ElMessage ,ElMessageBox } from 'element-plus'
+import { useRouter } from 'vue-router'
 export default {
   name: 'Signup',
+  setup() {
+    const email = ref('')
+    const name = ref('')
+    const role = ref('')
+    const password = ref('')
+    const subscribe = ref(false)
+    const router = useRouter();
+    
+
+    const handleSubmit = async () => {
+      try {
+        const response = await axios.post('http://localhost:5052/api/user/register', {
+          email: email.value,
+          username: name.value,
+          role: role.value,
+          password: password.value,
+          subscribe: subscribe.value,
+        })
+        if (response.data.code === '200') {
+          // 注册成功，弹出确认框
+          ElMessageBox.confirm('注册成功,请耐心等待审核,是否跳转到登录页面？', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'success'
+          }).then(() => {
+            // 用户点击确认，执行跳转到登录页面的操作
+            router.push('/signin')
+
+          }).catch(() => {
+            // 用户点击取消，不执行任何操作
+          }) 
+        }else {
+          ElMessage.error(response.data.msg || '注册失败')
+        }
+      } catch (error) {
+        console.error('注册失败:', error)
+        ElMessage.error('注册失败，请稍后再试')
+      }
+    }
+
+    return {
+      email,
+      name,
+      role,
+      password,
+      subscribe,
+      handleSubmit,
+      router
+    }
+  },
 }
 </script>
+
+<style scoped>
+body {
+  margin: 0;
+}
+</style>
