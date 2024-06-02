@@ -29,28 +29,30 @@
           </div>          
 
           <div class="max-w-sm mx-auto w-full px-4 py-8">
-            <h1 class="text-3xl text-slate-800 dark:text-slate-100 font-bold mb-6">Create your Account ✨</h1>
+            <h1 class="text-3xl text-slate-800 dark:text-slate-100 font-bold mb-6">Create your Account</h1>
             <!-- Form -->
             <form @submit.prevent="handleSubmit">
               <div class="space-y-4">
                 <div>
-                  <label class="block text-sm font-medium mb-1" for="email">邮箱地址 <span class="text-rose-500">*</span></label>
+                  <label class="block text-sm font-medium mb-1" for="email">Email Address <span class="text-rose-500">*</span></label>
                   <input id="email" v-model="email" class="form-input w-full" type="email" required />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium mb-1" for="name">全名 <span class="text-rose-500">*</span></label>
+                  <label class="block text-sm font-medium mb-1" for="name">Name <span class="text-rose-500">*</span></label>
                   <input id="name" v-model="name" class="form-input w-full" type="text" required />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium mb-1" for="role">您的角色 <span class="text-rose-500">*</span></label>
+                  <label class="block text-sm font-medium mb-1" for="role">Role <span class="text-rose-500">*</span></label>
                   <select id="role" v-model="role" class="form-select w-full" required>
+ 
                     <option value="Purchaser">Purchaser</option>
                     <option value="Supplier">Supplier</option>
                     <option value="Warehouse Admin">Warehouse Admin</option>
+ 
                   </select>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium mb-1" for="password">密码 <span class="text-rose-500">*</span></label>
+                  <label class="block text-sm font-medium mb-1" for="password">Password <span class="text-rose-500">*</span></label>
                   <input id="password" v-model="password" class="form-input w-full" type="password" autocomplete="on" required />
                 </div>
               </div>
@@ -58,16 +60,16 @@
                 <div class="mr-1">
                   <label class="flex items-center">
                     <input type="checkbox" class="form-checkbox" v-model="subscribe" />
-                    <span class="text-sm ml-2">订阅产品新闻邮件</span>
+                    <span class="text-sm ml-2">Subscibe Our News</span>
                   </label>
                 </div>
-                <button type="submit" class="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-3 whitespace-nowrap">注册</button>
+                <button type="submit" class="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-3 whitespace-nowrap">Register</button>
               </div>
             </form>
             <!-- Footer -->
             <div class="pt-5 mt-6 border-t border-slate-200 dark:border-slate-700">
               <div class="text-sm">
-                已有账号？ <router-link class="font-medium text-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400" to="/signin">登录</router-link>
+                Already have an account? <router-link class="font-medium text-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400" to="/signin">Sign in</router-link>
               </div>
             </div>
           </div>
@@ -113,9 +115,9 @@ export default {
         })
         if (response.data.code === '200') {
           // 注册成功，弹出确认框
-          ElMessageBox.confirm('注册成功,请耐心等待审核,是否跳转到登录页面？', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
+          ElMessageBox.confirm('Registration successful, please wait for review. Do you want to jump to the login page?', 'Tips', {
+            confirmButtonText: 'Confirm',
+            cancelButtonText: 'Cancel',
             type: 'success'
           }).then(() => {
             // 用户点击确认，执行跳转到登录页面的操作

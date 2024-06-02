@@ -124,7 +124,11 @@ export default {
           password: this.password,
         });
         const data = response.data;
+ 
         console.log("后端返回: " + data);
+ 
+      
+ 
         if (data.code === '200') { // 登录成功
           localStorage.setItem('token', data.data.token);
           console.log(localStorage.getItem('token'));

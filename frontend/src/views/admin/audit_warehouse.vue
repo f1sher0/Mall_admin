@@ -24,8 +24,6 @@
             <!-- Right: Actions  -->
             <div class="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2">
 
-              <!-- Delete button -->
-              <DeleteButton :selectedItems="selectedItems" />
 
               <!-- Search form -->
               <div class="hidden sm:block">
@@ -40,33 +38,32 @@
           <!-- Filters -->
           <div class="mb-5">
             <ul class="flex flex-wrap -m-1">
-              <li class="m-1">
-                <button
-                  class="inline-flex items-center justify-center text-sm font-medium leading-5 rounded-full px-3 py-1 border border-transparent shadow-sm bg-indigo-500 text-white duration-150 ease-in-out">View
-                  All</button>
-              </li>
-              <li class="m-1">
-                <button
-                  class="inline-flex items-center justify-center text-sm font-medium leading-5 rounded-full px-3 py-1 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 shadow-sm bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 duration-150 ease-in-out">Approved</button>
-              </li>
-              <li class="m-1">
-                <button
-                  class="inline-flex items-center justify-center text-sm font-medium leading-5 rounded-full px-3 py-1 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 shadow-sm bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 duration-150 ease-in-out">Pending</button>
-              </li>
-              <li class="m-1">
-                <button
-                  class="inline-flex items-center justify-center text-sm font-medium leading-5 rounded-full px-3 py-1 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 shadow-sm bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 duration-150 ease-in-out">Rejected</button>
+              <li v-for="(statusLabel, statusValue) in statusFilters" :key="statusValue" class="m-1">
+                <button @click="filterStatus(parseInt(statusValue))" :class="getStatus() === parseInt(statusValue) ? 'inline-flex items-center justify-center text-sm font-medium leading-5 rounded-full px-3 py-1 border border-transparent shadow-sm bg-indigo-500 text-white duration-150 ease-in-out' : 'inline-flex items-center justify-center text-sm font-medium leading-5 rounded-full px-3 py-1 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 shadow-sm bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 duration-150 ease-in-out'">{{ statusLabel }}</button>
               </li>
             </ul>
           </div>
 
-          <!-- Table -->
-          <TransactionsTable @change-selection="updateSelectedItems($event)" />
+          <el-table :data="tableData" style="width: 100%">
+            <el-table-column fixed prop="date" label="Date" width="200" />
+            <el-table-column prop="warehouseName" label="warehouseName" width="300" />
+            <el-table-column prop="warehouseLocation" label="warehouseLocation" width="300" />
+            <el-table-column prop="totalCapacity" label="totalCapacity" width="200" />
+            <el-table-column prop="status" label="status" width="150">
+              <template #default="{ row }">
+                <el-tag :type="getTagType(row.status)">{{ getStatusText(row.status) }}</el-tag>
+              </template>
+            </el-table-column>
+            <el-table-column fixed="right" label="Operations" width="120">
+              <template #default>
+                <el-button link type="primary" size="small" @click="handleClick">
+                  Detail
+                </el-button>
+                <el-button link type="primary" size="small">Edit</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
 
-          <!-- Pagination -->
-          <div class="mt-8">
-            <PaginationClassic />
-          </div>
 
         </div>
       </main>
@@ -77,14 +74,13 @@
 </template>
 
 <script>
-import { ref, reactive, onMounted, inject} from 'vue';
+import { ref, reactive, onMounted, inject } from 'vue';
 import Sidebar_admin from '../../partials/Sidebar_admin.vue'
 import Header from '../../partials/Header.vue'
 import DeleteButton from '../../partials/actions/DeleteButton.vue'
 import SearchForm from '../../components/SearchForm.vue'
 import DropdownTransaction from '../../components/DropdownTransaction.vue'
-import TransactionsTable from '../../partials/finance/TransactionsTable.vue'
-import PaginationClassic from '../../components/PaginationClassic.vue'
+
 export default {
   name: 'Transactions',
   components: {
@@ -93,27 +89,37 @@ export default {
     DeleteButton,
     SearchForm,
     DropdownTransaction,
-    TransactionsTable,
-    PaginationClassic,
   },
   setup() {
 
-    const sidebarOpen = ref(false)
-    const selectedItems = ref([])
+    const sidebarOpen = ref(false);
     const axios = inject('$axios');
-    const form = reactive({
-      id: "",
-      typeNo: "",
-      name: "",
-      supplierName: "",
-      price: "",
-      selling: "",
-      storageId: "",
-    });
-    const updateSelectedItems = (selected) => {
-      selectedItems.value = selected;
-    };
+    let rawData = [{
+        date: '2016-05-03',
+        warehouseName: 'Beijing Warehouse',
+        warehouseLocation: 'Haidian Beijing',
+        totalCapacity: 10000,
+        status: 0,
+        warehouseId: 0,
+      },
+      {
+        date: '2016-05-04',
+        warehouseName: 'Beijing Warehouse',
+        warehouseLocation: 'Haidian Beijing',
+        totalCapacity: 10000,
+        status: 1,
+        warehouseId: 1,
+      },
+      {
+        date: '2016-05-05',
+        warehouseName: 'Beijing Warehouse',
+        warehouseLocation: 'Haidian Beijing',
+        totalCapacity: 10000,
+        status: 2,
+        warehouseId: 2,
+      }];
 
+    let tableData = ref([]);
     const fetchUnreviewedWarehouses = async () => {
       try {
         const response = await axios.get('/user/unreviewed/warehouses');
@@ -127,13 +133,94 @@ export default {
       fetchUnreviewedWarehouses();
     });
 
+    const handleClick = () => {
+      console.log('click')
+    };
+
+    const getTagType = (s) => {
+      switch (s) {
+        case 0:
+          return 'primary';
+        case 1:
+          return 'success';
+        case 2:
+          return 'danger';
+        default:
+          return 'info';
+      }
+    };
+
+    const getStatusText = (status) => {
+      switch (status) {
+        case 0:
+          return 'Pending';
+        case 1:
+          return 'Approved';
+        case 2:
+          return 'Rejected';
+        default:
+          return 'Unknown';
+      }
+    };
+
+    let filteredStatus = ref(3);  //当前筛选的数据类型
+
+    const filteredData = () => { //返回筛选后的数据
+      if (filteredStatus.value == 3) {
+        return rawData;
+      } else {
+        console.log(filteredStatus.value);
+        return rawData.filter(item => item.status === filteredStatus.value);
+      }
+    };
+
+    const statusFilters = {
+        3: 'View All',
+        0: 'Pending',
+        1: 'Approved',
+        2: 'Rejected',
+    }
+
+    const filterStatus = (status) => {
+      filteredStatus.value = status;
+      tableData.value = filteredData();
+      console.log(tableData.value);
+    };
+
+    const getStatus = () => {
+      return filteredStatus.value;
+    }
     return {
-      form,
       sidebarOpen,
-      selectedItems,
-      updateSelectedItems,
+      tableData,
       fetchUnreviewedWarehouses,
+      handleClick,
+      getTagType,
+      getStatusText,
+      filteredData,
+      statusFilters,
+      filterStatus,
+      getStatus,
     }
   }
 }
 </script>
+
+<style>
+.selected-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.25;
+    border-radius: 9999px;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid transparent;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+    background-color: #667EEA;
+    color: #FFFFFF;
+    transition: background-color 0.15s ease-in-out;
+}
+
+</style>
