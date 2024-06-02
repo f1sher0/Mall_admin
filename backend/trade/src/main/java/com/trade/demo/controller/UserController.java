@@ -33,7 +33,10 @@ public class UserController {
 
     @Autowired
     private WarehouseService warehouseService;
-
+    @Autowired
+    private SupplierService supplierService;
+    @Autowired
+    private PurchaserService purchaserService;
     @PostMapping("/login")
     @ApiOperation(value = "用户登录")
     public Result login(@RequestBody User loginUser) {
@@ -44,7 +47,6 @@ public class UserController {
         if(user.getStatus()=='0'){
             return  Result.unauthorized("该用户暂没有通过审核,无法使用");
         }
-
         String JWTtoken = JWT.create()
                 .withSubject(user.getEmail().toString() + user.getPassword())
                 .withExpiresAt(new java.sql.Date(System.currentTimeMillis() + 60 * 60 * 1000)) // 设置过期时间
@@ -54,7 +56,8 @@ public class UserController {
         Map<String, String> responseMap = new HashMap<>();
         responseMap.put("role", role);
         responseMap.put("token", JWTtoken);
-
+        responseMap.put("email",user.getEmail());
+        responseMap.put("username",user.getUsername());
         return Result.success(responseMap);
 
     }
@@ -62,12 +65,12 @@ public class UserController {
     @PostMapping("/register")
     @ApiOperation(value = "用户注册")
     public Result registerUser(@RequestBody User user) {
-        user.setEmail(user.getEmail());
+
         user.setStatus('0');
         user.setCreateTime(new Date());
         user.setUpdateTime(new Date());
         System.out.println(user.getEmail());
-        user.setPassword(user.getPassword());
+
         System.out.println(user.getRole());
         if (user.getEmail() == null || user.getPassword() == null || user.getRole() == null) {
             return Result.error("Email, Password, and Role are required.");
@@ -84,6 +87,28 @@ public class UserController {
 //        System.out.println(user.getRole());
         boolean isSaved = userService.save(user);
         if (isSaved) {
+
+            String email = user.getEmail();
+            String name = user.getUsername();
+            String password = user.getPassword();
+            String role = user.getRole();
+            if ("Supplier".equals(role)) {
+                Supplier supplier = new Supplier();
+                supplier.setEmail(email);
+                supplier.setSupplierName(name );
+                supplier.setPassword(password);
+                supplier.setStatus('0');
+                supplierService.save(supplier);
+            } else if ("Purchaser".equals(role)) {
+                Purchaser purchaser = new Purchaser();
+                purchaser.setEmail(email);
+                purchaser.setPurchaserName(name);
+                purchaser.setPassword(password);
+                purchaser.setStatus('0');
+                purchaserService.save(purchaser);
+            }else if("Warehouse Admin".equals(role)){
+                //todo
+            }
             return Result.success(user);
         } else {
             return Result.error("Failed to register user.");
@@ -207,6 +232,7 @@ public class UserController {
             user.setStatus('1');
             user.setUpdateTime(new Date());
             //todo 根据用户的role进行相应表 的同步
+
             return Result.success(userService.updateById(user));
         }
         return Result.error("User not found");
