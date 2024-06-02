@@ -33,6 +33,6 @@ public class SalesListGoods implements Serializable {
  private Integer goodsId;
 
  @TableField("isReturned")
- @ApiModelProperty(value = "是否退货", example = "0")
- private Integer isReturned;
+ @ApiModelProperty(value = "是否退货" )
+ private IsReturned isReturned;
 }

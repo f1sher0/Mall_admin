@@ -74,7 +74,7 @@ export default {
     const totalGoods = ref(0)
     const warehouseGoods = ref([])
     const loading = ref(false)
-
+    // const axios = inject("$axios");
     const fetchWarehouseGoods = async (id = null) => {
       loading.value = true
       try {
@@ -94,13 +94,21 @@ export default {
       }
     }
 //这里是前端进行过滤信息,实现搜索功能,不必每次搜索进行请求后端,更加高效
+    // const filteredGoods = computed(() => {
+    //   return warehouseGoods.value.filter(good => 
+    //     good.goodsName.toLowerCase().includes(search.value.toLowerCase()) ||
+    //     good.warehouseName.toLowerCase().includes(search.value.toLowerCase())
+        
+    //   );
+    // })
     const filteredGoods = computed(() => {
-      return warehouseGoods.value.filter(good => 
+      const filtered = warehouseGoods.value.filter(good => 
         good.goodsName.toLowerCase().includes(search.value.toLowerCase()) ||
         good.warehouseName.toLowerCase().includes(search.value.toLowerCase())
       );
+      totalGoods.value = filtered.length;
+      return filtered;
     })
- 
     const handleSearch = () => {
       // 这里不需要做任何事情，因为过滤是通过计算属性   filteredGoods函数完成的
     }
@@ -120,7 +128,7 @@ export default {
     }
 
     const exportData = () => {
-      axios.get("http://localhost:5052/api/warehouseGoods/LeftExportInfo", {
+      axios.get("/warehouseGoods/LeftExportInfo", {
         responseType: "blob"
       }).then((res) => {
         const blob = new Blob([res.data], {
