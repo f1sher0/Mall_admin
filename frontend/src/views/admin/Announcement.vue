@@ -60,7 +60,7 @@
     </div>
 
 
-    <el-dialog v-model="dialogVisible" title="Add a New Announcement" width="500" :before-close="handleClose">
+    <el-dialog v-model="dialogVisible" title="Add a New Announcement" width="500">
       <div class="font-bold">
         Email
       </div>
@@ -121,7 +121,7 @@ export default {
     };
 
     const AddAnnouncement = () => {
-      dialogVisible = true;
+      dialogVisible.value = true;
     };
 
     onMounted(() => {
