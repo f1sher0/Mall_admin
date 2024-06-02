@@ -1,13 +1,15 @@
 package com.trade.demo.controller;
 
 import com.trade.demo.common.Result;
-import com.trade.demo.entity.Supplier;
-import com.trade.demo.service.SupplierService;
+import com.trade.demo.dto.GoodsInInfoDTO;
+import com.trade.demo.entity.*;
+import com.trade.demo.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -17,7 +19,14 @@ public class SupplierController {
 
     @Autowired
     private SupplierService supplierService;
-
+    @Autowired
+    private GoodsInService goodsInService;
+    @Autowired
+    private GoodsService goodsService;
+    @Autowired
+    private InListGoodsService inListGoodsService;
+    @Autowired
+    private WarehouseService warehouseService;
     @PostMapping("/add")
     @ApiOperation(value = "添加供应商")
     public Result addSupplier(@RequestBody Supplier supplier) {
@@ -68,5 +77,41 @@ public class SupplierController {
         } else {
             return Result.error("Failed to delete supplier");
         }
+    }
+
+
+    @GetMapping("/goodsInInfo/")
+    @ApiOperation(value = "按供应商ID获取GoodsInInf信息,不止GoodsIn表的信息")
+    public Result getGoodsInInfoByPurchaser(@RequestParam Integer supplierId) {
+        // 获取 goodsin 表中的订单信息
+        List<GoodsIn> goodsInList = goodsInService.getBysupplierId(supplierId);
+        List<GoodsInInfoDTO> resultList = new ArrayList<>();
+
+        for (GoodsIn goodsIn : goodsInList) {
+            int goodsInId = goodsIn.getGoodsInId();
+            List<InListGoods> inListGoods = inListGoodsService.getByGoodsInId(goodsInId);
+            for (InListGoods inListGood : inListGoods) {
+                Goods goods = goodsService.getById(inListGood.getGoodsId());
+                GoodsInInfoDTO dto = new GoodsInInfoDTO();
+                dto.setGoodsInTime(goodsIn.getGoodsInTime());
+                dto.setSupplierName(goodsIn.getSupplierName());
+                Supplier supplier = supplierService.getById(supplierId);
+                dto.setSupplierDesc( supplier.getSupplierDesc());
+                dto.setSupplierAddress(supplier.getAddress());
+                dto.setGoodsInId(goodsInId);
+                dto.setGoodsId(inListGood.getGoodsId());
+                dto.setIsReturned(inListGood.getIsReturned());
+                dto.setWarehouseId(goods.getWarehouseId());
+                dto.setWarehouseName(goodsIn.getWarehouseName());
+                dto.setWarehouseAddress(warehouseService.getById(goods.getWarehouseId()).getWarehouseLocation());
+                dto.setOnShelf(goods.getOnShelf());
+                dto.setPurchasePrice(goods.getPurchasePrice());
+                dto.setSellingPrice(goods.getSellingPrice());
+
+                resultList.add(dto);
+            }
+        }
+
+        return Result.success(resultList);
     }
 }

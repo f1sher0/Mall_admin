@@ -2,9 +2,9 @@ package com.trade.demo.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.trade.demo.entity.GoodsOut;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.*;
+
+import java.util.List;
 
 @Mapper
 public interface GoodsOutMapper extends BaseMapper<GoodsOut> {
@@ -13,4 +13,6 @@ public interface GoodsOutMapper extends BaseMapper<GoodsOut> {
     @Options(useGeneratedKeys = true, keyProperty = "salesId")
     int insertGoodsOut(GoodsOut goodsOut);
 
+    @Select("SELECT * FROM goodsout WHERE purchaserId = #{purchaserId}")
+    List<GoodsOut> selectByPurchaserId(@Param("purchaserId") int purchaserId);
 }

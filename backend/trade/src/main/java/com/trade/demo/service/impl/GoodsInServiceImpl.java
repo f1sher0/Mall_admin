@@ -107,7 +107,7 @@ public class GoodsInServiceImpl extends ServiceImpl<GoodsInMapper, GoodsIn> impl
             goodsIn.setGoodsAmount(total);
             goodsIn.setGoodsInNo(goodsInNoBuilder.toString());
             goodsInMapper.insertGoodsIn(goodsIn); // 插入 GoodsIn 表并获取自动生成的 goodsInId
-
+//<<<<<<<<<<<<<<<<<inListGoods同步
             for (Integer id : goodsIdList) {
                 InListGoods inListGoods = new InListGoods();
                 inListGoods.setGoodsId(id);
@@ -115,6 +115,7 @@ public class GoodsInServiceImpl extends ServiceImpl<GoodsInMapper, GoodsIn> impl
 
                 inListGoodsMapper.insert(inListGoods); // 再次插入以确保更新
             }
+//            >>>>>>>>>>>>inListGoods同步
             //数据都无误,能入库,在修改仓库容量
             warehouse.setAvailableCapacity(warehouse.getAvailableCapacity()-goodsNum.doubleValue());
             warehouseService.updateById(warehouse);
@@ -124,5 +125,11 @@ public class GoodsInServiceImpl extends ServiceImpl<GoodsInMapper, GoodsIn> impl
 
         return 200;
     }
+
+    @Override
+    public List<GoodsIn> getBysupplierId(Integer supplierId) {
+        return goodsInMapper.selectBySupplierId(supplierId);
+    }
+
 
 }
