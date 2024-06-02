@@ -1,5 +1,7 @@
 package com.trade.demo.controller;
 
+import cn.hutool.poi.excel.ExcelUtil;
+import cn.hutool.poi.excel.ExcelWriter;
 import com.trade.demo.common.Result;
 import com.trade.demo.entity.WarehouseGoods;
 import com.trade.demo.entity.WarehouseGoodsGroupedInfo;
@@ -10,9 +12,16 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import org.apache.commons.lang3.StringUtils;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/api/warehouseGoods")
@@ -59,12 +68,56 @@ public class WarehouseGoodsController {
             info = warehouseGoodsService.getWarehouseGoodsInfo(Integer.parseInt(id));
         } else {
             // todo 可以遍历所有的warehouseid,进行封装返回数据
-            info = warehouseGoodsService.getWarehouseGoodsInfo();
-            System.out.println("ok null");
+            Set<Integer> warehouseIds = new HashSet<>();
+            List<WarehouseGoods> allWarehouseGoods = warehouseGoodsService.list();
+
+            for (WarehouseGoods warehouseGoods : allWarehouseGoods) {
+                warehouseIds.add(warehouseGoods.getWarehouseId());
+            }
+
+            info = new ArrayList<>();
+            for (Integer warehouseId : warehouseIds) {
+                info.addAll(warehouseGoodsService.getWarehouseGoodsInfo(warehouseId));
+            }
+//            System.out.println("ok null");
         }
         return Result.success(info);
     }
+    @ApiOperation(value = "导出仓库的存储商品的信息 商品名字/价格等")
+    @GetMapping("/LeftExportInfo")
+    public void export(HttpServletResponse response) throws Exception {
 
+
+            List<WarehouseGoodsInfo> info;
+
+            Set<Integer> warehouseIds = new HashSet<>();
+            List<WarehouseGoods> allWarehouseGoods = warehouseGoodsService.list();
+
+            for (WarehouseGoods warehouseGoods : allWarehouseGoods) {
+                warehouseIds.add(warehouseGoods.getWarehouseId());
+            }
+
+            info = new ArrayList<>();
+            for (Integer warehouseId : warehouseIds) {
+                info.addAll(warehouseGoodsService.getWarehouseGoodsInfo(warehouseId));
+            }
+            // 在内存操作，写出到浏览器
+            ExcelWriter writer = ExcelUtil.getWriter(true);
+
+            // 一次性写出list内的对象到excel，使用默认样式，强制输出标题
+            writer.write(info, true);
+
+            // 设置浏览器响应的格式
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8");
+            String fileName = URLEncoder.encode("库存报表", "UTF-8");
+            response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ".xlsx");
+
+            ServletOutputStream out = response.getOutputStream();
+            writer.flush(out, true);
+            out.close();
+            writer.close();
+
+        }
 
     @GetMapping("/groupedinfo")
     @ApiOperation(value = "查询每个仓库的存储商品的信息，并按商品名分组")
