@@ -18,7 +18,7 @@
 
             <!-- Left: Title -->
             <div class="mb-4 sm:mb-0">
-              <h1 class="text-2xl md:text-3xl text-slate-800 dark:text-slate-100 font-bold">Audit Warehouse</h1>
+              <h1 class="text-2xl md:text-3xl text-slate-800 dark:text-slate-100 font-bold">Audit Supplier</h1>
             </div>
 
             <!-- Right: Actions  -->
@@ -46,9 +46,9 @@
 
           <el-table :data="tableData" style="width: 100%">
             <el-table-column fixed prop="date" label="Date" width="200" />
-            <el-table-column prop="warehouseName" label="warehouseName" width="300" />
-            <el-table-column prop="warehouseLocation" label="warehouseLocation" width="300" />
-            <el-table-column prop="totalCapacity" label="totalCapacity" width="200" />
+            <el-table-column prop="supplierName" label="SupplierName" width="300" />
+            <el-table-column prop="address" label="Address" width="300" />
+            <el-table-column prop="zip" label="ZipCode" width="200" />
             <el-table-column prop="status" label="status" width="150">
               <template #default="{ row }">
                 <el-tag :type="getTagType(row.status)">{{ getStatusText(row.status) }}</el-tag>
@@ -96,28 +96,29 @@ export default {
     const axios = inject('$axios');
     let rawData = [{
         date: '2016-05-03',
-        warehouseName: 'Beijing Warehouse',
-        warehouseLocation: 'Haidian Beijing',
-        totalCapacity: 10000,
+        supplierName: 'Jing Dong',
+        address: 'Beijing',
+        zip:10000,
         status: 0,
-        warehouseId: 0,
+        supplierId: 0,
       },
       {
-        date: '2016-05-04',
-        warehouseName: 'Beijing Warehouse',
-        warehouseLocation: 'Haidian Beijing',
-        totalCapacity: 10000,
+        date: '2016-05-03',
+        supplierName: 'Jing Dong',
+        address: 'Beijing',
+        zip:10000,
         status: 1,
-        warehouseId: 1,
+        supplierId: 0,
       },
       {
-        date: '2016-05-05',
-        warehouseName: 'Beijing Warehouse',
-        warehouseLocation: 'Haidian Beijing',
-        totalCapacity: 10000,
+        date: '2016-05-03',
+        supplierName: 'Jing Dong',
+        address: 'Beijing',
+        zip:10000,
         status: 2,
-        warehouseId: 2,
-      }];
+        supplierId: 0,
+      },
+      ];
 
     let tableData = ref([]);
     const fetchUnreviewedWarehouses = async () => {
