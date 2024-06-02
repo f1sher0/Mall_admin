@@ -2,6 +2,7 @@ package com.trade.demo.controller;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.trade.demo.common.Result;
 import com.trade.demo.entity.*;
 import com.trade.demo.service.*;
@@ -52,12 +53,33 @@ public class UserController {
                 .withExpiresAt(new java.sql.Date(System.currentTimeMillis() + 60 * 60 * 1000)) // 设置过期时间
                 .sign(Algorithm.HMAC256("secret")); // 使用秘钥签名
         String role = user.getRole();
+        Integer id=-1;
         System.out.println(JWTtoken);
+        if ("Supplier".equals(role)) {
+            // 通过user.getEmail()与Supplier中的email关联, 获取实体Supplier
+            Supplier supplier = supplierService.getOne(new QueryWrapper<Supplier>().eq("email", user.getEmail()));
+            if (supplier != null) {
+                id=supplier.getSupplierId();
+            } else {
+                System.out.println("No Supplier found with email: " + user.getEmail());
+            }
+        } else if ("Purchaser".equals(role)) {
+            Purchaser purchaser = purchaserService.getOne(new QueryWrapper<Purchaser>().eq("email", user.getEmail()));
+            if (purchaser != null) {
+                 id=purchaser.getPurchaserId();
+            } else {
+                System.out.println("No Purchaser found with email: " + user.getEmail());
+            }
+        } else {
+            System.out.println("Role not recognized: " + role);
+        }
         Map<String, String> responseMap = new HashMap<>();
         responseMap.put("role", role);
         responseMap.put("token", JWTtoken);
         responseMap.put("email",user.getEmail());
+
         responseMap.put("username",user.getUsername());
+        responseMap.put("id",id.toString());
         return Result.success(responseMap);
 
     }
@@ -88,27 +110,27 @@ public class UserController {
         boolean isSaved = userService.save(user);
         if (isSaved) {
 
-            String email = user.getEmail();
-            String name = user.getUsername();
-            String password = user.getPassword();
-            String role = user.getRole();
-            if ("Supplier".equals(role)) {
-                Supplier supplier = new Supplier();
-                supplier.setEmail(email);
-                supplier.setSupplierName(name );
-                supplier.setPassword(password);
-                supplier.setStatus('0');
-                supplierService.save(supplier);
-            } else if ("Purchaser".equals(role)) {
-                Purchaser purchaser = new Purchaser();
-                purchaser.setEmail(email);
-                purchaser.setPurchaserName(name);
-                purchaser.setPassword(password);
-                purchaser.setStatus('0');
-                purchaserService.save(purchaser);
-            }else if("Warehouse Admin".equals(role)){
-                //todo
-            }
+//            String email = user.getEmail();
+//            String name = user.getUsername();
+//            String password = user.getPassword();
+//            String role = user.getRole();
+//            if ("Supplier".equals(role)) {
+//                Supplier supplier = new Supplier();
+//                supplier.setEmail(email);
+//                supplier.setSupplierName(name );
+//                supplier.setPassword(password);
+//                supplier.setStatus('0');
+//                supplierService.save(supplier);
+//            } else if ("Purchaser".equals(role)) {
+//                Purchaser purchaser = new Purchaser();
+//                purchaser.setEmail(email);
+//                purchaser.setPurchaserName(name);
+//                purchaser.setPassword(password);
+//                purchaser.setStatus('0');
+//                purchaserService.save(purchaser);
+//            }else if("Warehouse Admin".equals(role)){
+//                //todo
+//            }
             return Result.success(user);
         } else {
             return Result.error("Failed to register user.");
@@ -176,6 +198,8 @@ public class UserController {
     @ApiOperation(value = "更新用户信息")
     public Result updateUser(@RequestBody User user) {
         boolean isUpdated = userService.updateById(user);
+        String username,password,email,role;
+
         if (isUpdated) {
             return Result.success(user);
         } else {
@@ -262,4 +286,7 @@ public class UserController {
         }
         return Result.success(purchasableGoods);
     }
+
+
+
 }

@@ -21,6 +21,7 @@ public class PurchaserController {
     @PostMapping("/add")
     @ApiOperation(value = "添加采购商")
     public Result addPurchaser(@RequestBody Purchaser purchaser) {
+        purchaser.setStatus('0');
         boolean isSaved = purchaserService.save(purchaser);
         if (isSaved) {
             return Result.success(purchaser);
