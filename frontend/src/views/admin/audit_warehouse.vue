@@ -39,7 +39,7 @@
           <div class="mb-5">
             <ul class="flex flex-wrap -m-1">
               <li v-for="(statusLabel, statusValue) in statusFilters" :key="statusValue" class="m-1">
-                <button @click="filterStatus(parseInt(statusValue))" :class="getStatus() === parseInt(statusValue) ? 'inline-flex items-center justify-center text-sm font-medium leading-5 rounded-full px-3 py-1 border border-transparent shadow-sm bg-indigo-500 text-white duration-150 ease-in-out' : 'inline-flex items-center justify-center text-sm font-medium leading-5 rounded-full px-3 py-1 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 shadow-sm bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 duration-150 ease-in-out'">{{ statusLabel }}</button>
+                <button @click="filterStatus(parseInt(statusValue))" :class="getStatus() == parseInt(statusValue) ? 'inline-flex items-center justify-center text-sm font-medium leading-5 rounded-full px-3 py-1 border border-transparent shadow-sm bg-indigo-500 text-white duration-150 ease-in-out' : 'inline-flex items-center justify-center text-sm font-medium leading-5 rounded-full px-3 py-1 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 shadow-sm bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 duration-150 ease-in-out'">{{ statusLabel }}</button>
               </li>
             </ul>
           </div>
@@ -94,36 +94,14 @@ export default {
 
     const sidebarOpen = ref(false);
     const axios = inject('$axios');
-    let rawData = [{
-        date: '2016-05-03',
-        warehouseName: 'Beijing Warehouse',
-        warehouseLocation: 'Haidian Beijing',
-        totalCapacity: 10000,
-        status: 0,
-        warehouseId: 0,
-      },
-      {
-        date: '2016-05-04',
-        warehouseName: 'Beijing Warehouse',
-        warehouseLocation: 'Haidian Beijing',
-        totalCapacity: 10000,
-        status: 1,
-        warehouseId: 1,
-      },
-      {
-        date: '2016-05-05',
-        warehouseName: 'Beijing Warehouse',
-        warehouseLocation: 'Haidian Beijing',
-        totalCapacity: 10000,
-        status: 2,
-        warehouseId: 2,
-      }];
-
+    let rawData = [];
     let tableData = ref([]);
     const fetchUnreviewedWarehouses = async () => {
       try {
-        const response = await axios.get('/user/unreviewed/warehouses');
-        console.log('Data fetched successfully:', response.data);
+        const response = await axios.get('/warehouse/list');
+        tableData.value = response.data.data;
+        rawData = response.data.data;
+        console.log('Data fetched successfully:', response.data.data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -139,11 +117,11 @@ export default {
 
     const getTagType = (s) => {
       switch (s) {
-        case 0:
+        case "0":
           return 'primary';
-        case 1:
+        case "1":
           return 'success';
-        case 2:
+        case "2":
           return 'danger';
         default:
           return 'info';
@@ -152,11 +130,11 @@ export default {
 
     const getStatusText = (status) => {
       switch (status) {
-        case 0:
+        case "0":
           return 'Pending';
-        case 1:
+        case "1":
           return 'Approved';
-        case 2:
+        case "2":
           return 'Rejected';
         default:
           return 'Unknown';
@@ -170,7 +148,7 @@ export default {
         return rawData;
       } else {
         console.log(filteredStatus.value);
-        return rawData.filter(item => item.status === filteredStatus.value);
+        return rawData.filter(item => item.status == filteredStatus.value);
       }
     };
 

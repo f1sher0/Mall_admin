@@ -94,37 +94,15 @@ export default {
 
     const sidebarOpen = ref(false);
     const axios = inject('$axios');
-    let rawData = [{
-        date: '2016-05-03',
-        supplierName: 'Jing Dong',
-        address: 'Beijing',
-        zip:10000,
-        status: 0,
-        supplierId: 0,
-      },
-      {
-        date: '2016-05-03',
-        supplierName: 'Jing Dong',
-        address: 'Beijing',
-        zip:10000,
-        status: 1,
-        supplierId: 0,
-      },
-      {
-        date: '2016-05-03',
-        supplierName: 'Jing Dong',
-        address: 'Beijing',
-        zip:10000,
-        status: 2,
-        supplierId: 0,
-      },
-      ];
+    let rawData = [];
 
     let tableData = ref([]);
     const fetchUnreviewedWarehouses = async () => {
       try {
-        const response = await axios.get('/user/unreviewed/warehouses');
-        console.log('Data fetched successfully:', response.data);
+        const response = await axios.get('/supplier/list');
+        console.log('Data fetched successfully:', response.data.data);
+        rawData = response.data.data;
+        tableData.value = response.data.data;
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -139,7 +117,8 @@ export default {
     };
 
     const getTagType = (s) => {
-      switch (s) {
+      let num = parseInt(s);
+      switch (num) {
         case 0:
           return 'primary';
         case 1:
@@ -152,7 +131,8 @@ export default {
     };
 
     const getStatusText = (status) => {
-      switch (status) {
+      let num = parseInt(status);
+      switch (num) {
         case 0:
           return 'Pending';
         case 1:
@@ -167,11 +147,11 @@ export default {
     let filteredStatus = ref(3);  //当前筛选的数据类型
 
     const filteredData = () => { //返回筛选后的数据
-      if (filteredStatus.value == 3) {
+      if (filteredStatus.value == '3') {
         return rawData;
       } else {
         console.log(filteredStatus.value);
-        return rawData.filter(item => item.status === filteredStatus.value);
+        return rawData.filter(item => item.status == filteredStatus.value);
       }
     };
 

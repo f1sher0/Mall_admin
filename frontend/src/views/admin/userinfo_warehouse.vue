@@ -35,11 +35,11 @@
             <UsersTilesCard_warehouse v-for="item in items" :key="item.id" :item="item" />
           </div>
 
-          <!-- Pagination -->
-          <div class="mt-8">
-            <PaginationNumeric />
+          <div class="flex justify-center mt-5">
+            <el-pagination background  default-page-size="12" layout="prev, pager, next" :total=DataNum />
           </div>
 
+          
         </div>
       </main>
 
@@ -54,7 +54,6 @@ import Sidebar_admin from '../../partials/Sidebar_admin.vue'
 import Header from '../../partials/Header.vue'
 import SearchForm from '../../components/SearchForm.vue'
 import UsersTilesCard_warehouse from '../../partials/community/UsersTilesCard_warehouse.vue'
-import PaginationNumeric from '../../components/PaginationNumeric.vue'
 import Image from '../../assets/image3.png'
 
 
@@ -65,12 +64,11 @@ export default {
     Header,
     SearchForm,
     UsersTilesCard_warehouse,
-    PaginationNumeric,
   },
   setup() {
 
-    const sidebarOpen = ref(false)
-
+    const sidebarOpen = ref(false);
+    const DataNum = ref(0);
     const axios = inject("$axios");
     const items = ref([]);
     const fetchData = async () => {
@@ -78,6 +76,7 @@ export default {
         const response = await axios.get('/warehouse/list');
         console.log('Data fetched successfully:', response.data.data);
         items.value = response.data.data;
+        DataNum.value = response.data.data.length;
         items.value.forEach(item => { item.avatar = Image })
         console.log(items.value.data);
       } catch (error) {
@@ -92,6 +91,7 @@ export default {
     return {
       sidebarOpen,
       items,
+      DataNum,
     }
   }
 }

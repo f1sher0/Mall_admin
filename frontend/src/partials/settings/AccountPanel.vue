@@ -15,34 +15,18 @@
       <!-- Business Profile -->
       <section>
         <h3 class="text-xl leading-snug text-slate-800 dark:text-slate-100 font-bold mb-1">Business Profile</h3>
-        <div class="text-sm">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.</div>
         <div class="sm:flex sm:items-center space-y-4 sm:space-y-0 sm:space-x-4 mt-5">
           <div class="sm:w-1/3">
-            <label class="block text-sm font-medium mb-1" for="name">Business Name</label>
+            <label class="block text-sm font-medium mb-1" for="name">Name</label>
             <input id="name" class="form-input w-full" type="text" />
           </div>
           <div class="sm:w-1/3">
-            <label class="block text-sm font-medium mb-1" for="business-id">Business ID</label>
+            <label class="block text-sm font-medium mb-1" for="business-id">Address</label>
             <input id="business-id" class="form-input w-full" type="text" />
           </div>
-          <div class="sm:w-1/3">
-            <label class="block text-sm font-medium mb-1" for="location">Location</label>
-            <input id="location" class="form-input w-full" type="text" />
-          </div>
         </div>
       </section>
-      <!-- Email -->
-      <section>
-        <h3 class="text-xl leading-snug text-slate-800 dark:text-slate-100 font-bold mb-1">Email</h3>
-        <div class="text-sm">Excepteur sint occaecat cupidatat non proident sunt in culpa qui officia.</div>
-        <div class="flex flex-wrap mt-5">
-          <div class="mr-2">
-            <label class="sr-only" for="email">Business email</label>
-            <input id="email" class="form-input" type="email" />
-          </div>
-          <button class="btn border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 shadow-sm text-indigo-500">Change</button>
-        </div>
-      </section>
+
       <!-- Password -->
       <section>
         <h3 class="text-xl leading-snug text-slate-800 dark:text-slate-100 font-bold mb-1">Password</h3>
@@ -51,21 +35,7 @@
           <button class="btn border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 shadow-sm text-indigo-500">Set New Password</button>
         </div>
       </section>
-      <!-- Smart Sync -->
-      <section>
-        <h3 class="text-xl leading-snug text-slate-800 dark:text-slate-100 font-bold mb-1">Smart Sync update for Mac</h3>
-        <div class="text-sm">With this update, online-only files will no longer appear to take up hard drive space.</div>
-        <div class="flex items-center mt-5">
-          <div class="form-switch">
-            <input type="checkbox" id="toggle" class="sr-only" v-model="sync" true-value="On" false-value="Off" />
-            <label class="bg-slate-400 dark:bg-slate-700" for="toggle">
-              <span class="bg-white shadow-sm" aria-hidden="true"></span>
-              <span class="sr-only">Enable smart sync</span>
-            </label>
-          </div>
-          <div class="text-sm text-slate-400 dark:text-slate-500 italic ml-2">{{sync}}</div>
-        </div>
-      </section>
+
     </div>
     <!-- Panel footer -->
     <footer>
