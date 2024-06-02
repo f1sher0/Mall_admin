@@ -44,9 +44,9 @@
                 <div>
                   <label class="block text-sm font-medium mb-1" for="role">您的角色 <span class="text-rose-500">*</span></label>
                   <select id="role" v-model="role" class="form-select w-full" required>
-                    <option value="采购商">采购商</option>
-                    <option value="供应商">供应商</option>
-                    <option value="仓库管理员">仓库管理员</option>
+                    <option value="Purchaser">Purchaser</option>
+                    <option value="Supplier">Supplier</option>
+                    <option value="Warehouse Admin">Warehouse Admin</option>
                   </select>
                 </div>
                 <div>
