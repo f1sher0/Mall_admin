@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import dashboard from "./views/dashboard.vue";
 import Signin from "./views/Signin.vue";
 import Signup from './views/Signup.vue';
+import HighlightText from './views/HighlightText.vue';
 import Admin_dashboard from "./views/admin/admin_dashboard.vue";
 import Audit_supplier from './views/admin/audit_supplier.vue';
 import Audit_warehouse from './views/admin/audit_warehouse.vue';

@@ -11,10 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/user")
@@ -51,10 +49,14 @@ public class UserController {
                 .withSubject(user.getEmail().toString() + user.getPassword())
                 .withExpiresAt(new java.sql.Date(System.currentTimeMillis() + 60 * 60 * 1000)) // 设置过期时间
                 .sign(Algorithm.HMAC256("secret")); // 使用秘钥签名
-
+        String role = user.getRole();
         System.out.println(JWTtoken);
+        Map<String, String> responseMap = new HashMap<>();
+        responseMap.put("role", role);
+        responseMap.put("token", JWTtoken);
 
-        return Result.success(JWTtoken);
+        return Result.success(responseMap);
+
     }
 
     @PostMapping("/register")
@@ -116,7 +118,35 @@ public class UserController {
         List<User> userList = userService.list();
         return Result.success(userList);
     }
+    @GetMapping("/list/Purchaser")
+    @ApiOperation(value = "获取所有采购商用户信息")
+    public Result listPurchasers() {
+        List<User> userList = userService.list();
+        List<User> purchasers = userList.stream()
+                .filter(user -> "Purchaser".equals(user.getRole()))
+                .collect(Collectors.toList());
+        return Result.success(purchasers);
+    }
 
+    @GetMapping("/list/WarehouseAdmin")
+    @ApiOperation(value = "获取所有仓库管理员用户信息")
+    public Result listWarehouseAdmins() {
+        List<User> userList = userService.list();
+        List<User> warehouseAdmins = userList.stream()
+                .filter(user -> "Warehouse Admin".equals(user.getRole()))
+                .collect(Collectors.toList());
+        return Result.success(warehouseAdmins);
+    }
+
+    @GetMapping("/list/Supplier")
+    @ApiOperation(value = "获取所有供应商用户信息")
+    public Result listSuppliers() {
+        List<User> userList = userService.list();
+        List<User> suppliers = userList.stream()
+                .filter(user -> "Supplier".equals(user.getRole()))
+                .collect(Collectors.toList());
+        return Result.success(suppliers);
+    }
     @PutMapping("/update")
     @ApiOperation(value = "更新用户信息")
     public Result updateUser(@RequestBody User user) {
@@ -159,6 +189,15 @@ public class UserController {
         unreviewedEntities.addAll(warehouseService.getUnreviewedWarehouses());
         return Result.success(unreviewedEntities);
     }
+    @GetMapping("/review/list")
+    @ApiOperation(value = "获取所有用户和仓库的审核信息")
+    public Result getReviewEntities() {
+        List<Object> reviewEntities = new ArrayList<>();
+
+        reviewEntities.addAll(userService.list());
+        reviewEntities.addAll(warehouseService.list());
+        return Result.success(reviewEntities);
+    }
 
     @PutMapping("/approve/user")
     @ApiOperation(value = "审核通过用户")
@@ -167,6 +206,7 @@ public class UserController {
         if (user != null) {
             user.setStatus('1');
             user.setUpdateTime(new Date());
+            //todo 根据用户的role进行相应表 的同步
             return Result.success(userService.updateById(user));
         }
         return Result.error("User not found");
