@@ -52,4 +52,13 @@ public class ReturnRequest implements Serializable {
     @TableField("reviewTime")
     @ApiModelProperty(value = "审核时间", example = "2024-05-24 15:00:00")
     private Date reviewTime;
+    @TableField("submitterId")
+    @ApiModelProperty(value = "提交人ID", example = "2")
+    private Integer submitterId;
+
+    @TableField("role")
+    @ApiModelProperty(value = "角色", example = "Purchaser")
+    private String role;
+
+
 }

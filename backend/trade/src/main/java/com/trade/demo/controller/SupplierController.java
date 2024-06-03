@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -27,6 +28,8 @@ public class SupplierController {
     private InListGoodsService inListGoodsService;
     @Autowired
     private WarehouseService warehouseService;
+    @Autowired
+    private UserService userService;
     @PostMapping("/add")
     @ApiOperation(value = "添加供应商")
     public Result addSupplier(@RequestBody Supplier supplier) {
@@ -60,12 +63,26 @@ public class SupplierController {
     @PutMapping("/update")
     @ApiOperation(value = "更新供应商信息")
     public Result updateSupplier(@RequestBody Supplier supplier) {
-        boolean isUpdated = supplierService.updateById(supplier);
+        Supplier supplierOri=supplierService.getById(supplier.getSupplierId());
+        supplierOri.setSupplierName(supplier.getSupplierName());
+        supplierOri.setSupplierDesc(supplier.getSupplierDesc());
+        supplierOri.setPassword(supplier.getPassword());
+        supplierOri.setAddress(supplier.getAddress());
+        boolean isUpdated = supplierService.updateById(supplierOri);
         if (isUpdated) {
+            String email = supplierOri.getEmail();
+            User user = userService.findByEmail(email);
+            user.setUpdateTime( new Date());
+            user.setPassword(supplier.getPassword());
+            user.setUsername(supplier.getSupplierName());
+            userService.updateById(user);
+
             return Result.success(supplier);
         } else {
             return Result.error("Failed to update supplier");
         }
+
+
     }
 
     @DeleteMapping("/delete")
@@ -80,7 +97,7 @@ public class SupplierController {
     }
 
 
-    @GetMapping("/goodsInInfo/")
+    @GetMapping("/goodsInInfo")
     @ApiOperation(value = "按供应商ID获取GoodsInInf信息,不止GoodsIn表的信息")
     public Result getGoodsInInfoByPurchaser(@RequestParam Integer supplierId) {
         // 获取 goodsin 表中的订单信息
@@ -98,10 +115,13 @@ public class SupplierController {
                 Supplier supplier = supplierService.getById(supplierId);
                 dto.setSupplierDesc( supplier.getSupplierDesc());
                 dto.setSupplierAddress(supplier.getAddress());
+                dto.setEmail(supplier.getEmail());
                 dto.setGoodsInId(goodsInId);
                 dto.setGoodsId(inListGood.getGoodsId());
+
                 dto.setIsReturned(inListGood.getIsReturned());
                 dto.setWarehouseId(goods.getWarehouseId());
+                dto.setGoodsName(goods.getGoodsName());
                 dto.setWarehouseName(goodsIn.getWarehouseName());
                 dto.setWarehouseAddress(warehouseService.getById(goods.getWarehouseId()).getWarehouseLocation());
                 dto.setOnShelf(goods.getOnShelf());

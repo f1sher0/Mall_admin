@@ -15,8 +15,10 @@ public class GoodsOutInfoDTO {
     private String purchaserName;
     private String purchaserDesc;
     private String purchaserAddress;
+    private String email ;
     private int salesId;
     private int goodsId;
+    private String  goodsName;
     private IsReturned isReturned;
     private int warehouseId;
     private String warehouseName;
