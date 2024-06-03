@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/returnrequests")
+@RequestMapping("/api/returnrequests")
 @Api(value = "ReturnRequestController", tags = {"退货申请管理"})
 public class ReturnRequestController {
 
@@ -53,7 +53,7 @@ public class ReturnRequestController {
     public Result insertReturnRequest(@RequestBody ReturnRequest returnRequest) {
         boolean isSaved = returnRequestService.save(returnRequest);
         if (isSaved) {
-            return Result.success(returnRequest);
+            return Result.success("添加退货申请成功");
         } else {
             return Result.error("添加退货申请失败");
         }

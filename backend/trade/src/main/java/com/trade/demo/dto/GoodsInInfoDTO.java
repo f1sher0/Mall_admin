@@ -18,6 +18,7 @@ public class GoodsInInfoDTO {
     private String email ;
     private int goodsInId;
     private int goodsId;
+    private String  goodsName;
     private IsReturned isReturned;
     private int warehouseId;
     private String warehouseName;

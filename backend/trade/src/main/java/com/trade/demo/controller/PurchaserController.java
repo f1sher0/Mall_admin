@@ -7,6 +7,7 @@ import com.trade.demo.mapper.GoodsMapper;
 import com.trade.demo.mapper.GoodsOutMapper;
 import com.trade.demo.mapper.SalesListGoodsMapper;
 import com.trade.demo.service.PurchaserService;
+import com.trade.demo.service.UserService;
 import com.trade.demo.service.WarehouseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -31,6 +33,8 @@ public class PurchaserController {
     private GoodsMapper goodsMapper;
     @Autowired
     private WarehouseService warehouseService;
+    @Autowired
+    private UserService userService;
     @PostMapping("/add")
     @ApiOperation(value = "添加采购商")
     public Result addPurchaser(@RequestBody Purchaser purchaser) {
@@ -64,9 +68,31 @@ public class PurchaserController {
     @PutMapping("/update")
     @ApiOperation(value = "更新采购商信息")
     public Result updatePurchaser(@RequestBody Purchaser purchaser) {
-        boolean isUpdated = purchaserService.updateById(purchaser);
+        Purchaser purchaserOri = purchaserService.getById(purchaser.getPurchaserId());
+        if (purchaserOri == null) {
+            return Result.error("Purchaser not found");
+        }
+        purchaserOri.setPurchaserName(purchaser.getPurchaserName());
+        purchaserOri.setPurchaserDesc(purchaser.getPurchaserDesc());
+        purchaserOri.setPassword(purchaser.getPassword());
+        purchaserOri.setAddress(purchaser.getAddress());
+//        purchaserOri.setTelephone(purchaser.getTelephone());
+//        purchaserOri.setEmail(purchaser.getEmail());
+//        purchaserOri.setZip(purchaser.getZip());
+//        purchaserOri.setAvatar(purchaser.getAvatar());
+        boolean isUpdated = purchaserService.updateById(purchaserOri);
         if (isUpdated) {
-            return Result.success(purchaser);
+            String email = purchaserOri.getEmail();
+            User user = userService.findByEmail(email);
+            if (user != null) {
+                user.setUpdateTime(new Date());
+                user.setPassword(purchaser.getPassword());
+                user.setUsername(purchaser.getPurchaserName());
+                userService.updateById(user);
+            } else {
+                return Result.error("Associated user not found");
+            }
+            return Result.success(purchaserOri);
         } else {
             return Result.error("Failed to update purchaser");
         }
@@ -87,6 +113,7 @@ public class PurchaserController {
     @ApiOperation(value = "按采购商ID获取GoodsOutInfo信息，不止GoodsOut表的信息")
     public Result getGoodsOutInfoByPurchaser(int purchaserId) {
         List<GoodsOut> goodsOutList = goodsOutMapper.selectByPurchaserId(purchaserId);
+
         List<GoodsOutInfoDTO> resultList = new ArrayList<>();
 
         for (GoodsOut goodsOut : goodsOutList) {
@@ -102,8 +129,10 @@ public class PurchaserController {
                 dto.setPurchaserName(goodsOut.getPurchaserName());
                 dto.setPurchaserDesc(purchaser.getPurchaserDesc());
                 dto.setPurchaserAddress(purchaser.getAddress());
+                dto.setEmail(purchaser.getEmail());
                 dto.setSalesId(salesId);
                 dto.setGoodsId(outListGood.getGoodsId());
+                dto.setGoodsName(goods.getGoodsName());
                 dto.setIsReturned(outListGood.getIsReturned());
                 dto.setWarehouseId(goods.getWarehouseId());
                 dto.setWarehouseName(warehouse.getWarehouseName());

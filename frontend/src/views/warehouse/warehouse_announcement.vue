@@ -30,8 +30,8 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue'
-import axios from 'axios'
+import { ref, onMounted,inject } from 'vue'
+// import axios from 'axios'
 import Header from '../../partials/Header.vue'
 import Sidebar_warehouse from '../../partials/Sidebar_warehouse.vue'
 import { ElMessage } from 'element-plus'
@@ -44,6 +44,7 @@ export default {
     Header,
   },
   setup() {
+    const axios = inject('$axios');
     const sidebarOpen = ref(false)
     const announcements = ref([])
     const loading = ref(false)
@@ -51,7 +52,7 @@ export default {
     const fetchAnnouncements = async () => {
       loading.value = true
       try {
-        const response = await axios.get('http://localhost:5052/api/announcements/list')
+        const response = await axios.get('/announcements/list')
         if (response.data.code === '200') {
           announcements.value = response.data.data
         } else {
