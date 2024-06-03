@@ -62,7 +62,6 @@
 
                     <option value="Purchaser">Purchaser</option>
                     <option value="Supplier">Supplier</option>
-                    <option value="Warehouse Admin">Warehouse Admin</option>
 
                   </select>
                 </div>
@@ -97,17 +96,6 @@
                     type="textarea" placeholder="Please input" />
                 </div>
 
-                <div v-if="role == 'Warehouse Admin'">
-                  <label class="block text-sm font-medium mb-1" for="address">Address<span
-                      class="text-rose-500">*</span></label>
-                  <input id="address" v-model="address" class="form-input w-full" type="address" autocomplete="on"
-                    required />
-                  <label class="block text-sm font-medium mb-1 mt-3" for="capacity">Your Capacity<span
-                      class="text-rose-500">*</span></label>
-                  <input id="capacity" v-model="capacity" class="form-input w-full" type="capacity" autocomplete="on"
-                    required />
-                </div>
-            
               </div>
               <div class="flex items-center justify-between mt-6">
                 <div class="mr-1">
@@ -185,7 +173,7 @@ export default {
             email: email.value,
             status: 1,
           })
-        } else if (role.value == "Supplier") {
+        } else {
           response1 = await axios.post('/supplier/add', {
             supplierDesc: description.value,
             supplierName: name.value,
@@ -195,16 +183,7 @@ export default {
             email: email.value,
             status: 0,
           })
-        } else {
-          response1 = await axios.post('/warehouse/add', {
-            warehouseName: name.value,
-            password: password.value,
-            warehouseLocation: address.value,
-            totalCapacity: capacity.value,
-            availableCapacity: capacity.value,
-            status: 0,
-          })
-        }
+        } 
         if (response.data.code === '200' && response1.data.code === '200') {
           // 注册成功，弹出确认框
           ElMessageBox.confirm('Registration successful, please wait for review. Do you want to jump to the login page?', 'Tips', {

@@ -23,10 +23,9 @@
           <!-- Menu button -->
           <EditMenu align="right" class="relative inline-flex shrink-0">
             <li>
-              <router-link class="font-medium text-sm text-slate-600 dark:text-slate-300 hover:text-slate-800 dark:hover:text-slate-200 flex py-1 px-3" to="#0">Detail</router-link>
-            </li>
-            <li>
-              <router-link class="font-medium text-sm text-rose-500 hover:text-rose-600 flex py-1 px-3" to="#0">Remove</router-link>
+              <button
+                class="font-medium text-sm text-slate-600 dark:text-slate-300 hover:text-slate-800 dark:hover:text-slate-200 flex py-1 px-3"
+                @click=dialogOpen>Detail</button>
             </li>
           </EditMenu>
         </div>
@@ -36,11 +35,56 @@
         </div>
       </div>
     </div>
+
+    <el-dialog v-model="dialogVisible" title="Purchaser Detail" width="700">
+      <el-descriptions class="margin-top"  :column="1" :size="size" border>
+        <el-descriptions-item>
+          <template #label>
+            <div class="cell-item">
+              Warehouse Name
+            </div>
+          </template>
+          {{item.warehouseName}}
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template #label>
+            <div class="cell-item">
+              Warehouse location
+            </div>
+          </template>
+          {{item.warehouseLocation}}
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template #label>
+            <div class="cell-item">
+              Total Capacity
+            </div>
+          </template>
+          {{ item.totalCapacity }}
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template #label>
+            <div class="cell-item">
+              Available Capacity
+            </div>
+          </template>
+          {{ item.availableCapacity }}
+        </el-descriptions-item>
+      </el-descriptions>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button type="primary" @click="dialogVisible = false">
+            Confirm
+          </el-button>
+        </div>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import EditMenu from '../../components/DropdownEditMenu.vue'
+import { ref } from 'vue'
 
 export default {
   name: 'UsersTilesCard',
@@ -48,8 +92,15 @@ export default {
   components: {
     EditMenu,
   }, 
-  mounted() {
-    console.log('Received item:', this.item);
+  setup() {
+    const dialogVisible = ref(false);
+    const dialogOpen = () => {
+      dialogVisible.value = true;
+    }
+    return {
+      dialogVisible,
+      dialogOpen,
+    }
   }
 }
 </script>

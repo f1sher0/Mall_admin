@@ -18,14 +18,12 @@
 
             <!-- Left: Title -->
             <div class="mb-4 sm:mb-0">
-              <h1 class="text-2xl md:text-3xl text-slate-800 dark:text-slate-100 font-bold">Acme Inc. ✨</h1>
+              <h1 class="text-2xl md:text-3xl text-slate-800 dark:text-slate-100 font-bold">Supplier Information ✨</h1>
             </div>
 
             <!-- Right: Actions  -->
             <div class="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2">
-              <!-- Search form -->
-              <SearchForm />
-              <!-- Add member button -->
+
             </div>
 
           </div>
@@ -51,7 +49,6 @@
 import { ref, inject, onMounted } from 'vue'
 import Sidebar_admin from '../../partials/Sidebar_admin.vue'
 import Header from '../../partials/Header.vue'
-import SearchForm from '../../components/SearchForm.vue'
 import UsersTilesCard_supplier from '../../partials/community/UsersTilesCard_supplier.vue'
 import Image from '../../assets/image1.png'
 
@@ -61,7 +58,6 @@ export default {
   components: {
     Sidebar_admin,
     Header,
-    SearchForm,
     UsersTilesCard_supplier,
   },
   setup() {

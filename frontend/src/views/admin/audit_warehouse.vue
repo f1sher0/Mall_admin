@@ -18,48 +18,30 @@
 
             <!-- Left: Title -->
             <div class="mb-4 sm:mb-0">
-              <h1 class="text-2xl md:text-3xl text-slate-800 dark:text-slate-100 font-bold">Audit Warehouse</h1>
+              <h1 class="text-2xl md:text-3xl text-slate-800 dark:text-slate-100 font-bold">Warehouse Management</h1>
             </div>
 
             <!-- Right: Actions  -->
             <div class="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2">
-
-
-              <!-- Search form -->
-              <div class="hidden sm:block">
-                <SearchForm class="hidden sm:block" />
-              </div>
-
+              <el-button type="primary" @click="dialogVisible = true">
+                Add New Warehouse
+              </el-button>
             </div>
 
           </div>
 
-
-          <!-- Filters -->
-          <div class="mb-5">
-            <ul class="flex flex-wrap -m-1">
-              <li v-for="(statusLabel, statusValue) in statusFilters" :key="statusValue" class="m-1">
-                <button @click="filterStatus(parseInt(statusValue))" :class="getStatus() == parseInt(statusValue) ? 'inline-flex items-center justify-center text-sm font-medium leading-5 rounded-full px-3 py-1 border border-transparent shadow-sm bg-indigo-500 text-white duration-150 ease-in-out' : 'inline-flex items-center justify-center text-sm font-medium leading-5 rounded-full px-3 py-1 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 shadow-sm bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 duration-150 ease-in-out'">{{ statusLabel }}</button>
-              </li>
-            </ul>
-          </div>
-
           <el-table :data="tableData" style="width: 100%">
-            <el-table-column fixed prop="date" label="Date" width="200" />
-            <el-table-column prop="warehouseName" label="warehouseName" width="300" />
-            <el-table-column prop="warehouseLocation" label="warehouseLocation" width="300" />
-            <el-table-column prop="totalCapacity" label="totalCapacity" width="200" />
-            <el-table-column prop="status" label="status" width="150">
+            <el-table-column fixed prop="warehouseName" label="Warehouse Name" width="250" />
+            <el-table-column prop="warehouseLocation" label="Warehouse Location" width="400" />
+            <el-table-column prop="totalCapacity" label="Total Capacity" width="150" />
+            <el-table-column prop="availableCapacity" label="Available Capacity" width="150" />
+            <el-table-column prop="date" label="Last Update Date" width="200" />
+            <el-table-column fixed="right" label="Operations" width="200">
               <template #default="{ row }">
-                <el-tag :type="getTagType(row.status)">{{ getStatusText(row.status) }}</el-tag>
-              </template>
-            </el-table-column>
-            <el-table-column fixed="right" label="Operations" width="120">
-              <template #default>
-                <el-button link type="primary" size="small" @click="handleClick">
-                  Detail
+                <el-button type="primary" size="small" @click="handleClick(row)">
+                  Edit
                 </el-button>
-                <el-button link type="primary" size="small">Edit</el-button>
+                <el-button type="danger" size="small">Remove</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -69,6 +51,53 @@
       </main>
 
     </div>
+
+    <el-dialog v-model="dialogVisible" title="Add Warehouse" width="500" :before-close="handleClose">
+      <el-form label-position="right" label-width="auto" :model="formLabelAlign" style="max-width: 600px">
+        <el-form-item label="Warehouse Name">
+          <el-input v-model="formLabelAlign.name" />
+        </el-form-item>
+        <el-form-item label="Warehouse Location">
+          <el-input v-model="formLabelAlign.location" />
+        </el-form-item>
+        <el-form-item label="Total Capacity">
+          <el-input v-model="formLabelAlign.capacity" />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="dialogVisible = false">Cancel</el-button>
+          <el-button type="primary" @click="addNewWarehouse">
+            Confirm
+          </el-button>
+        </div>
+      </template>
+    </el-dialog>
+
+    <el-dialog v-model="dialogVisible1" title="Edit Warehouse Information" width="500">
+      <el-form label-position="right" label-width="auto" :model="editForm" style="max-width: 600px">
+        <el-form-item label="Warehouse Name">
+          <el-input v-model="editForm.warehouseName" />
+        </el-form-item>
+        <el-form-item label="Warehouse Location">
+          <el-input v-model="editForm.warehouseLocation" />
+        </el-form-item>
+        <el-form-item label="Total Capacity">
+          <el-input v-model="editForm.totalCapacity" />
+        </el-form-item>
+        <el-form-item label="Available Capacity">
+          <el-input v-model="editForm.availableCapacity" />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="dialogVisible1 = false">Cancel</el-button>
+          <el-button type="primary" @click="editWarehouse">
+            Confirm
+          </el-button>
+        </div>
+      </template>
+    </el-dialog>
 
   </div>
 </template>
@@ -80,6 +109,7 @@ import Header from '../../partials/Header.vue'
 import DeleteButton from '../../partials/actions/DeleteButton.vue'
 import SearchForm from '../../components/SearchForm.vue'
 import DropdownTransaction from '../../components/DropdownTransaction.vue'
+import { ElNotification } from 'element-plus'
 
 export default {
   name: 'Transactions',
@@ -91,9 +121,16 @@ export default {
     DropdownTransaction,
   },
   setup() {
-
+    const formLabelAlign = reactive({
+      name: '',
+      location: '',
+      capacity: '',
+    })
+    const editForm = ref({});
+    const dialogVisible = ref(false);
     const sidebarOpen = ref(false);
     const axios = inject('$axios');
+    const dialogVisible1 = ref(false);
     let rawData = [];
     let tableData = ref([]);
     const fetchUnreviewedWarehouses = async () => {
@@ -111,94 +148,61 @@ export default {
       fetchUnreviewedWarehouses();
     });
 
-    const handleClick = () => {
-      console.log('click')
+    const handleClick = (row) => {
+      editForm.value = JSON.parse(JSON.stringify(row));
+      dialogVisible1.value = true;
     };
 
-    const getTagType = (s) => {
-      switch (s) {
-        case "0":
-          return 'primary';
-        case "1":
-          return 'success';
-        case "2":
-          return 'danger';
-        default:
-          return 'info';
+    const addNewWarehouse = async () => {
+      dialogVisible.value = false;
+      try {
+        const response = await axios.post('/warehouse/add', {
+          availableCapacity: formLabelAlign.capacity,
+          totalCapacity: formLabelAlign.capacity,
+          status: 1,
+          warehouseLocation: formLabelAlign.location,
+          warehouseName: formLabelAlign.name,
+        });
+        formLabelAlign.capacity = '';
+        formLabelAlign.location = '';
+        formLabelAlign.name = '';
+      } catch (error) {
+        console.error('Error fetching data:', error);
       }
-    };
-
-    const getStatusText = (status) => {
-      switch (status) {
-        case "0":
-          return 'Pending';
-        case "1":
-          return 'Approved';
-        case "2":
-          return 'Rejected';
-        default:
-          return 'Unknown';
-      }
-    };
-
-    let filteredStatus = ref(3);  //当前筛选的数据类型
-
-    const filteredData = () => { //返回筛选后的数据
-      if (filteredStatus.value == 3) {
-        return rawData;
-      } else {
-        console.log(filteredStatus.value);
-        return rawData.filter(item => item.status == filteredStatus.value);
-      }
-    };
-
-    const statusFilters = {
-        3: 'View All',
-        0: 'Pending',
-        1: 'Approved',
-        2: 'Rejected',
     }
 
-    const filterStatus = (status) => {
-      filteredStatus.value = status;
-      tableData.value = filteredData();
-      console.log(tableData.value);
-    };
-
-    const getStatus = () => {
-      return filteredStatus.value;
+    const editWarehouse = async () => {
+      dialogVisible1.value = false;
+      try {
+        const response = await axios.put('/warehouse/update', editForm.value);
+        fetchUnreviewedWarehouses();
+        ElNotification({
+          title: 'Success',
+          message: 'Edit successfully',
+          type: 'success',
+        })
+      } catch (error) {
+        ElNotification({
+          title: 'Error',
+          message: 'Edit fail',
+          type: 'error',
+        })
+        console.error('Error fetching data:', error);
+      }
     }
+
     return {
       sidebarOpen,
       tableData,
       fetchUnreviewedWarehouses,
       handleClick,
-      getTagType,
-      getStatusText,
-      filteredData,
-      statusFilters,
-      filterStatus,
-      getStatus,
+      dialogVisible,
+      dialogVisible1,
+      formLabelAlign,
+      editForm,
+      addNewWarehouse,
+      editWarehouse,
     }
   }
 }
 </script>
-
-<style>
-.selected-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.875rem;
-    font-weight: 500;
-    line-height: 1.25;
-    border-radius: 9999px;
-    padding: 0.5rem 0.75rem;
-    border: 1px solid transparent;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
-    background-color: #667EEA;
-    color: #FFFFFF;
-    transition: background-color 0.15s ease-in-out;
-}
-
-</style>

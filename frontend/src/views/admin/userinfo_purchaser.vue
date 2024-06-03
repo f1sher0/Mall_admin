@@ -18,14 +18,12 @@
 
             <!-- Left: Title -->
             <div class="mb-4 sm:mb-0">
-              <h1 class="text-2xl md:text-3xl text-slate-800 dark:text-slate-100 font-bold">Acme Inc. ✨</h1>
+              <h1 class="text-2xl md:text-3xl text-slate-800 dark:text-slate-100 font-bold">Purchaser Information✨</h1>
             </div>
 
             <!-- Right: Actions  -->
             <div class="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2">
-              <!-- Search form -->
-              <SearchForm />
-              <!-- Add member button -->
+
             </div>
 
           </div>
@@ -51,7 +49,6 @@
 import { ref, inject , onMounted} from 'vue'
 import Sidebar_admin from '../../partials/Sidebar_admin.vue'
 import Header from '../../partials/Header.vue'
-import SearchForm from '../../components/SearchForm.vue'
 import UsersTilesCard_admin from '../../partials/community/UsersTilesCard_admin.vue'
 import Image1 from '../../assets/image.png'
 
@@ -61,7 +58,6 @@ export default {
   components: {
     Sidebar_admin,
     Header,
-    SearchForm,
     UsersTilesCard_admin,
   },
   setup() {
@@ -76,7 +72,6 @@ export default {
         items.value = response.data.data;
         DataNum.value = response.data.data.length;
         items.value.forEach(item => {item.avatar = Image1})
-        console.log(items.value.data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }

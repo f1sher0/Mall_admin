@@ -152,7 +152,7 @@
                       <path class="fill-current" :class="currentRoute.fullPath.includes('audit') ? 'text-indigo-500' : 'text-slate-600'" d="M1 1h22v23H1z" />
                       <path class="fill-current" :class="currentRoute.fullPath.includes('audit') ? 'text-indigo-300' : 'text-slate-400'" d="M15 10.586L16.414 12 11 17.414 7.586 14 9 12.586l2 2zM5 0h14v4H5z" />                      
                     </svg>
-                    <span class="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">User Audit</span>
+                    <span class="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">User Management</span>
                   </div>
                   <!-- Icon -->
                   <div class="flex shrink-0 ml-2">

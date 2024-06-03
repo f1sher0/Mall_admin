@@ -137,8 +137,6 @@ export default {
             this.router.push("/Purchaser/dashboard/main");
           } else if (role === "Supplier") {
             this.router.push("/Supplier/dashboard/main");
-          } else if (role === "Warehouse Admin") {
-            this.router.push("/Warehouse/dashboard/main");
           } else if (role === "Admin") {
             this.router.push("/admin/dashboard/main");
           } else {
