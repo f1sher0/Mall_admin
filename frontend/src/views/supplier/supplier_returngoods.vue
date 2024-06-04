@@ -1,93 +1,104 @@
 <template>
   <div class="flex h-[100dvh] overflow-hidden">
-    <!-- Sidebar -->
     <Sidebar_supplier :sidebarOpen="sidebarOpen" @close-sidebar="sidebarOpen = false" />
 
-    <!-- Content area -->
     <div class="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
-      <!-- Site header -->
       <Header :sidebarOpen="sidebarOpen" @toggle-sidebar="sidebarOpen = !sidebarOpen" />
       
       <main class="grow dark:bg-slate-900 p-4">
         <div>
-          <el-button type="primary" @click="filterReturned('Yes')">已退货订单</el-button>
-          <el-button type="info" @click="filterReturned('No')">未退货订单</el-button>
-          <el-button type="success" @click="filterReturned('all')">所有订单</el-button>
-        </div> 
-        <!-- Search bar -->
+          <el-button type="info" @click="filterStatus('待审核')">待审核</el-button>
+          <el-button type="success" @click="filterStatus('已批准')">已批准</el-button>
+          <el-button type="danger" @click="filterStatus('已拒绝')">已拒绝</el-button>
+          <el-button type="primary" @click="filterStatus('all')">所有申请</el-button>
+        </div>
+        
         <div style="margin-bottom: 10px"> 
-           <el-input v-model="search" placeholder="搜索商品..." @input="handleSearch" class="w-1/3"></el-input>
+          <el-input v-model="search" placeholder="搜索退货理由..." @input="handleSearch" class="w-1/3"></el-input>
           <el-button style="margin-left: 10px" type="primary" @click="handleSearch">搜 索</el-button>
           <el-button type="info" @click="reset">重 置</el-button>
-          <el-button type="success" @click="add">新 增</el-button>
-          <el-button type="primary" @click="exportData">导出数据</el-button>
         </div>
-        <!-- Table -->
-        <el-table :data="paginatedGoods" border stripe style="width: 100%" max-height="66vh" v-loading="loading"
-          :default-sort="{ prop: 'sellingPrice', order: 'descending' }">
-   
-          <el-table-column prop="supplierName" label="供应商名称" width="180">
+
+        <el-table :data="paginatedRequests" border stripe style="width: 100%" max-height="66vh" v-loading="loading"
+          :default-sort="{ prop: 'submitTime', order: 'descending' }">
+          <el-table-column prop="submitterName" label="提交人姓名" width="180">
             <template #default="{ row }">
-              <HighlightText :text="row.supplierName" :query="search" />
+              <HighlightText :text="row.submitterName" :query="search" />
             </template>
           </el-table-column>
-          <el-table-column prop="goodsName" label="商品名称" fixed width="180">
+          <el-table-column prop="reason" label="退货理由" width="300">
             <template #default="{ row }">
-              <HighlightText :text="row.goodsName" :query="search" />
+              <HighlightText :text="row.reason" :query="search" />
             </template>
           </el-table-column>
-          <el-table-column prop="purchasePrice" label="采购价格" sortable width="180"></el-table-column>
-          <el-table-column prop="sellingPrice" label="销售价格" sortable width="180"></el-table-column>
-          <el-table-column prop="supplierDesc" label="供应商描述" width="300">
-            <template #default="{ row }">
-              <HighlightText :text="row.supplierDesc" :query="search" />
-            </template>
-          </el-table-column>
-          <el-table-column prop="supplierAddress" label="供应商地址" width="180">
-            <template #default="{ row }">
-              <HighlightText :text="row.supplierAddress" :query="search" />
-            </template>
-          </el-table-column>
-          <el-table-column prop="email" label="电子邮箱" width="180">
-            <template #default="{ row }">
-              <HighlightText :text="row.email || 'N/A'" :query="search" />
-            </template>
-          </el-table-column>
-          <el-table-column prop="goodsInTime" label="入库时间" width="180" :formatter="formatDate">
- 
-          </el-table-column>
-          <el-table-column prop="goodsInId" label="入库ID" width="180"></el-table-column>
           <el-table-column prop="goodsId" label="商品ID" width="180"></el-table-column>
-      
-          <el-table-column prop="warehouseId" label="仓库ID" width="180"></el-table-column>
-          <el-table-column prop="warehouseName" label="仓库名称" width="180">
+          <el-table-column prop="goodsName" label="商品名" width="180"></el-table-column>
+          <el-table-column prop="submitTime" label="提交时间" width="180" :formatter="formatDate"></el-table-column>
+  
+          <el-table-column prop="reviewerName" label="审核人" width="180">
             <template #default="{ row }">
-              <HighlightText :text="row.warehouseName" :query="search" />
+              {{ row.reviewerName || '无人审核' }}
             </template>
           </el-table-column>
-          <el-table-column prop="warehouseAddress" label="仓库地址" width="180">
+          <el-table-column prop="reviewTime" label="审核时间" width="180" :formatter="formatDate"></el-table-column>
+          <el-table-column prop="role" label="提交人角色" width="180"></el-table-column>
+          <el-table-column prop="submitterId" label="提交人ID" width="180"></el-table-column>
+          <el-table-column prop="status" label="审核状态" width="180" fixed="right">
             <template #default="{ row }">
-              <HighlightText :text="row.warehouseAddress" :query="search" />
+              <el-tag :type="getTagType(row.status)">{{ row.status }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="onShelf" label="上架数量" width="180"></el-table-column>
-          <el-table-column prop="isReturned" label="是否退货" width="180" fixed="right">
+          <el-table-column label="Operations" width="120" fixed="right">
             <template #default="{ row }">
-              <!-- <HighlightText :text="row.isReturned" :query="search" /> -->
-              <el-tag :type="getTagType(row.isReturned)">{{ getStatusText(row.isReturned) }}</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column fixed="right" label="Operations" width="120">
-            <template #default>
-              <el-button link type="primary" size="small" @click="handleClick">
+              <el-button link type="primary" size="small" @click="handleDetail(row)">
                 Detail
               </el-button>
-              <el-button link type="primary" size="small">Edit</el-button>
+              <el-button link type="primary" size="small" @click="handleEdit(row)">
+                Edit
+              </el-button>
             </template>
           </el-table-column>
         </el-table>
 
-        <!-- Pagination -->
+        <el-dialog v-model="detailDialogVisible" title="Return Request Details" width="500" :before-close="handleClose">
+          <el-form label-position="right" label-width="auto" :model="formLabelAlign" style="max-width: 600px">
+            <el-form-item label="Submitter Name">
+              <el-input v-model="formLabelAlign.submitterName" disabled />
+              //disabled可以禁止修改
+            </el-form-item>
+            <el-form-item label="Reason">
+              <el-input v-model="formLabelAlign.reason" disabled />
+            </el-form-item>
+            <el-form-item label="Reviewer">
+              <el-input v-model="formLabelAlign.reviewerName" disabled />
+            </el-form-item>
+            <el-form-item label="Review Time">
+              <el-input v-model="formLabelAlign.reviewTime" disabled />
+            </el-form-item>
+            <el-form-item label="Status">
+              <el-input v-model="formLabelAlign.status" disabled />
+            </el-form-item>
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="detailDialogVisible = false">关闭</el-button>
+          </div>
+        </el-dialog>
+
+        <el-dialog v-model="editDialogVisible" title="Edit Return Request" width="500" :before-close="handleClose">
+          <el-form label-position="right" label-width="auto" :model="formLabelAlign" style="max-width: 600px">
+            <el-form-item label="Submitter Name">
+              <el-input v-model="formLabelAlign.submitterName" />
+            </el-form-item>
+            <el-form-item label="Reason">
+              <el-input v-model="formLabelAlign.reason" />
+            </el-form-item>
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="editDialogVisible = false">取消</el-button>
+            <el-button type="primary" @click="submitReturnRequest">提交</el-button>
+          </div>
+        </el-dialog>
+
         <div class="mt-4">
           <el-pagination
             @current-change="handleCurrentChange"
@@ -96,7 +107,7 @@
             :page-size="pageSize"
             :page-sizes="[5,10,15,20]"
             layout="total, sizes, prev, pager, next"
-            :total="totalGoods">
+            :total="totalRequests">
           </el-pagination>
         </div>
       </main>
@@ -105,169 +116,181 @@
 </template>
 
 <script>
-import { ref, onMounted, inject,computed } from 'vue'
-// import axios from 'axios'
-import Header from '../../partials/Header.vue'
-import Sidebar_supplier from '../../partials/Sidebar_supplier.vue'
-import HighlightText from '../HighlightText.vue'
-import dayjs from 'dayjs'
+import { ref, onMounted, inject, computed } from 'vue';
+import Header from '../../partials/Header.vue';
+import Sidebar_supplier from '../../partials/Sidebar_supplier.vue';
+import HighlightText from '../HighlightText.vue';
+import dayjs from 'dayjs';
+
 export default {
-  name: 'Dashboard', 
+  name: 'ReturnRequests',
   components: {
     Sidebar_supplier,
     Header,
     HighlightText,
   },
- 
   setup() {
     const axios = inject('$axios');
-    const sidebarOpen = ref(false)
-    const search = ref('')
-    const currentPage = ref(1)
-    const pageSize = ref(5)
-    const totalGoods = ref(0)
-    const warehouseGoods = ref([])
-    const loading = ref(false)
+    const sidebarOpen = ref(false);
+    const search = ref('');
+    const currentPage = ref(1);
+    const pageSize = ref(5);
+    const totalRequests = ref(0);
+    const returnRequests = ref([]);
+    const loading = ref(false);
     const filterValue = ref('all');
-    const fetchWarehouseGoods = async (supplierId = 1) => {
-      loading.value = true
+    const detailDialogVisible = ref(false);
+    const editDialogVisible = ref(false);
+    const formLabelAlign = ref({
+      submitterName: '',
+      reason: '',
+      reviewerName: '',
+      reviewTime: '',
+      status: '',
+      goodsId: null
+    });
+
+    const fetchReturnRequests = async () => {
+      loading.value = true;
       try {
-        const response = await axios.get('/supplier/goodsInInfo',{
-          params: {
-            supplierId 
+        const response = await axios.get('/returnrequests/getBySubid_Role', {
+          params: { 
+            id: sessionStorage.getItem("id"),
+            role: sessionStorage.getItem("role")
           }
-        })
+        });
         if (response.status === 200) {
-          warehouseGoods.value = response.data.data // 仅处理单个数据对象
-          totalGoods.value = warehouseGoods.value.length
+          returnRequests.value = response.data.data;
+          totalRequests.value = returnRequests.value.length;
         }
       } catch (error) {
-        console.error('Failed to fetch warehouse goods info:', error)
+        console.error('Failed to fetch return requests:', error);
       } finally {
-        loading.value = false
+        loading.value = false;
       }
-    }
-    const paginatedGoods = computed(() => {
-      const startIndex = (currentPage.value - 1) * pageSize.value
-      const endIndex = currentPage.value * pageSize.value
-      return filteredGoods.value.slice(startIndex, endIndex)
-    })
-    const filteredGoods = computed(() => {
+    };
+
+    const handleEdit = (row) => {
+      formLabelAlign.value = { ...row };
+      editDialogVisible.value = true;
+    };
+
+    const handleDetail = (row) => {
+      formLabelAlign.value = { ...row };
+      formLabelAlign.value.reviewerName = row.reviewerName || '无人审核';
+      formLabelAlign.value.reviewTime = formatDate(row, null, row.reviewTime);
+      detailDialogVisible.value = true;
+    };
+
+    const handleClose = (done) => {
+      detailDialogVisible.value = false;
+      editDialogVisible.value = false;
+    };
+
+    const paginatedRequests = computed(() => {
+      const startIndex = (currentPage.value - 1) * pageSize.value;
+      const endIndex = currentPage.value * pageSize.value;
+      return filteredRequests.value.slice(startIndex, endIndex);
+    });
+
+    const filteredRequests = computed(() => {
       const searchLower = search.value.toLowerCase();
-      const filtered = warehouseGoods.value.filter(good => 
-        (good.goodsInTime && good.goodsInTime.toLowerCase().includes(searchLower)) ||
-        (good.supplierName && good.supplierName.toLowerCase().includes(searchLower)) ||
-        (good.supplierDesc && good.supplierDesc.toLowerCase().includes(searchLower)) ||
-        (good.supplierAddress && good.supplierAddress.toLowerCase().includes(searchLower)) ||
-        (good.email && good.email.toLowerCase().includes(searchLower)) ||
-        (good.isReturned && good.isReturned.toLowerCase().includes(searchLower)) ||
-        (good.warehouseName && good.warehouseName.toLowerCase().includes(searchLower)) ||
-        (good.warehouseAddress && good.warehouseAddress.toLowerCase().includes(searchLower))
+      const filtered = returnRequests.value.filter(request =>
+        (request.reason && request.reason.toLowerCase().includes(searchLower)) ||
+        (request.submitterName && request.submitterName.toLowerCase().includes(searchLower)) ||
+        (request.status && request.status.toLowerCase().includes(searchLower)) ||
+        (request.role && request.role.toLowerCase().includes(searchLower))
       );
-        // 根据过滤条件进行过滤
+
       if (filterValue.value === 'all') {
-        totalGoods.value = filtered.length
+        totalRequests.value = filtered.length;
         return filtered;
       } else {
-        return filtered.filter(good => good.isReturned === filterValue.value);
+        return filtered.filter(request => request.status === filterValue.value);
       }
-      
-    })
-    const filterReturned = (returned) => {
-  filterValue.value = returned;
-  totalGoods.value = filteredGoods.value.length;
-};
+    });
+
+    const filterStatus = (status) => {
+      filterValue.value = status;
+      totalRequests.value = filteredRequests.value.length;
+    };
+
     const handleSearch = () => {
-      // 这里不需要做任何事情，因为过滤是通过计算属性 filteredGoods 函数完成的
-    }
+      // 这里不需要做任何事情，因为过滤是通过计算属性 filteredRequests 函数完成的
+    };
 
-
-const getTagType = (isReturned) => {
-      if (isReturned === 'Yes') {
+    const getTagType = (status) => {
+      if (status === '已批准') {
         return 'success';
-      } else if (isReturned === 'No') {
-        return 'primary';
+      } else if (status === '待审核') {
+        return 'warning';
+      } else if (status === '已拒绝') {
+        return 'danger';
       } else {
         return 'info';
       }
     };
 
-    const getStatusText = (isReturned) => {
-      if (isReturned === 'Yes') {
-        return 'Returned';
-      } else if (isReturned === 'No') {
-        return 'Not Returned';
-      } else {
-        return 'Unknown';
-      }
-    };
- 
- 
-
     const handleCurrentChange = (page) => {
-      currentPage.value = page
-    }
+      currentPage.value = page;
+    };
 
     const handleSizeChange = (size) => {
-      pageSize.value = size
-      currentPage.value = 1  //默认的是第一页,不是以0开始  
-    }
-
-    const exportData = () => {
-      axios.get("/warehouseGoods/LeftExportInfo", {
-        responseType: "blob"
-      }).then((res) => {
-        const blob = new Blob([res.data], {
-          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        })
-        const link = document.createElement("a")
-        link.href = URL.createObjectURL(blob)
-        const fileName = "库存信息表.xlsx"
-        link.download = fileName
-        link.click()
-        URL.revokeObjectURL(link.href)
-      }).catch((error) => {
-        console.error("导出失败", error)
-      })
-    }
-
-    const add = () => {
-      fetchWarehouseGoods()
-    }
+      pageSize.value = size;
+      currentPage.value = 1;
+    };
 
     const reset = () => {
-      search.value = ''
-      fetchWarehouseGoods()
-    }
+      search.value = '';
+      fetchReturnRequests();
+    };
+
+    const formatDate = (row, column, cellValue) => {
+      if (!cellValue) return '';
+      return dayjs(cellValue).format('YYYY-MM-DD HH:mm:ss');
+    };
+
+    const submitReturnRequest = async () => {
+      try {
+        await axios.post('/returnrequests/update', formLabelAlign.value);
+        editDialogVisible.value = false;
+        fetchReturnRequests();
+      } catch (error) {
+        console.error('Failed to submit return request:', error);
+      }
+    };
 
     onMounted(() => {
-      fetchWarehouseGoods()
-    })
-    const formatDate = (row, column, cellValue) => {
-      return dayjs(cellValue).format('YYYY-MM-DD HH:mm:ss')
-    }
+      fetchReturnRequests();
+    });
+
     return {
       sidebarOpen,
       search,
       currentPage,
       pageSize,
-      totalGoods,
-      warehouseGoods,
-      filteredGoods,
-      paginatedGoods,
-      fetchWarehouseGoods,
+      totalRequests,
+      returnRequests,
+      filteredRequests,
+      paginatedRequests,
+      fetchReturnRequests,
       handleCurrentChange,
       handleSizeChange,
-      exportData,
+      handleEdit,
+      handleDetail,
       reset,
       loading,
       formatDate,
       getTagType,
-      getStatusText,
-      filterReturned
-    }
+      filterStatus,
+      detailDialogVisible,
+      editDialogVisible,
+      submitReturnRequest,
+      handleClose,
+      formLabelAlign
+    };
   }
-}
+};
 </script>
 
 <style scoped>

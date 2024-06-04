@@ -102,7 +102,8 @@
 import axios from 'axios';
 import { ref, onMounted,inject } from 'vue'
 import { useRouter } from 'vue-router';
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { ElMessage, ElMessageBox ,ElNotification} from 'element-plus'
+ 
 export default {
   name: 'Signin',
   data() {
@@ -139,9 +140,9 @@ export default {
           sessionStorage.setItem('email',  data.data.email);
           sessionStorage.setItem('username',  data.data.username);
           sessionStorage.setItem('id',data.data.id);
-          alert(sessionStorage.getItem("id"))
-          alert(sessionStorage.getItem("token"))
-          alert(sessionStorage.getItem("role"));
+          console.log(sessionStorage.getItem("id"))
+          console.log(sessionStorage.getItem("token"))
+          console.log(sessionStorage.getItem("role"));
           const role = data.data.role;
           if (role === "Purchaser") {
             this.router.push("/Purchaser/dashboard/main");
@@ -150,15 +151,38 @@ export default {
           } else if (role === "Admin") {
             this.router.push("/admin/dashboard/main");
           } else {
-            alert('用户身份异常');
+            ElNotification({
+            title: 'Error',
+            message:  data.msg,
+            type: 'error',
+            position: 'top-right',
+          });
+            
           }
         } else if (data.code === '401') { // 未通过审核
-          alert(data.msg);
+          ElNotification({
+            title: 'Error',
+            message:  data.msg,
+            type: 'error',
+            position: 'top-right',
+          });
+         
         } else if (data.code === '500') { // 其他错误
-          alert(data.msg);
+          ElNotification({
+            title: 'Error',
+            message:  data.msg,
+            type: 'error',
+            position: 'top-right',
+          });
         }
       } catch (error) {
-        alert('未知错误: ' + error.message);
+        ElNotification({
+            title: 'Error',
+            message: '未知错误: ' + error.message,
+            type: 'error',
+            position: 'top-right',
+          });
+        
       } finally {
         this.loading = false;
       }

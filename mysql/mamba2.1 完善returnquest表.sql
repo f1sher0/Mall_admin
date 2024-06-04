@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80022
 File Encoding         : 65001
 
-Date: 2024-06-03 21:47:42
+Date: 2024-06-04 12:06:12
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -349,13 +349,13 @@ INSERT INTO `user` VALUES ('9', 'string', 'string', null, '0', null, 'string212'
 INSERT INTO `user` VALUES ('10', 'string', 'string', 'F', '0', 'string', 'str22ing', 'string', '0', 'string', '2024-05-25 14:47:23', '2024-05-25 14:47:23');
 INSERT INTO `user` VALUES ('11', '用户', 'string', 'F', '0', 'string', 'str222ing', 'string', '0', 'string', '2024-05-25 14:50:45', '2024-05-25 14:50:45');
 INSERT INTO `user` VALUES ('12', '用户', '', null, null, null, '', '', '\0', null, '2024-06-01 20:18:52', '2024-06-01 20:18:52');
-INSERT INTO `user` VALUES ('13', 'baiyang194315@outlook.com', '111', null, null, null, 'baiyang194315@outlook.com', 'Purchaser', '1', null, '2024-06-01 20:41:04', '2024-06-02 11:11:37');
+INSERT INTO `user` VALUES ('13', 'baiyang194315@outlook.com', '111', null, null, null, 'baiyang194315@outlook.com', 'Supplier', '1', null, '2024-06-01 20:41:04', '2024-06-04 11:56:52');
 INSERT INTO `user` VALUES ('14', 'poplar white', '111', null, null, null, 'strin1g22@qq.com', 'Warehouse Admin', '0', null, '2024-06-01 20:44:21', '2024-06-01 20:44:21');
 INSERT INTO `user` VALUES ('15', 'poplar white', '111', null, null, null, 'strin11g22@qq.com', 'Warehouse Admin', '1', null, '2024-06-01 20:45:14', '2024-06-02 11:33:16');
 INSERT INTO `user` VALUES ('16', 'poplar white', '1122', null, null, null, 'stri333n11g22@qq.com', 'Warehouse Admin', '1', null, '2024-06-01 20:45:35', '2024-06-02 11:11:41');
 INSERT INTO `user` VALUES ('17', 'poplar white', '1122', null, null, null, 'stri33322n11g22@qq.com', 'Warehouse Admin', '0', null, '2024-06-01 20:47:54', '2024-06-01 20:47:54');
 INSERT INTO `user` VALUES ('18', 'poplar white', '1122', null, null, null, 'str22i33322n11g22@qq.com', 'Warehouse Admin', '0', null, '2024-06-01 20:48:00', '2024-06-01 20:48:00');
-INSERT INTO `user` VALUES ('19', 'poplar white', '111', null, null, null, 'string22@qq.com22', 'Supplier', '1', null, '2024-06-01 20:49:54', '2024-06-02 11:33:55');
+INSERT INTO `user` VALUES ('19', 'poplar white', '111', null, null, null, 'string22@qq.com22', 'Purchaser', '1', null, '2024-06-01 20:49:54', '2024-06-04 11:56:48');
 INSERT INTO `user` VALUES ('20', '胡洋 xl1h', 'ww', null, null, null, 'string2w2@qq.com', '供应商', '0', null, '2024-06-01 20:51:51', '2024-06-01 20:51:51');
 INSERT INTO `user` VALUES ('21', 'wqw', 'ww', null, null, null, 'admiwwn@example.com', '供应商', '0', null, '2024-06-01 20:53:48', '2024-06-01 20:53:48');
 INSERT INTO `user` VALUES ('22', 'white yang', 'qqq', null, null, null, 'str1ing22@qq.com11', '仓库管理员', '0', null, '2024-06-01 20:55:44', '2024-06-01 20:55:44');
