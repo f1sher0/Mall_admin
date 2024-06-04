@@ -64,10 +64,19 @@ INSERT INTO `goods` VALUES ('3', 'temp', 'temp', '22.00', '333.00', '2024-05-17 
 DROP TABLE IF EXISTS `goodsin`;
 CREATE TABLE `goodsin` (
   `goodsInId` int NOT NULL AUTO_INCREMENT COMMENT '入库单的唯一标识',
+<<<<<<< HEAD
   `goodsInNo` varchar(200) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '入库单的编号,可以含有多个商品的id,以逗号分隔',
   `supplierId` int NOT NULL COMMENT '供应商的ID',
   `supplierName` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '供应商的名称',
   `goodsPrice` decimal(10,2) NOT NULL COMMENT '入库商品的单价',
+=======
+  `goodsInNo` varchar(200) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '入库单的编号,可以含有多个商品的id,以逗号分隔,获取后三位字符为数字id',
+  `goodsName` varchar(200) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '商品名称,与商品编号对应,以逗号分隔',
+  `goodsCategory` varchar(200) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '商品分类,与商品编号对应,以逗号分隔',
+  `supplierId` int NOT NULL COMMENT '供应商的ID',
+  `supplierName` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '供应商的名称',
+  `goodsPrice` varchar(200) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '入库商品的单价,以逗号分隔,与商品编号对应',
+>>>>>>> dbc29ad74aa4d65a220d8274d782e4bcbe358f3a
   `goodsAmount` decimal(10,2) NOT NULL COMMENT '入库商品的总金额',
   `goodsInTime` datetime NOT NULL COMMENT '商品入库的时间',
   `warehouseId` int NOT NULL COMMENT '入库商品所在的仓库ID',
@@ -75,22 +84,41 @@ CREATE TABLE `goodsin` (
   `operatorId` int NOT NULL COMMENT '执行入库操作的用户ID',
   `operatorName` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '执行入库操作的用户名称',
   `remark` varchar(500) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '入库单的备注信息',
+<<<<<<< HEAD
+=======
+ 
+ 
+
+>>>>>>> dbc29ad74aa4d65a220d8274d782e4bcbe358f3a
   PRIMARY KEY (`goodsInId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='商品入库';
 
 -- ----------------------------
 -- Records of goodsin
 -- ----------------------------
+<<<<<<< HEAD
 INSERT INTO `goodsin` VALUES ('1', 'GIN001,GIN003', '1', '华纳电子信息公司', '5000.00', '50000.00', '2024-05-23 10:00:00', '1', '北京仓库', '1', '操作员张三', '首次入库');
 INSERT INTO `goodsin` VALUES ('2', 'GIN002', '2', '京东惊喜公司', '1500.00', '15000.00', '2024-05-23 11:00:00', '2', '上海仓库', '2', '操作员李四', '首次入库');
 
+=======
+ 
+INSERT INTO `goodsin` VALUES ('1', 'GIN001,GIN003', '商品A,商品C', '分类1,分类3', '1', '华纳电子信息公司', '5000.00,8000.00', '50000.00', '2024-05-23 10:00:00', '1', '北京仓库', '1', '操作员张三', '首次入库');
+INSERT INTO `goodsin` VALUES ('2', 'GIN002', '商品B', '分类2', '2', '京东惊喜公司', '1500.00', '15000.00', '2024-05-23 11:00:00', '2', '上海仓库', '2', '操作员李四', '首次入库');
+
+
+ 
+>>>>>>> dbc29ad74aa4d65a220d8274d782e4bcbe358f3a
 -- ----------------------------
 -- Table structure for goodsout
 -- ----------------------------
 DROP TABLE IF EXISTS `goodsout`;
 CREATE TABLE `goodsout` (
   `salesId` int NOT NULL AUTO_INCREMENT COMMENT '销售单的唯一标识',
+<<<<<<< HEAD
   `salesNo` varchar(200) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '销售单的编号,可以含有多个商品的id,以逗号分隔',
+=======
+  `salesNo` varchar(200) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '销售单的编号,可以含有多个商品的id,以逗号分隔,获取后三位字符为数字id',
+>>>>>>> dbc29ad74aa4d65a220d8274d782e4bcbe358f3a
   `purchaserId` int NOT NULL COMMENT '采购商的ID',
   `purchaserName` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '采购商的名称',
   `goodsPrice` decimal(10,2) NOT NULL COMMENT '销售商品的单价',

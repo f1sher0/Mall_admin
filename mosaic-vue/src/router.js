@@ -64,6 +64,7 @@ import AvatarPage from './pages/component/AvatarPage.vue'
 import TooltipPage from './pages/component/TooltipPage.vue'
 import AccordionPage from './pages/component/AccordionPage.vue'
 import IconsPage from './pages/component/IconsPage.vue'
+import Announcement from './pages/ecommerce/Announcement.vue'
 import { useAuthStore } from './stores/auth';
 
 const routerHistory = createWebHistory()
@@ -134,6 +135,11 @@ const router = createRouter({
     {
       path: '/ecommerce/pay',
       component: Pay,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/ecommerce/announcement',
+      component: Announcement,
       meta: { requiresAuth: true }
     },
     {
@@ -404,9 +410,6 @@ router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
   const authRequired = to.matched.some(record => record.meta.requiresAuth);
   const userLoggedIn = authStore.isAuthenticated;
-
-  console.log(authRequired);
-  console.log(userLoggedIn);
   if (authRequired && !userLoggedIn) {
     next('/signin');
   } else if (to.path === '/signin' && userLoggedIn) {

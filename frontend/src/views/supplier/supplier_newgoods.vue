@@ -1,0 +1,62 @@
+<template>
+  <div class="flex h-[100dvh] overflow-hidden">
+
+    <!-- Sidebar -->
+    <Sidebar_supplier :sidebarOpen="sidebarOpen" @close-sidebar="sidebarOpen = false" />
+
+    <!-- Content area -->
+    <div class="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
+
+      <!-- Site header -->
+      <Header :sidebarOpen="sidebarOpen" @toggle-sidebar="sidebarOpen = !sidebarOpen" />
+
+      <main class="grow dark:bg-slate-900">
+        <div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
+
+          <!-- Page header -->
+          <div class="sm:flex sm:justify-between sm:items-center mb-4 md:mb-2">
+            <!-- Left: Title -->
+            <div class="mb-4 sm:mb-0">
+              <h1 class="text-2xl md:text-3xl text-slate-800 dark:text-slate-100 font-bold">Add New Goods</h1>
+            </div>
+            <!-- Right: Actions  -->
+            <div class="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2">
+              <!-- Search form -->
+              <div class="hidden sm:block">
+                <SearchForm class="hidden sm:block" />
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </main>
+
+    </div>
+
+  </div>
+</template>
+
+<script>
+import { ref } from 'vue'
+import Header from '../../partials/Header.vue'
+import DashboardAvatars from '../../partials/dashboard/DashboardAvatars.vue'
+import Sidebar_supplier from '../../partials/Sidebar_supplier.vue'
+
+export default {
+  name: 'Dashboard',
+  components: {
+    Sidebar_supplier,
+    Header,
+    DashboardAvatars,
+  },
+  setup() {
+
+    const sidebarOpen = ref(false)
+
+    return {
+      sidebarOpen,
+    }
+  }
+}
+</script>

@@ -7,6 +7,7 @@ import axios from 'axios';
 
 const app = createApp(App)
 const pinia = createPinia();
+<<<<<<< HEAD
 
 axios.interceptors.request.use(config => {
 const token = localStorage.getItem("authToken");
@@ -45,6 +46,9 @@ alert("cuowu");
 // return Promise.reject(error);
 });
 
+=======
+ 
+>>>>>>> dbc29ad74aa4d65a220d8274d782e4bcbe358f3a
 app.use(router);
 app.use(axios);
 app.use(pinia);

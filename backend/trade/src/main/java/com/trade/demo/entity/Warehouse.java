@@ -20,20 +20,31 @@ public class Warehouse implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "warehouseId", type = IdType.AUTO)
-    @ApiModelProperty(value = "仓库ID")
+    @ApiModelProperty(value = "仓库ID", example = "1")
     private Integer warehouseId;
+
     @TableField("warehouseName")
-    @ApiModelProperty(value = "仓库名称")
+    @ApiModelProperty(value = "仓库名称", example = "北京仓库")
     private String warehouseName;
+
     @TableField("warehouseLocation")
-    @ApiModelProperty(value = "仓库位置")
+    @ApiModelProperty(value = "仓库位置", example = "北京市海淀区")
     private String warehouseLocation;
+
     @TableField("totalCapacity")
-    @ApiModelProperty(value = "总容量")
-    private BigDecimal totalCapacity;
+    @ApiModelProperty(value = "总容量", example = "10.00")
+    private Double totalCapacity;
+
     @TableField("availableCapacity")
+<<<<<<< HEAD
     @ApiModelProperty(value = "可用容量")
     private BigDecimal availableCapacity;
     @ApiModelProperty(value = "审核状态")
+=======
+    @ApiModelProperty(value = "可用容量", example = "10.00")
+    private Double availableCapacity;
+
+    @ApiModelProperty(value = "审核状态", example = "1")
+>>>>>>> dbc29ad74aa4d65a220d8274d782e4bcbe358f3a
     private char status;
 }

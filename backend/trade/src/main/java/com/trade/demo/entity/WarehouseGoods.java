@@ -20,18 +20,19 @@ public class WarehouseGoods implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId("warehouseGoodsId")
-    @ApiModelProperty(value = "仓库ID")
+    @ApiModelProperty(value = "仓库商品ID", example = "1")
     private Integer warehouseGoodsId;
 
     @TableField("warehouseId")
-    @ApiModelProperty(value = "仓库ID")
+    @ApiModelProperty(value = "仓库ID", example = "1")
     private Integer warehouseId;
 
     @TableField("goodsId")
-    @ApiModelProperty(value = "商品ID")
-    private String goodsId;
+    @ApiModelProperty(value = "商品ID", example = "1001")
+    private Integer goodsId;
 
     @TableField("goodsQuantity")
-    @ApiModelProperty(value = "商品数量")
-    private String goodsQuantity;
+    @ApiModelProperty(value = "商品数量", example = "100")
+    private Integer goodsQuantity;
+
 }

@@ -2,6 +2,7 @@ package com.trade.demo.controller;
 
 import com.trade.demo.common.Result;
 import com.trade.demo.service.impl.DatabaseService;
+<<<<<<< HEAD
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,12 +16,27 @@ import java.nio.file.StandardCopyOption;
 
 @RestController
 @RequestMapping("/database")
+=======
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.io.IOException;
+
+@RestController
+@RequestMapping("/database")
+@Api(tags = "数据库备份恢复")
+>>>>>>> dbc29ad74aa4d65a220d8274d782e4bcbe358f3a
 public class DatabaseBackupController {
 
     @Autowired
     private DatabaseService databaseService;
 
     @PostMapping("/backup")
+<<<<<<< HEAD
     public Result backup( ) throws IOException {
         try {
             System.out.println("备份ing");
@@ -48,10 +64,22 @@ public class DatabaseBackupController {
 //        // 读取备份文件数据并写入响应输出流
 //        Files.copy(Paths.get(backupPath), response.getOutputStream());
 //        response.flushBuffer();
+=======
+    @ApiOperation(value = "备份数据库")
+    public Result backup() throws IOException {
+        try {
+            System.out.println("备份ing");
+            databaseService.backup();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return Result.error("Failed to backup database");
+        }
+>>>>>>> dbc29ad74aa4d65a220d8274d782e4bcbe358f3a
         return Result.success();
     }
 
     @PostMapping("/restore")
+<<<<<<< HEAD
     public Result restore( ) throws IOException {
         String projectPath = System.getProperty("user.dir");
         String adjustedPath = projectPath.replace("\\", "/");
@@ -68,6 +96,22 @@ public class DatabaseBackupController {
             databaseService.restore (backupPath);
         } catch (InterruptedException e) {
             e.printStackTrace();
+=======
+    @ApiOperation(value = "恢复数据库")
+    public Result restore() throws IOException {
+        String projectPath = System.getProperty("user.dir");
+        String adjustedPath = projectPath.replace("\\", "/");
+        System.out.println(adjustedPath + " 测试路径位置");
+        String backupPath = adjustedPath + "/src/main/resources/mybackup/" + "backup.sql"; // 保存备份的文件路径
+
+        // 执行数据库恢复
+        try {
+            System.out.println("恢复ing");
+            databaseService.restore(backupPath);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return Result.error("Failed to restore database");
+>>>>>>> dbc29ad74aa4d65a220d8274d782e4bcbe358f3a
         }
         return Result.success();
     }

@@ -1,0 +1,14 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\main",
+    "\\src\\main\\java",
+    "\\src\\main\\java\\com",
+    "\\src\\main\\java\\com\\trade",
+    "\\src\\main\\java\\com\\trade\\demo",
+    "\\src\\main\\java\\com\\trade\\demo\\entity"
+  ],
+  "SelectedNode": "\\src\\main\\java\\com\\trade\\demo\\entity\\ReturnRequest.java",
+  "PreviewInSolutionExplorer": false
+}

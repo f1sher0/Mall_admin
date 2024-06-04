@@ -9,6 +9,7 @@ export const useAuthStore = defineStore('auth', () => {
   
   async function login(email, password) {
     try {
+<<<<<<< HEAD
       // isAuthenticated = false;
       const response = await axios.post('http://localhost:5052/api/user/login', { email, password });
       // const token = response.data.token;
@@ -26,6 +27,16 @@ export const useAuthStore = defineStore('auth', () => {
       // const token = "jwtTokenTest"; 
       localStorage.setItem('authToken', token);
       alert(localStorage.getItem('authToken'))
+=======
+ 
+      // const response = await axios.post('http://localhost:5052/api/user/login', { email, password });
+      const token = "12345";
+      //const token = response.data ;
+	    //弹窗提示,对没有获取token的情况处理
+      //console.log(response.data)
+      // const token = "jwtTokenTest"; 
+      localStorage.setItem('authToken', token);
+>>>>>>> dbc29ad74aa4d65a220d8274d782e4bcbe358f3a
       isAuthenticated.value = true;
       router.push('/');  // Redirect to the Dashboard
     }else{
