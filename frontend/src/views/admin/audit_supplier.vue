@@ -39,27 +39,28 @@
           <div class="mb-5">
             <ul class="flex flex-wrap -m-1">
               <li v-for="(statusLabel, statusValue) in statusFilters" :key="statusValue" class="m-1">
-                <button @click="filterStatus(parseInt(statusValue))" :class="getStatus() === parseInt(statusValue) ? 'inline-flex items-center justify-center text-sm font-medium leading-5 rounded-full px-3 py-1 border border-transparent shadow-sm bg-indigo-500 text-white duration-150 ease-in-out' : 'inline-flex items-center justify-center text-sm font-medium leading-5 rounded-full px-3 py-1 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 shadow-sm bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 duration-150 ease-in-out'">{{ statusLabel }}</button>
+                <button @click="filterStatus(parseInt(statusValue))"
+                  :class="getStatus() === parseInt(statusValue) ? 'inline-flex items-center justify-center text-sm font-medium leading-5 rounded-full px-3 py-1 border border-transparent shadow-sm bg-indigo-500 text-white duration-150 ease-in-out' : 'inline-flex items-center justify-center text-sm font-medium leading-5 rounded-full px-3 py-1 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 shadow-sm bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 duration-150 ease-in-out'">{{
+                    statusLabel }}</button>
               </li>
             </ul>
           </div>
 
           <el-table :data="tableData" style="width: 100%">
-            <el-table-column fixed prop="date" label="Date" width="200" />
-            <el-table-column prop="supplierName" label="SupplierName" width="300" />
-            <el-table-column prop="address" label="Address" width="300" />
-            <el-table-column prop="zip" label="ZipCode" width="200" />
+            <el-table-column prop="supplierName" label="SupplierName" width="250" />
+            <el-table-column prop="address" label="Address" width="350" />
+            <el-table-column prop="zip" label="ZipCode" width="150" />
             <el-table-column prop="status" label="status" width="150">
               <template #default="{ row }">
                 <el-tag :type="getTagType(row.status)">{{ getStatusText(row.status) }}</el-tag>
               </template>
             </el-table-column>
-            <el-table-column fixed="right" label="Operations" width="120">
-              <template #default>
-                <el-button link type="primary" size="small" @click="handleClick">
-                  Detail
+            <el-table-column prop="date" label="Date" width="200" />
+            <el-table-column fixed="right" label="Operations" width="250">
+              <template #default="{ row }">
+                <el-button type="primary" size="small" @click="handleClick(row)">
+                  Edit Status
                 </el-button>
-                <el-button link type="primary" size="small">Edit</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -69,6 +70,22 @@
       </main>
 
     </div>
+
+    <el-dialog v-model="dialog1" title="Supplier" width="500">
+      <el-radio-group v-model="radio">
+        <el-radio :value="0">Pending</el-radio>
+        <el-radio :value="1">Approved</el-radio>
+        <el-radio :value="2">Rejected</el-radio>
+      </el-radio-group>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="dialog1 = false">Cancel</el-button>
+          <el-button type="primary" @click="changeStatus">
+            Confirm
+          </el-button>
+        </div>
+      </template>
+    </el-dialog>
 
   </div>
 </template>
@@ -80,6 +97,7 @@ import Header from '../../partials/Header.vue'
 import DeleteButton from '../../partials/actions/DeleteButton.vue'
 import SearchForm from '../../components/SearchForm.vue'
 import DropdownTransaction from '../../components/DropdownTransaction.vue'
+import { ElNotification } from 'element-plus'
 
 export default {
   name: 'Transactions',
@@ -93,9 +111,11 @@ export default {
   setup() {
 
     const sidebarOpen = ref(false);
+    const dialog1 = ref(false);
+    const editForm = ref({});
+    const radio = ref(2);
     const axios = inject('$axios');
     let rawData = [];
-
     let tableData = ref([]);
     const fetchUnreviewedWarehouses = async () => {
       try {
@@ -112,8 +132,11 @@ export default {
       fetchUnreviewedWarehouses();
     });
 
-    const handleClick = () => {
-      console.log('click')
+    const handleClick = (row) => {
+      editForm.value = JSON.parse(JSON.stringify(row));
+      console.log(editForm.value);
+      dialog1.value = true;
+      radio.value = parseInt(editForm.value.status);
     };
 
     const getTagType = (s) => {
@@ -156,10 +179,10 @@ export default {
     };
 
     const statusFilters = {
-        3: 'View All',
-        0: 'Pending',
-        1: 'Approved',
-        2: 'Rejected',
+      3: 'View All',
+      0: 'Pending',
+      1: 'Approved',
+      2: 'Rejected',
     }
 
     const filterStatus = (status) => {
@@ -171,6 +194,28 @@ export default {
     const getStatus = () => {
       return filteredStatus.value;
     }
+
+    const changeStatus = async () => {
+      dialog1.value = false;
+      editForm.value.status = radio.value;
+      try {
+        const response = await axios.put('/supplier/update', editForm.value);
+        fetchUnreviewedWarehouses();
+        ElNotification({
+          title: 'Success',
+          message: 'update successfully',
+          type: 'success',
+        })
+      } catch (error) {
+        ElNotification({
+          title: 'Error',
+          message: 'update Status fail',
+          type: 'error',
+        })
+        console.error('Error :', error);
+      }
+    }
+
     return {
       sidebarOpen,
       tableData,
@@ -182,11 +227,13 @@ export default {
       statusFilters,
       filterStatus,
       getStatus,
+      dialog1,
+      editForm,
+      radio,
+      changeStatus,
     }
   }
 }
 </script>
 
-<style>
-
-</style>
+<style></style>

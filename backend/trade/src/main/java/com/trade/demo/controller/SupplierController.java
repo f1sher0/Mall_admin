@@ -33,7 +33,7 @@ public class SupplierController {
     @PostMapping("/add")
     @ApiOperation(value = "添加供应商")
     public Result addSupplier(@RequestBody Supplier supplier) {
-        supplier.setStatus('0');
+        supplier.setStatus("0");
         boolean isSaved = supplierService.save(supplier);
         if (isSaved) {
             return Result.success(supplier);
@@ -63,11 +63,14 @@ public class SupplierController {
     @PutMapping("/update")
     @ApiOperation(value = "更新供应商信息")
     public Result updateSupplier(@RequestBody Supplier supplier) {
+        System.out.println(supplier.getStatus());
+        System.out.println(supplier.getSupplierDesc());
         Supplier supplierOri=supplierService.getById(supplier.getSupplierId());
         supplierOri.setSupplierName(supplier.getSupplierName());
         supplierOri.setSupplierDesc(supplier.getSupplierDesc());
         supplierOri.setPassword(supplier.getPassword());
         supplierOri.setAddress(supplier.getAddress());
+        supplierOri.setStatus(supplier.getStatus());
         boolean isUpdated = supplierService.updateById(supplierOri);
         if (isUpdated) {
             String email = supplierOri.getEmail();
@@ -75,6 +78,7 @@ public class SupplierController {
             user.setUpdateTime( new Date());
             user.setPassword(supplier.getPassword());
             user.setUsername(supplier.getSupplierName());
+            user.setStatus(supplier.getStatus().charAt(0));
             userService.updateById(user);
 
             return Result.success(supplier);

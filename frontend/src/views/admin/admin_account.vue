@@ -23,7 +23,7 @@
           <div class="bg-white dark:bg-slate-800 shadow-lg rounded-sm mb-8">
             <div class="flex flex-col md:flex-row md:-mr-px">
               <SettingsSidebar_admin />
-              <AccountPanel />
+              <admin_AccountPanel />
             </div>
           </div>
 
@@ -40,7 +40,7 @@ import { ref } from 'vue'
 import Sidebar_admin from '../../partials/Sidebar_admin.vue'
 import Header from '../../partials/Header.vue'
 import SettingsSidebar_admin from '../../partials/settings/SettingsSidebar_admin.vue'
-import AccountPanel from '../../partials/settings/AccountPanel.vue'
+import admin_AccountPanel from '../../partials/settings/admin_AccountPanel.vue'
 
 export default {
   name: 'Account',
@@ -48,7 +48,7 @@ export default {
     Sidebar_admin,
     Header,
     SettingsSidebar_admin,
-    AccountPanel,
+    admin_AccountPanel,
   },
   setup() {
 
