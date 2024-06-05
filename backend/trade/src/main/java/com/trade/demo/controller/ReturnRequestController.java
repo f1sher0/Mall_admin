@@ -1,6 +1,7 @@
 package com.trade.demo.controller;
 
 import com.trade.demo.common.Result;
+import com.trade.demo.dto.ReturnRequestDTO;
 import com.trade.demo.entity.Goods;
 import com.trade.demo.entity.ReturnRequest;
 import com.trade.demo.service.GoodsService;
@@ -26,6 +27,7 @@ public class ReturnRequestController {
     @GetMapping("/get")
     @ApiOperation(value = "根据ID获取退货申请")
     public Result getReturnRequestById(@RequestParam Integer requestId) {
+
         ReturnRequest returnRequest = returnRequestService.getById(requestId);
         if (returnRequest != null) {
             return Result.success(returnRequest);
@@ -33,7 +35,17 @@ public class ReturnRequestController {
             return Result.error("退货申请不存在");
         }
     }
+    @GetMapping("/getBySubid_Role")
+    @ApiOperation(value = "根据提交人id,role获取退货申请")
+    public Result getBySubid_Role(@RequestParam Integer id,@RequestParam String role) {
+        List<ReturnRequestDTO> returnRequestDTOs = returnRequestService.getBySubid_Role2(id, role);
 
+        if (returnRequestDTOs != null && !returnRequestDTOs.isEmpty()) {
+            return Result.success(returnRequestDTOs);
+        } else {
+            return Result.error("退货申请不存在");
+        }
+    }
     @GetMapping("/all")
     @ApiOperation(value = "获取所有退货申请")
     public Result getAllReturnRequests() {

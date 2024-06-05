@@ -45,7 +45,7 @@ public class UserController {
         if (user == null || !user.getPassword().equals(loginUser.getPassword())) {
             return Result.error("Invalid email or password");
         }
-        if(user.getStatus()=='0'){
+        if(user.getStatus()!='1'){//0为待审核, 2为拒绝, 1为通过
             return  Result.unauthorized("该用户暂没有通过审核,无法使用");
         }
         String JWTtoken = JWT.create()
@@ -62,6 +62,7 @@ public class UserController {
                 id=supplier.getSupplierId();
             } else {
                 System.out.println("No Supplier found with email: " + user.getEmail());
+                return Result.error("No Supplier found with email: " + user.getEmail());
             }
         } else if ("Purchaser".equals(role)) {
             Purchaser purchaser = purchaserService.getOne(new QueryWrapper<Purchaser>().eq("email", user.getEmail()));
@@ -69,9 +70,16 @@ public class UserController {
                  id=purchaser.getPurchaserId();
             } else {
                 System.out.println("No Purchaser found with email: " + user.getEmail());
+                return Result.error("No Supplier found with email: " + user.getEmail());
             }
-        } else {
+        }
+        else if ("Warehouse Admin".equals(role)) {
+             id = user.getUserId();//返回user ID, 对于
+        }
+
+        else {
             System.out.println("Role not recognized: " + role);
+            return Result.error("No Supplier found with email: " + user.getEmail());
         }
         Map<String, String> responseMap = new HashMap<>();
         responseMap.put("role", role);
@@ -254,6 +262,7 @@ public class UserController {
         User user = userService.getById(userId);
         if (user != null) {
             user.setStatus('1');
+
             user.setUpdateTime(new Date());
             //todo 根据用户的role进行相应表 的同步
 

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -52,19 +53,40 @@ public class SupplierController {
             return Result.error("Supplier not found");
         }
     }
-
+    @GetMapping("/getAccount")
+    @ApiOperation(value = "根据ID获取供应商Account")
+    public Result getAccountById(@RequestParam Integer id) {
+        Supplier supplier = supplierService.getById(id);
+        if (supplier != null) {
+            String name=supplier.getSupplierName();
+            String address = supplier.getAddress();
+            String password = supplier.getPassword();
+            HashMap<String, String> accountInfo = new HashMap<>();
+            accountInfo.put("name", name);
+            accountInfo.put("address", address);
+            accountInfo.put("password", password);
+            return Result.success(accountInfo );
+        } else {
+            return Result.error("Supplier not found");
+        }
+    }
     @GetMapping("/list")
     @ApiOperation(value = "获取所有供应商")
     public Result listSuppliers() {
         List<Supplier> supplierList = supplierService.list();
         return Result.success(supplierList);
     }
-
     @PutMapping("/update")
     @ApiOperation(value = "更新供应商信息")
     public Result updateSupplier(@RequestBody Supplier supplier) {
+ 
+        System.out.println(supplier.getAddress());
+        System.out.println(supplier.getSupplierId()+"id");
+
+ 
         System.out.println(supplier.getStatus());
         System.out.println(supplier.getSupplierDesc());
+ 
         Supplier supplierOri=supplierService.getById(supplier.getSupplierId());
         supplierOri.setSupplierName(supplier.getSupplierName());
         supplierOri.setSupplierDesc(supplier.getSupplierDesc());
@@ -78,7 +100,9 @@ public class SupplierController {
             user.setUpdateTime( new Date());
             user.setPassword(supplier.getPassword());
             user.setUsername(supplier.getSupplierName());
+ 
             user.setStatus(supplier.getStatus().charAt(0));
+ 
             userService.updateById(user);
 
             return Result.success(supplier);
@@ -88,8 +112,7 @@ public class SupplierController {
 
 
     }
-
-    @DeleteMapping("/delete")
+     @DeleteMapping("/delete")
     @ApiOperation(value = "根据ID删除供应商")
     public Result deleteSupplier(@RequestParam Integer id) {
         boolean isRemoved = supplierService.removeById(id);

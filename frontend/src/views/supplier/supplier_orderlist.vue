@@ -69,7 +69,7 @@
               <el-tag :type="getTagType(row.isReturned)">{{ getStatusText(row.isReturned) }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column fixed="right" label="操作" width="120">
+          <el-table-column    fixed="right" label="操作" width="120">
             <template #default="{ row }">
               <el-button link type="primary" size="small" v-if="row.isReturned === 'No'" @click="openReturnDialog(row)">
                 退货申请
@@ -112,7 +112,7 @@ import HighlightText from '../HighlightText.vue';
 import dayjs from 'dayjs';
 import { ElNotification } from 'element-plus'
 export default {
-  name: 'Dashboard',
+  name: 'OrderList',
   components: {
     Sidebar_supplier,
     Header,
@@ -177,8 +177,8 @@ export default {
         });
 
 
-        console.log(sessionStorage.getItem("id"));
-        alert(sessionStorage.getItem("role"));
+        // console.log(sessionStorage.getItem("id"));ok
+        // alert(sessionStorage.getItem("role"));
         if (response.status === 200) {
           alert(response.data.data)
           dialogVisible.value = false;
