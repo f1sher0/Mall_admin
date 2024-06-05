@@ -6,6 +6,8 @@
       <Header :sidebarOpen="sidebarOpen" @toggle-sidebar="sidebarOpen = !sidebarOpen" />
       
       <main class="grow dark:bg-slate-900 p-4">
+        <!-- Welcome banner -->
+        <WelcomeBanner />
         <div>
           <el-button type="info" @click="filterStatus('待审核')">待审核</el-button>
           <el-button type="success" @click="filterStatus('已批准')">已批准</el-button>
@@ -64,7 +66,7 @@
           <el-form label-position="right" label-width="auto" :model="formLabelAlign" style="max-width: 600px">
             <el-form-item label="Submitter Name">
               <el-input v-model="formLabelAlign.submitterName" disabled />
-              //disabled可以禁止修改
+              <!-- //disabled可以禁止修改 -->
             </el-form-item>
             <el-form-item label="Reason">
               <el-input v-model="formLabelAlign.reason" disabled />
@@ -121,13 +123,16 @@ import Header from '../../partials/Header.vue';
 import Sidebar_supplier from '../../partials/Sidebar_supplier.vue';
 import HighlightText from '../HighlightText.vue';
 import dayjs from 'dayjs';
-
+import WelcomeBanner from '../../partials/dashboard/WelcomeBanner.vue'
+  import DashboardAvatars from '../../partials/dashboard/DashboardAvatars.vue'
 export default {
   name: 'ReturnRequests',
   components: {
     Sidebar_supplier,
     Header,
     HighlightText,
+    WelcomeBanner,
+    DashboardAvatars,
   },
   setup() {
     const axios = inject('$axios');

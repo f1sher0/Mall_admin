@@ -6,6 +6,8 @@
       <Header :sidebarOpen="sidebarOpen" @toggle-sidebar="sidebarOpen = !sidebarOpen" />
 
       <main class="grow dark:bg-slate-900 p-4">
+         <!-- Welcome banner -->
+         <WelcomeBanner />
         <div>
           <el-button type="primary" @click="filterReturned('Yes')">已退货订单</el-button>
           <el-button type="info" @click="filterReturned('No')">未退货订单</el-button>
@@ -107,6 +109,7 @@
 <script>
 import { ref, onMounted, inject, computed } from 'vue';
 import Header from '../../partials/Header.vue';
+import WelcomeBanner from '../../partials/dashboard/WelcomeBanner.vue'
 import Sidebar_supplier from '../../partials/Sidebar_supplier.vue';
 import HighlightText from '../HighlightText.vue';
 import dayjs from 'dayjs';
@@ -117,6 +120,7 @@ export default {
     Sidebar_supplier,
     Header,
     HighlightText,
+    WelcomeBanner,
   },
   setup() {
     const axios = inject('$axios');
@@ -332,6 +336,7 @@ export default {
       fetchWarehouseGoods,
       handleCurrentChange,
       handleSizeChange,
+      handleSearch,
       exportData,
       reset,
       loading,

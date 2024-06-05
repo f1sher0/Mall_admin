@@ -39,7 +39,7 @@
               </template>
               {{ item.content }}
               <template #footer>
-                {{ item.updateTime }}
+                {{ formatDate(item.updateTime)  }}
               </template>
             </el-card>
           </div>
@@ -62,7 +62,7 @@ import Header from '../../partials/Header.vue'
 import WelcomeBanner from '../../partials/dashboard/WelcomeBanner.vue'
 import DashboardAvatars from '../../partials/dashboard/DashboardAvatars.vue'
 import Sidebar_purchaser from '../../partials/Sidebar_purchaser.vue'
-
+import dayjs from 'dayjs'
 export default {
   name: 'Dashboard',
   components: {
@@ -87,7 +87,9 @@ export default {
         console.error('Error fetching data:', error);
       } 
     };
-
+    const formatDate = (row, column, cellValue) => {
+      return dayjs(cellValue).format('YYYY-MM-DD HH:mm:ss')
+    }
     onMounted(() => {
       fetchData();
     });
@@ -96,6 +98,7 @@ export default {
       fetchData,
       sourceData,
       DataNum,
+      formatDate,
     }
   }
 }
