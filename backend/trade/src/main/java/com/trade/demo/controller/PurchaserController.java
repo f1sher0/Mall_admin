@@ -64,7 +64,7 @@ public class PurchaserController {
     public Result listPurchasers() {
         List<Purchaser> purchaserList = purchaserService.list();
         return Result.success(purchaserList);
-    }
+    } 
 
     @DeleteMapping("/delete")
     @ApiOperation(value = "删除采购商")

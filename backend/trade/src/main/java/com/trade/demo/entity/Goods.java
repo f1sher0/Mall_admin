@@ -53,5 +53,5 @@ public class Goods implements Serializable {
 
     @TableField("warehouseId")
     @ApiModelProperty(value = "仓库ID", example = "1")
-    private Integer warehouseId = 1;
+    private Integer warehouseId ;
 }

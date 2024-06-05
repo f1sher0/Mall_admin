@@ -29,6 +29,7 @@ public class ReturnRequestServiceImpl extends ServiceImpl<ReturnRequestMapper, R
     @Override
     public List<ReturnRequestDTO> getBySubid_Role2(Integer id, String role) {
         List<ReturnRequest> returnRequests =  getBySubid_Role(id, role);
+        if(returnRequests==null)return null;
         return returnRequests.stream().map(returnRequest -> {
             String goodsName =   goodsService.getById(returnRequest.getGoodsId()).getGoodsName();
             return convertToDTO(returnRequest, goodsName);

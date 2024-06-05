@@ -31,7 +31,7 @@ public class GoodsIn implements Serializable {
 
     @TableField("supplierId")
     @ApiModelProperty(value = "供应商ID", example = "1")
-    private Integer supplierId = 2;
+    private Integer supplierId ;
 
     @TableField("supplierName")
     @ApiModelProperty(value = "供应商名称", example = "华纳电子信息公司")
@@ -47,7 +47,7 @@ public class GoodsIn implements Serializable {
 
     @TableField("goodsAmount")
     @ApiModelProperty(value = "入库商品总金额", example = "50000.00")
-    private Double goodsAmount = 50000.00;
+    private Double goodsAmount ;
 
     @TableField("goodsInTime")
     @ApiModelProperty(value = "商品入库时间", example = "2024-05-23 10:00:00")
