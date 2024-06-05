@@ -16,11 +16,11 @@
       <section>
         <h3 class="text-xl leading-snug text-slate-800 dark:text-slate-100 font-bold mb-1">Business Profile</h3>
         <div class="sm:flex sm:items-center space-y-4 sm:space-y-0 sm:space-x-4 mt-5">
-          <div class="sm:w-1/3">
+          <div class="sm:w-1/6">
             <label class="block text-sm font-medium mb-1" for="name">Name</label>
             <input id="name" v-model="name" class="form-input w-full" type="text" />
           </div>
-          <div class="sm:w-1/3">
+          <div class="sm:w-4/6">
             <label class="block text-sm font-medium mb-1" for="address">Address</label>
             <input id="address" v-model="address" class="form-input w-full" type="text" />
           </div>
@@ -32,7 +32,7 @@
         <h3 class="text-xl leading-snug text-slate-800 dark:text-slate-100 font-bold mb-1">Password</h3>
         <div class="text-sm">You can set a permanent password if you don't want to use temporary login codes.</div>
         <div class="mt-5">
-          <button class="btn border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 shadow-sm text-indigo-500">Set New Password</button>
+          <router-link class="btn border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 shadow-sm text-indigo-500" to="/reset">Set New Password</router-link>
         </div>
       </section>
     </div>
@@ -63,13 +63,10 @@ export default {
 
     const fetchAccountInfo = async () => {
       try {
-        alert(role);alert(id);
         const response = await axios.get(`http://localhost:5052/api/${role.toLowerCase()}/getAccount`, { params: { id } });
-       
         if (response.status === 200) {
           const accountInfo = response.data.data;
           name.value = accountInfo.name;
-          alert(name.value )
           address.value = accountInfo.address;
         } else {
           console.error('Failed to fetch account info:', response.data.message);
@@ -85,11 +82,16 @@ export default {
     }
     const saveChanges = async () => {
       try {
-        alert(id);
-        const payload = { supplierId:id, supplierName: name.value, address: address.value };
+        let payload = {};
+        if (role.toLowerCase() == 'supplier') {
+          payload = {supplierId:id, supplierName: name.value, address: address.value};
+        } 
+        if (role.toLocaleLowerCase() == 'purchaser') {
+          payload = {purchaserId:id, purchaserName: name.value, address: address.value}
+        }
         const response = await axios.put(`http://localhost:5052/api/${role.toLowerCase()}/update`, payload);
-        if (response.data && response.data.code === 200) {
-          alert('Changes saved successfully');
+        console.log(response);
+        if (response.data && response.data.code == "200") {
         } else {
           console.error('Failed to save changes:', response.data.message);
         }
