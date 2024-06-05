@@ -100,7 +100,7 @@
 
 <script>
 import axios from 'axios';
-import { ref, onMounted,inject } from 'vue'
+import { ref, onMounted, inject } from 'vue'
 import { useRouter } from 'vue-router';
 import { ElMessage, ElMessageBox ,ElNotification} from 'element-plus'
  
@@ -127,14 +127,17 @@ export default {
           password: this.password,
         });
         const data = response.data;
- 
+
         console.log("后端返回: " + data);
- 
-      
- 
+
         if (data.code === '200') { // 登录成功
+          ElMessage({
+            message: 'Login In Successfully',
+            type: 'success',
+          })
           localStorage.setItem('token', data.data.token);
           console.log(localStorage.getItem('token'));
+ 
           sessionStorage.setItem('role',  data.data.role);
           sessionStorage.setItem('token',  data.data.token);
           sessionStorage.setItem('email',  data.data.email);
@@ -143,6 +146,7 @@ export default {
           console.log(sessionStorage.getItem("id"))
           console.log(sessionStorage.getItem("token"))
           console.log(sessionStorage.getItem("role"));
+ 
           const role = data.data.role;
           if (role === "Purchaser") {
             this.router.push("/Purchaser/dashboard/main");

@@ -41,7 +41,7 @@
                 <el-button type="primary" size="small" @click="handleClick(row)">
                   Edit
                 </el-button>
-                <el-button type="danger" size="small">Remove</el-button>
+                <el-button type="danger" size="small" @click="handleRemove(row)">Remove</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -52,7 +52,7 @@
 
     </div>
 
-    <el-dialog v-model="dialogVisible" title="Add Warehouse" width="500" :before-close="handleClose">
+    <el-dialog v-model="dialogVisible" title="Add Warehouse" width="500">
       <el-form label-position="right" label-width="auto" :model="formLabelAlign" style="max-width: 600px">
         <el-form-item label="Warehouse Name">
           <el-input v-model="formLabelAlign.name" />
@@ -99,6 +99,18 @@
       </template>
     </el-dialog>
 
+
+    <el-dialog v-model="dialogVisible2" title="Tips" width="500">
+      <span>Confirm to Remove the Warehouse</span>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="dialogVisible2 = false">Cancel</el-button>
+          <el-button type="danger" @click="removeWarehouse">
+            Confirm
+          </el-button>
+        </div>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -131,6 +143,7 @@ export default {
     const sidebarOpen = ref(false);
     const axios = inject('$axios');
     const dialogVisible1 = ref(false);
+    const dialogVisible2 = ref(false);
     let rawData = [];
     let tableData = ref([]);
     const fetchUnreviewedWarehouses = async () => {
@@ -153,6 +166,10 @@ export default {
       dialogVisible1.value = true;
     };
 
+    const handleRemove = (row) => {
+      editForm.value = JSON.parse(JSON.stringify(row));
+      dialogVisible2.value = true;
+    }
     const addNewWarehouse = async () => {
       dialogVisible.value = false;
       try {
@@ -191,17 +208,41 @@ export default {
       }
     }
 
+    const removeWarehouse = async () => {
+      dialogVisible2.value = false;
+      try {
+        console.log(editForm.value.warehouseId);
+        const response = await axios.delete(`/warehouse/delete?id=${editForm.value.warehouseId}`);
+        fetchUnreviewedWarehouses();
+        ElNotification({
+          title: 'Success',
+          message: 'Remove successfully',
+          type: 'success',
+        })
+      } catch (error) {
+        ElNotification({
+          title: 'Error',
+          message: 'Remove fail',
+          type: 'error',
+        })
+        console.error('Error Removing Warehouse:', error);
+      }
+    }
+
     return {
       sidebarOpen,
       tableData,
       fetchUnreviewedWarehouses,
       handleClick,
+      handleRemove,
       dialogVisible,
       dialogVisible1,
+      dialogVisible2,
       formLabelAlign,
       editForm,
       addNewWarehouse,
       editWarehouse,
+      removeWarehouse,
     }
   }
 }
