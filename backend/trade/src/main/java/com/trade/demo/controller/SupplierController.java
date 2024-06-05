@@ -91,8 +91,12 @@ public class SupplierController {
         supplierOri.setSupplierName(supplier.getSupplierName());
         supplierOri.setSupplierDesc(supplier.getSupplierDesc());
         supplierOri.setPassword(supplier.getPassword());
-        supplierOri.setAddress(supplier.getAddress());
-        supplierOri.setStatus(supplier.getStatus());
+        if (supplier.getAddress() != null) {
+            supplierOri.setAddress(supplier.getAddress());
+        }
+        if (supplier.getStatus() != null) {
+            supplierOri.setStatus(supplier.getStatus());
+        }
         boolean isUpdated = supplierService.updateById(supplierOri);
         if (isUpdated) {
             String email = supplierOri.getEmail();

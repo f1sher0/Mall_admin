@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -38,7 +39,7 @@ public class PurchaserController {
     @PostMapping("/add")
     @ApiOperation(value = "添加采购商")
     public Result addPurchaser(@RequestBody Purchaser purchaser) {
-        purchaser.setStatus('0');
+        purchaser.setStatus("0");
         boolean isSaved = purchaserService.save(purchaser);
         if (isSaved) {
             return Result.success(purchaser);
@@ -63,39 +64,6 @@ public class PurchaserController {
     public Result listPurchasers() {
         List<Purchaser> purchaserList = purchaserService.list();
         return Result.success(purchaserList);
-    }
-
-    @PutMapping("/update")
-    @ApiOperation(value = "更新采购商信息")
-    public Result updatePurchaser(@RequestBody Purchaser purchaser) {
-        Purchaser purchaserOri = purchaserService.getById(purchaser.getPurchaserId());
-        if (purchaserOri == null) {
-            return Result.error("Purchaser not found");
-        }
-        purchaserOri.setPurchaserName(purchaser.getPurchaserName());
-        purchaserOri.setPurchaserDesc(purchaser.getPurchaserDesc());
-        purchaserOri.setPassword(purchaser.getPassword());
-        purchaserOri.setAddress(purchaser.getAddress());
-//        purchaserOri.setTelephone(purchaser.getTelephone());
-//        purchaserOri.setEmail(purchaser.getEmail());
-//        purchaserOri.setZip(purchaser.getZip());
-//        purchaserOri.setAvatar(purchaser.getAvatar());
-        boolean isUpdated = purchaserService.updateById(purchaserOri);
-        if (isUpdated) {
-            String email = purchaserOri.getEmail();
-            User user = userService.findByEmail(email);
-            if (user != null) {
-                user.setUpdateTime(new Date());
-                user.setPassword(purchaser.getPassword());
-                user.setUsername(purchaser.getPurchaserName());
-                userService.updateById(user);
-            } else {
-                return Result.error("Associated user not found");
-            }
-            return Result.success(purchaserOri);
-        } else {
-            return Result.error("Failed to update purchaser");
-        }
     }
 
     @DeleteMapping("/delete")
@@ -145,6 +113,69 @@ public class PurchaserController {
             }
         }
 
+
         return Result.success(resultList);
+    }
+
+    @GetMapping("/getAccount")
+    @ApiOperation(value = "根据ID获取购买商Account")
+    public Result getAccountById(@RequestParam Integer id) {
+        Purchaser purchaser = purchaserService.getById(id);
+        if (purchaser != null) {
+            String name=purchaser.getPurchaserName();
+            String address = purchaser.getAddress();
+            String password = purchaser.getPassword();
+            HashMap<String, String> accountInfo = new HashMap<>();
+            accountInfo.put("name", name);
+            accountInfo.put("address", address);
+            accountInfo.put("password", password);
+            return Result.success(accountInfo );
+        } else {
+            return Result.error("purchaser not found");
+        }
+    }
+
+    @PutMapping("/update")
+    @ApiOperation(value = "更新采购商信息")
+    public Result updatePurchaser(@RequestBody Purchaser purchaser) {
+        Purchaser purchaserOri = purchaserService.getById(purchaser.getPurchaserId());
+        if (purchaserOri == null) {
+            return Result.error("Purchaser not found");
+        }
+        purchaserOri.setPurchaserName(purchaser.getPurchaserName());
+        purchaserOri.setPurchaserDesc(purchaser.getPurchaserDesc());
+        purchaserOri.setPassword(purchaser.getPassword());
+
+        if(purchaser.getAddress()!=null) {
+            purchaserOri.setAddress(purchaser.getAddress());
+        }
+
+        if(purchaser.getStatus()!=null) {
+            purchaserOri.setStatus(purchaser.getStatus());
+        }
+
+//        purchaserOri.setTelephone(purchaser.getTelephone());
+//        purchaserOri.setEmail(purchaser.getEmail());
+//        purchaserOri.setZip(purchaser.getZip());
+//        purchaserOri.setAvatar(purchaser.getAvatar());
+        boolean isUpdated = purchaserService.updateById(purchaserOri);
+        if (isUpdated) {
+            String email = purchaserOri.getEmail();
+            User user = userService.findByEmail(email);
+            if (user != null) {
+                user.setUpdateTime(new Date());
+                user.setPassword(purchaser.getPassword());
+                user.setUsername(purchaser.getPurchaserName());
+                if(purchaser.getStatus()==null){}
+                else
+                    user.setStatus(purchaser.getStatus().charAt(0));
+                userService.updateById(user);
+            } else {
+                return Result.error("Associated user not found");
+            }
+            return Result.success(purchaserOri);
+        } else {
+            return Result.error("Failed to update purchaser");
+        }
     }
 }

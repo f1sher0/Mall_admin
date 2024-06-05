@@ -18,10 +18,14 @@
         <h3 class="text-xl leading-snug text-slate-800 dark:text-slate-100 font-bold mb-1">Business Profile</h3>
         <div class="sm:flex sm:items-center space-y-4 sm:space-y-0 sm:space-x-4 mt-5">
           <div class="sm:w-1/3 flex align-center">
-            <div class=" text-sm font-medium mb-1 mr-4 pt-1">Name</div>
+            <div class=" text-sm font-medium mb-1 mr-4 pt-1">Purchaser Name</div>
             <el-input v-model="input" clearable class="w-fit">
             </el-input>
-            <el-button type="primary" class="ml-2" @click="handleClick">Save</el-button>
+          </div>
+          <div class="sm:w-1/3 flex align-center">
+            <div class=" text-sm font-medium mb-1 mr-4 pt-1">Purchaser Address</div>
+            <el-input v-model="input" clearable class="w-fit">
+            </el-input>
           </div>
         </div>
       </section>
@@ -43,7 +47,7 @@
         <div class="flex self-end">
           <button
             class="btn dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 text-slate-600 dark:text-slate-300">Cancel</button>
-          <button class="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-3">Save Changes</button>
+          <button class="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-3" @click="handleClick">Save Changes</button>
         </div>
       </div>
     </footer>
@@ -60,7 +64,13 @@ export default {
     const input = ref('');
     const axios = inject('$axios');
     onMounted(() => {
-      console.log(sessionStorage.getItem("id"))
+      console.log(sessionStorage.getItem("id"));
+      try {
+        const response = axios.get('/purchaser/getAccount', sessionStorage.getItem("id"));
+        console.log(response);
+      } catch (error) {
+        console.error(error);
+      }
       input.value = sessionStorage.getItem("username");
     });
     const handleClick = () => {

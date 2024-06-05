@@ -39,6 +39,8 @@ import Purchaser_orderlist from "./views/purchaser/purchaser_orderlist.vue";
 import Purchaser_purchase from "./views/purchaser/purchaser_purchase.vue";
 import Purchaser_return from "./views/purchaser/purchaser_return.vue";
 import Purchaser_announcement from "./views/purchaser/purchaser_announcement.vue";
+import component from "element-plus/es/components/tree-select/src/tree-select-option.mjs";
+import ResetPassword from "./views/ResetPassword.vue";
 
 const routes = [
     {
@@ -235,6 +237,11 @@ const routes = [
         path: '/purchaser/announcement',
         name: 'purchaser_announcement',
         component: Purchaser_announcement,
+    },
+    {
+        path: '/reset',
+        name: 'reset_password',
+        component: ResetPassword,
     },
 ];
 
