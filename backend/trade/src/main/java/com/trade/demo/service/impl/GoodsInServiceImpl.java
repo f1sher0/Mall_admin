@@ -50,7 +50,7 @@ public class GoodsInServiceImpl extends ServiceImpl<GoodsInMapper, GoodsIn> impl
         StringBuilder goodsInNoBuilder = new StringBuilder();
         Integer goodsNum = goodsCategories.length;
         Warehouse warehouse = warehouseService.getById(goodsIn.getWarehouseId());
-        warehouseMapper.selectById(goodsIn.getWarehouseId());
+//        warehouseMapper.selectById(goodsIn.getWarehouseId());
         if(warehouse.getStatus()=='0'){//  检查仓库status
             System.out.println("空");
             return 505;
@@ -83,6 +83,7 @@ public class GoodsInServiceImpl extends ServiceImpl<GoodsInMapper, GoodsIn> impl
 
                 goods.setOnShelf(1); // 默认上架
                 goods.setWarehouseId(goodsIn.getWarehouseId());
+                System.out.println(goods.getWarehouseId()+" getWarehouseId");
                 goodsMapper.insertGoods(goods); // 插入 Goods 表并获取自动生成的 goodsId
                 //<<<<<<<<<<<<同步WarehouseGoods表
                 WarehouseGoods warehouseGoods = new WarehouseGoods();
@@ -106,6 +107,7 @@ public class GoodsInServiceImpl extends ServiceImpl<GoodsInMapper, GoodsIn> impl
 
             goodsIn.setGoodsAmount(total);
             goodsIn.setGoodsInNo(goodsInNoBuilder.toString());
+            goodsIn.setWarehouseName(warehouse.getWarehouseName());
             goodsInMapper.insertGoodsIn(goodsIn); // 插入 GoodsIn 表并获取自动生成的 goodsInId
 //<<<<<<<<<<<<<<<<<inListGoods同步
             for (Integer id : goodsIdList) {

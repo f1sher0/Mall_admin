@@ -55,7 +55,7 @@ public class Purchaser implements Serializable {
     private String email;
 
     @ApiModelProperty(value = "审核状态", example = "1")
-    private char status;
+    private String status;
 
     @ApiModelProperty(value = "头像", example = "http://example.com/avatar.jpg")
     private String avatar;

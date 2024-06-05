@@ -73,7 +73,7 @@ public class UserController {
                 return Result.error("No Supplier found with email: " + user.getEmail());
             }
         }
-        else if ("Warehouse Admin".equals(role)) {
+        else if ("Admin".equals(role)) {
              id = user.getUserId();//返回user ID, 对于
         }
 

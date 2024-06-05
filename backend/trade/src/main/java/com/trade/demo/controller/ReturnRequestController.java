@@ -43,6 +43,7 @@ public class ReturnRequestController {
         if (returnRequestDTOs != null && !returnRequestDTOs.isEmpty()) {
             return Result.success(returnRequestDTOs);
         } else {
+            System.out.println("null");
             return Result.error("退货申请不存在");
         }
     }
@@ -71,7 +72,7 @@ public class ReturnRequestController {
         }
     }
 
-    @PutMapping("/update")
+    @PostMapping("/update")
     @ApiOperation(value = "更新退货申请")
     public Result updateReturnRequest(@RequestBody ReturnRequest returnRequest) {
         // 检查状态是否变为已批准
@@ -84,7 +85,13 @@ public class ReturnRequestController {
                 goodsService.updateById(goods);
             }
         }
-        returnRequest.setReviewTime(new Date());
+        if ("待审核".equals(returnRequest.getStatus())){
+            returnRequest.setSubmitTime(new Date());
+        }else{
+            returnRequest.setReviewTime(new Date());
+        }
+
+
         boolean isUpdated = returnRequestService.updateById(returnRequest);
         if (isUpdated) {
             return Result.success(returnRequest);

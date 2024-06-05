@@ -11,7 +11,7 @@ public interface GoodsMapper extends BaseMapper<Goods> {
 
     @Update("UPDATE goods SET onShelf = 0, updateTime = NOW() WHERE goodsId = #{goodsId}")
     boolean unshelfGoods(@Param("goodsId") int goodsId);
-    @Insert("INSERT INTO goods (goodsName, goodsCategory, purchasePrice, sellingPrice, onShelf) VALUES (#{goodsName}, #{goodsCategory}, #{purchasePrice}, #{sellingPrice}, #{onShelf})")
+    @Insert("INSERT INTO goods (goodsName, goodsCategory, purchasePrice, sellingPrice, onShelf,warehouseId) VALUES (#{goodsName}, #{goodsCategory}, #{purchasePrice}, #{sellingPrice}, #{onShelf},#{warehouseId})")
     @Options(useGeneratedKeys = true, keyProperty = "goodsId")
     int insertGoods(Goods goods);
 }

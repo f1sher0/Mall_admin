@@ -136,7 +136,7 @@ export default {
     });
 
 
-    const fetchWarehouseGoods = async (supplierId = 1) => {
+    const fetchWarehouseGoods = async (supplierId = sessionStorage.getItem('id')) => {
       loading.value = true;
       try {
         const response = await axios.get('/supplier/goodsInInfo', {

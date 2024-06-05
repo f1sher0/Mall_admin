@@ -79,15 +79,15 @@ public class SupplierController {
     @PutMapping("/update")
     @ApiOperation(value = "更新供应商信息")
     public Result updateSupplier(@RequestBody Supplier supplier) {
- 
         System.out.println(supplier.getAddress());
         System.out.println(supplier.getSupplierId()+"id");
-
- 
         System.out.println(supplier.getStatus());
         System.out.println(supplier.getSupplierDesc());
- 
+
         Supplier supplierOri=supplierService.getById(supplier.getSupplierId());
+        if (supplierOri == null) {
+            return Result.error("supplier  not found");
+        }
         supplierOri.setSupplierName(supplier.getSupplierName());
         supplierOri.setSupplierDesc(supplier.getSupplierDesc());
         supplierOri.setPassword(supplier.getPassword());
@@ -97,15 +97,17 @@ public class SupplierController {
         if (isUpdated) {
             String email = supplierOri.getEmail();
             User user = userService.findByEmail(email);
-            user.setUpdateTime( new Date());
-            user.setPassword(supplier.getPassword());
-            user.setUsername(supplier.getSupplierName());
- 
-            user.setStatus(supplier.getStatus().charAt(0));
- 
-            userService.updateById(user);
+            if (user != null) {
+                user.setUpdateTime( new Date());
+                user.setPassword(supplier.getPassword());
+                user.setUsername(supplier.getSupplierName());
+                user.setStatus(supplier.getStatus().charAt(0));
 
-            return Result.success(supplier);
+                userService.updateById(user);
+            } else {
+                return Result.error("Associated user not found");
+            }
+                return Result.success(supplier);
         } else {
             return Result.error("Failed to update supplier");
         }

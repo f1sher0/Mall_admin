@@ -151,7 +151,7 @@ export default {
     });
 
     const fetchReturnRequests = async () => {
-      loading.value = true;
+      // loading.value = true;
       try {
         const response = await axios.get('/returnrequests/getBySubid_Role', {
           params: { 
@@ -159,12 +159,25 @@ export default {
             role: sessionStorage.getItem("role")
           }
         });
-        if (response.status === 200) {
+         console.log(response)
+        if (response.status == "200") {
           returnRequests.value = response.data.data;
           totalRequests.value = returnRequests.value.length;
+          console.log(totalRequests)
+          loading.value = false;
+        }
+        else{
+          ElNotification({
+            title: 'Error',
+            message: response.data.msg,
+            type: 'error',
+            position: 'top-right',
+          });
+          loading.value = false;
         }
       } catch (error) {
         console.error('Failed to fetch return requests:', error);
+        loading.value = false;
       } finally {
         loading.value = false;
       }
