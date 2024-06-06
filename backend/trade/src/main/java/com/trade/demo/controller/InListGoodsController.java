@@ -7,6 +7,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 
@@ -59,6 +60,7 @@ public class InListGoodsController {
     }
 
     @DeleteMapping("/delete")
+    @ApiIgnore
     @ApiOperation(value = "根据ID删除入库商品")
     public Result deleteInListGoods(@RequestParam Integer id) {
         boolean isRemoved = inListGoodsService.removeById(id);

@@ -11,6 +11,7 @@
       <Header :sidebarOpen="sidebarOpen" @toggle-sidebar="sidebarOpen = !sidebarOpen" />
 
       <main class="grow dark:bg-slate-900">
+        <WelcomeBanner />
         <div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
 
           <!-- Page header -->
@@ -71,12 +72,13 @@ import { ref, onMounted, inject } from 'vue';
 import { ElMessage, ElNotification } from 'element-plus';
 import Header from '../../partials/Header.vue';
 import Sidebar_supplier from '../../partials/Sidebar_supplier.vue';
-
+import WelcomeBanner from '../../partials/dashboard/WelcomeBanner.vue'
 export default {
   name: 'AddGoods',
   components: {
     Sidebar_supplier,
     Header,
+    WelcomeBanner,
   },
   setup() {
     const axios = inject('$axios');

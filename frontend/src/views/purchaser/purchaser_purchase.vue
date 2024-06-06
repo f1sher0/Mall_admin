@@ -1,18 +1,22 @@
 <template>
   <div class="flex h-[100dvh] overflow-hidden">
-    <Sidebar_supplier :sidebarOpen="sidebarOpen" @close-sidebar="sidebarOpen = false" />
+    <Sidebar_purchaser :sidebarOpen="sidebarOpen" @close-sidebar="sidebarOpen = false" />
 
     <div class="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
       <Header :sidebarOpen="sidebarOpen" @toggle-sidebar="sidebarOpen = !sidebarOpen" />
 
       <main class="grow dark:bg-slate-900 p-4">
+        <WelcomeBanner />
+        <div class="product-table-container">
+
+      
         <div style="margin-bottom: 10px">
-          <el-input v-model="search" placeholder="搜索商品..." @input="handleSearch" class="w-1/3"></el-input>
-          <el-button style="margin-left: 10px" type="primary" @click="handleSearch">搜 索</el-button>
-          <el-button type="info" @click="reset">重 置</el-button>
+          <el-input v-model="search" placeholder="搜索商品..." @input="handleSearch" class="search-input"></el-input>
+          <el-button style="margin-left: 10px" type="primary" @click="handleSearch" class="search-button" >搜 索</el-button>
+          <el-button type="info" @click="reset" class="reset-button">重 置</el-button>
         </div>
 
-        <el-table :data="paginatedGoods" border stripe style="width: 100%" v-loading="loading"   :default-sort="{ prop: 'sellingPrice, goodsId', order: 'descending' }" >
+        <el-table :data="paginatedGoods" border stripe style="width: 70%" class="product-table" v-loading="loading"   :default-sort="{ prop: 'sellingPrice, goodsId', order: 'descending' }" >
           <el-table-column prop="goodsId" label="商品ID" width="180" sortable >
             <template #default="{ row }">
               <HighlightText :text="String(row.goodsId)" :query="search" />
@@ -48,6 +52,7 @@
             layout="total, sizes, prev, pager, next" :total="totalGoods">
           </el-pagination>
         </div>
+      </div>
       </main>
     </div>
   </div>
@@ -56,23 +61,24 @@
 <script>
 import { ref, onMounted, inject, computed } from 'vue';
 import Header from '../../partials/Header.vue';
-import Sidebar_supplier from '../../partials/Sidebar_supplier.vue';
+import Sidebar_purchaser from '../../partials/Sidebar_purchaser.vue';
 import HighlightText from '../HighlightText.vue';
 import { ElNotification } from 'element-plus';
-
+import WelcomeBanner from '../../partials/dashboard/WelcomeBanner.vue'
 export default {
   name: 'PurchasableGoods',
   components: {
-    Sidebar_supplier,
+    Sidebar_purchaser,
     Header,
     HighlightText,
+    WelcomeBanner,
   },
   setup() {
     const axios = inject('$axios');
     const sidebarOpen = ref(false);
     const search = ref('');
     const currentPage = ref(1);
-    const pageSize = ref(5);
+    const pageSize = ref(10);
     const totalGoods = ref(0);
     const purchasableGoods = ref([]);
     const loading = ref(false);
@@ -109,8 +115,8 @@ export default {
       loading.value = true;
       const purchaserId = sessionStorage.getItem("id");
  
-      alert(goods.goodsId);
-      alert(goods.sellingPrice);
+      // alert(goods.goodsId);
+      // alert(goods.sellingPrice);
 
       try {
         const response = await axios.post('/goodsOut/add',   {
@@ -221,4 +227,33 @@ body {
 .example-showcase .el-loading-mask {
   z-index: 9;
 }
-</style>
+.product-table-container {
+ 
+  max-width: 1200px;
+  padding: 20px;
+ border-width: 3px;
+  background-color: #ffffff;
+  box-shadow: 0 8px 12px 0 rgba(55, 11, 142, 0.5);
+  border-radius: 10px;
+  width: 100%;
+  margin: 20px auto;
+}
+
+.search-input {
+  width: 300px;
+  margin-right: 10px;
+}
+
+.search-button,
+.reset-button {
+  margin-right: 10px;
+}
+
+.product-table {
+  margin-top: 20px;
+}
+
+.pagination {
+  margin-top: 20px;
+  text-align: center;
+}</style>
