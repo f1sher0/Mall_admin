@@ -96,7 +96,7 @@ public class UserController {
     @ApiOperation(value = "用户注册")
     public Result registerUser(@RequestBody User user) {
 
-        user.setStatus('0');
+
         user.setCreateTime(new Date());
         user.setUpdateTime(new Date());
         System.out.println(user.getEmail());
@@ -108,7 +108,11 @@ public class UserController {
          if (userService.isEmailTaken(user.getEmail())) {
             return Result.error("Email is already in use.");
         }
-
+        if(user.getRole().equals("Purchaser")){
+            user.setStatus('1');
+        }else if(user.getRole().equals("Supplier")){
+            user.setStatus('0');
+        }
 //        user.setEmail(user.getEmail());
 //        user.setStatus('0');
 //        user.setCreateTime(new Date());

@@ -39,7 +39,7 @@ public class PurchaserController {
     @PostMapping("/add")
     @ApiOperation(value = "添加采购商")
     public Result addPurchaser(@RequestBody Purchaser purchaser) {
-        purchaser.setStatus("0");
+//        purchaser.setStatus("0");
         boolean isSaved = purchaserService.save(purchaser);
         if (isSaved) {
             return Result.success(purchaser);
@@ -96,6 +96,7 @@ public class PurchaserController {
                 dto.setSalesTime(goodsOut.getSalesTime());
                 dto.setPurchaserName(goodsOut.getPurchaserName());
                 dto.setPurchaserDesc(purchaser.getPurchaserDesc());
+                System.out.println(dto.getPurchaserDesc());
                 dto.setPurchaserAddress(purchaser.getAddress());
                 dto.setEmail(purchaser.getEmail());
                 dto.setSalesId(salesId);
