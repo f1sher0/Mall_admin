@@ -9,6 +9,7 @@
       <Header :sidebarOpen="sidebarOpen" @toggle-sidebar="sidebarOpen = !sidebarOpen" />
       
       <main class="grow dark:bg-slate-900 p-4">
+        <WelcomeBanner />
         <div>
           <el-button type="primary" @click="filterOnshelf(1)">待售商品</el-button>
           <el-button type="info" @click="filterOnshelf(0)">已售商品</el-button>
@@ -113,12 +114,14 @@ import Header from '../../partials/Header.vue'
 import Sidebar_supplier from '../../partials/Sidebar_supplier.vue'
 import HighlightText from '../HighlightText.vue'
 import dayjs from 'dayjs'
+import WelcomeBanner from '../../partials/dashboard/WelcomeBanner.vue'
 export default {
   name: 'Dashboard', 
   components: {
     Sidebar_supplier,
     Header,
     HighlightText,
+    WelcomeBanner,
   },
  
   setup() {

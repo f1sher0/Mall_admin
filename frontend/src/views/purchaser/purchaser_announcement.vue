@@ -79,12 +79,16 @@ export default {
     const fetchData = async () => {
       try {
         const response = await axios.get('/announcements/list');
-        sourceData.value = response.data.data;
-        DataNum.value = response.data.data.length;
-        console.log('Data fetched successfully:', response.data.data);
+        if (response.data.code === '200') {
+          sourceData.value = response.data.data;
+          DataNum.value = response.data.data.length;
+          console.log('Data fetched successfully:', response.data.data);
         console.log(sourceData.value);
+        } else {
+          ElMessage.error('Data fetched fail')
+        }     
       } catch (error) {
-        console.error('Error fetching data:', error);
+        ElMessage.error('Data fetched fail')
       } 
     };
     const formatDate = (row, column, cellValue) => {

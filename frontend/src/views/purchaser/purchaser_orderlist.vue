@@ -156,7 +156,7 @@ export default {
           params: { purchaserId }
         });
         if (response.status === 200) {
-          alert(sessionStorage.getItem("role"));
+          // alert(sessionStorage.getItem("role"));
           console.log(response.data.data)
           warehouseGoods.value = response.data.data;
           totalGoods.value = warehouseGoods.value.length;
@@ -183,7 +183,7 @@ export default {
           role
         });
         if (response.status === 200) {
-          alert(response.data.data)
+          // alert(response.data.data)
           dialogVisible.value = false;
           resetReturnForm();
           ElNotification({

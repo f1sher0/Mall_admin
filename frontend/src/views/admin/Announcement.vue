@@ -45,7 +45,7 @@
               </template>
               {{ item.content }}
               <template #footer>
-                {{ item.updateTime }}
+                {{ formate(item.updateTime) }}
               </template>
             </el-card>
           </div>
@@ -91,7 +91,7 @@ import Header from '../../partials/Header.vue'
 import SearchForm from '../../components/SearchForm.vue'
 import Sidebar_admin from '../../partials/Sidebar_admin.vue'
 import { ElMessageBox } from 'element-plus'
-
+import dayjs from 'dayjs'
 export default {
   name: 'Campaigns',
   components: {
@@ -111,12 +111,17 @@ export default {
     const fetchData = async () => {
       try {
         const response = await axios.get('/announcements/list');
-        sourceData.value = response.data.data;
-        DataNum.value = response.data.data.length;
-        console.log('Data fetched successfully:', response.data.data);
+        if (response.data.code === '200') {
+          sourceData.value = response.data.data;
+          console.log(sourceData.value)
+          DataNum.value = response.data.data.length;
+          console.log('Data fetched successfully:', response.data.data);
         console.log(sourceData.value);
+        } else {
+          ElMessage.error('Data fetched fail')
+        }     
       } catch (error) {
-        console.error('Error fetching data:', error);
+        ElMessage.error('Data fetched fail')
       } 
     };
 
@@ -124,9 +129,7 @@ export default {
       dialogVisible.value = true;
     };
 
-    onMounted(() => {
-      fetchData();
-    });
+
 
     const postNew = async () => {
       try {
@@ -143,7 +146,12 @@ export default {
         dialogVisible = false;
       }
     };
-
+    const formatDate = (row, column, cellValue) => {
+      return dayjs(cellValue).format('YYYY-MM-DD HH:mm:ss')
+    }
+    onMounted(() => {
+      fetchData();
+    });
     return {
       sidebarOpen,
       fetchData,
@@ -154,7 +162,8 @@ export default {
       postNew,
       title,
       content,
-      email,
+      email, 
+      formatDate,
     }
   }
 }

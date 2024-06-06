@@ -147,7 +147,7 @@ export default {
           params: { supplierId }
         });
         if (response.status === 200) {
-          alert(sessionStorage.getItem("role"));
+       //   alert(sessionStorage.getItem("role"));
           warehouseGoods.value = response.data.data;
           totalGoods.value = warehouseGoods.value.length;
         }
@@ -184,7 +184,7 @@ export default {
         // console.log(sessionStorage.getItem("id"));ok
         // alert(sessionStorage.getItem("role"));
         if (response.status === 200) {
-          alert(response.data.data)
+          // alert(response.data.data)
           dialogVisible.value = false;
           resetReturnForm();
           ElNotification({
