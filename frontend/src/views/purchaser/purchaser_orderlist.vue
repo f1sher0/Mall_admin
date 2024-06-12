@@ -27,11 +27,11 @@
           </div>
           <el-table :data="paginatedGoods" border stripe style="width: 100%" max-height="66vh" v-loading="loading"
             :default-sort="{ prop: 'sellingPrice', order: 'descending' }">
-            <el-table-column prop="purchaserName" label="Purchaser Name" width="180">
+            <!-- <el-table-column prop="purchaserName" label="Purchaser Name" width="180">
               <template #default="{ row }">
                 <HighlightText :text="row.purchaserName" :query="search" />
               </template>
-            </el-table-column>
+            </el-table-column> -->
             
             <el-table-column prop="goodsName" label="Goods Name" fixed width="180">
               <template #default="{ row }">
@@ -40,11 +40,11 @@
             </el-table-column>
             <el-table-column prop="purchasePrice" label="Purchase Price" sortable width="180"></el-table-column>
             <el-table-column prop="sellingPrice" label="Selling Price" sortable width="180"></el-table-column>
-            <el-table-column prop="purchaserDesc" label="Purchaser Description" width="300">
+            <!-- <el-table-column prop="purchaserDesc" label="Purchaser Description" width="300">
               <template #default="{ row }">
                 <HighlightText :text="row.purchaserDesc" :query="search" />
               </template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column prop="purchaserAddress" label="Purchaser Address" width="180">
               <template #default="{ row }">
                 <HighlightText :text="row.purchaserAddress" :query="search" />

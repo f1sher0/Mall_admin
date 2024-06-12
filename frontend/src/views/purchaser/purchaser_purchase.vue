@@ -5,7 +5,7 @@
     <div class="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
       <Header :sidebarOpen="sidebarOpen" @toggle-sidebar="sidebarOpen = !sidebarOpen" />
 
-      <main class="grow dark:bg-slate-900 p-4">
+      <main class="grow dark:bg-slate-900 p-4"  >
         <WelcomeBanner />
         <div class="product-table-container">
 
@@ -16,28 +16,28 @@
           <el-button type="info" @click="reset" class="reset-button">重 置</el-button>
         </div>
 
-        <el-table :data="paginatedGoods" border stripe style="width: 70%" class="product-table" v-loading="loading"   :default-sort="{ prop: 'sellingPrice, goodsId', order: 'descending' }" >
-          <el-table-column prop="goodsId" label="商品ID" width="180" sortable >
+        <el-table :data="paginatedGoods" border stripe style="width: 100%" class="product-table" v-loading="loading"   :default-sort="{ prop: 'sellingPrice, goodsId', order: 'descending' }" >
+          <el-table-column prop="goodsId" label="商品ID" width="225" sortable >
             <template #default="{ row }">
               <HighlightText :text="String(row.goodsId)" :query="search" />
             </template>
           </el-table-column>
-          <el-table-column prop="goodsName" label="商品名" width="180"  >
+          <el-table-column prop="goodsName" label="商品名" width="250"  >
             <template #default="{ row }">
               <HighlightText :text="row.goodsName" :query="search" />
             </template>
           </el-table-column>
-          <el-table-column prop="sellingPrice" label="价格" width="180" sortable>
+          <el-table-column prop="sellingPrice" label="价格" width="230" sortable>
             <template #default="{ row }">
               <HighlightText :text="String(row.sellingPrice)" :query="search" />
             </template>
           </el-table-column>
-          <el-table-column prop="warehouseId" label="仓库ID" width="180">
+          <el-table-column prop="warehouseId" label="仓库ID" width="225">
             <template #default="{ row }">
               <HighlightText :text="String(row.warehouseId)" :query="search" />
             </template>
           </el-table-column>
-          <el-table-column label="操作" width="120" fixed="right">
+          <el-table-column label="操作" width="225  " fixed="right">
             <template #default="{ row }">
               <el-button type="primary" size="small" @click="purchaseGoods(row)">
                 购买
