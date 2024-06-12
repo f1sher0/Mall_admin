@@ -47,7 +47,7 @@
               <!-- Row -->
               <tr>
                 <td class="py-2">
-                  <div class="text-left">preview.cruip.com/open-pro/</div>
+                  <div class="text-left">purchaser/dashboard/main</div>
                 </td>
                 <td class="py-2">
                   <div class="font-medium text-right text-slate-800">94</div>
@@ -56,7 +56,7 @@
               <!-- Row -->
               <tr>
                 <td class="py-2">
-                  <div class="text-left">preview.cruip.com/simple/</div>
+                  <div class="text-left">purchaser/purchase</div>
                 </td>
                 <td class="py-2">
                   <div class="font-medium text-right text-slate-800">42</div>
@@ -65,7 +65,7 @@
               <!-- Row -->
               <tr>
                 <td class="py-2">
-                  <div class="text-left">cruip.com/unlimited/</div>
+                  <div class="text-left">purchaser/return</div>
                 </td>
                 <td class="py-2">
                   <div class="font-medium text-right text-slate-800">12</div>
@@ -74,7 +74,7 @@
               <!-- Row -->
               <tr>
                 <td class="py-2">
-                  <div class="text-left">preview.cruip.com/twist/</div>
+                  <div class="text-left">supplier/dashboard/analytics</div>
                 </td>
                 <td class="py-2">
                   <div class="font-medium text-right text-slate-800">4</div>

@@ -43,19 +43,19 @@
               <!-- Horizontal bar chart (Audience Overview) -->
               <AnalyticsCard04 />
               <!-- Report card (Top Channels) -->
-              <AnalyticsCard05 />
+              <!-- <AnalyticsCard05 /> -->
               <!-- Report card (Top Pages) -->
-              <AnalyticsCard06 />
+              <!-- <AnalyticsCard06 /> -->
               <!-- Report card (Top Countries) -->
-              <AnalyticsCard07 />
+              <!-- <AnalyticsCard07 /> -->
               <!-- Doughnut chart (Sessions By Device) -->
-              <AnalyticsCard08 />
+              <!-- <AnalyticsCard08 /> -->
               <!-- Doughnut chart (Visit By Age Category) -->
-              <AnalyticsCard09 />
+              <!-- <AnalyticsCard09 /> -->
               <!-- Polar chart (Sessions By Gender) -->
-              <AnalyticsCard10 />
+              <!-- <AnalyticsCard10 /> -->
               <!-- Table (Top Products) -->
-              <AnalyticsCard11 />
+              <!-- <AnalyticsCard11 /> -->
   
             </div>
   

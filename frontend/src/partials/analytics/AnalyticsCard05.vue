@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col col-span-full sm:col-span-6 xl:col-span-4 bg-white dark:bg-slate-800 shadow-lg rounded-sm border border-slate-200 dark:border-slate-700">
     <header class="px-5 py-4 border-b border-slate-100 dark:border-slate-700">
-      <h2 class="font-semibold text-slate-800 dark:text-slate-100">Top Channels</h2>
+      <h2 class="font-semibold text-slate-800 dark:text-slate-100">Top Goods</h2>
     </header>
     <div class="grow p-3">
       <div class="flex flex-col h-full">
@@ -17,7 +17,7 @@
             <li class="relative px-2 py-1">
               <div class="absolute inset-0 bg-indigo-100 dark:bg-indigo-500/30" aria-hidden="true" style="width: 82%;"></div>
               <div class="relative flex justify-between space-x-2">
-                <div>Google</div>
+                <div>Apple iPhone</div>
                 <div class="font-medium">4.7K</div>
               </div>
             </li>
@@ -25,7 +25,7 @@
             <li class="relative px-2 py-1">
               <div class="absolute inset-0 bg-indigo-100 dark:bg-indigo-500/30" aria-hidden="true" style="width: 70%;"></div>
               <div class="relative flex justify-between space-x-2">
-                <div>Indiehackers.com</div>
+                <div>Nike Air Max sneakers</div>
                 <div class="font-medium">4.2K</div>
               </div>
             </li>
@@ -33,7 +33,7 @@
             <li class="relative px-2 py-1">
               <div class="absolute inset-0 bg-indigo-100 dark:bg-indigo-500/30" aria-hidden="true" style="width: 60%;"></div>
               <div class="relative flex justify-between space-x-2">
-                <div>DuckDuckGo</div>
+                <div>Samsung 4K TV</div>
                 <div class="font-medium">3.4K</div>
               </div>
             </li>
@@ -41,7 +41,7 @@
             <li class="relative px-2 py-1">
               <div class="absolute inset-0 bg-indigo-100 dark:bg-indigo-500/30" aria-hidden="true" style="width: 44%;"></div>
               <div class="relative flex justify-between space-x-2">
-                <div>Hacker News</div>
+                <div>Canon DSLR camera</div>
                 <div class="font-medium">3.1K</div>
               </div>
             </li>
@@ -49,7 +49,7 @@
             <li class="relative px-2 py-1">
               <div class="absolute inset-0 bg-indigo-100 dark:bg-indigo-500/30" aria-hidden="true" style="width: 40%;"></div>
               <div class="relative flex justify-between space-x-2">
-                <div>Github.com</div>
+                <div>KitchenAid stand mixer</div>
                 <div class="font-medium">2.2K</div>
               </div>
             </li>
@@ -57,7 +57,7 @@
             <li class="relative px-2 py-1">
               <div class="absolute inset-0 bg-indigo-100 dark:bg-indigo-500/30" aria-hidden="true" style="width: 30%;"></div>
               <div class="relative flex justify-between space-x-2">
-                <div>Madewithvuejs.com</div>
+                <div>Sony noise-cancelling headphones</div>
                 <div class="font-medium">1.7K</div>
               </div>
             </li>
@@ -65,7 +65,7 @@
             <li class="relative px-2 py-1">
               <div class="absolute inset-0 bg-indigo-100 dark:bg-indigo-500/30" aria-hidden="true" style="width: 22%;"></div>
               <div class="relative flex justify-between space-x-2">
-                <div>Producthunt.com</div>
+                <div>Yeti cooler</div>
                 <div class="font-medium">924</div>
               </div>
             </li>
@@ -73,7 +73,7 @@
             <li class="relative px-2 py-1">
               <div class="absolute inset-0 bg-indigo-100 dark:bg-indigo-500/30" aria-hidden="true" style="width: 12%;"></div>
               <div class="relative flex justify-between space-x-2">
-                <div>Dev.to</div>
+                <div>Lululemon yoga pants</div>
                 <div class="font-medium">696</div>
               </div>
             </li>
