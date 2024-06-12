@@ -15,6 +15,7 @@
 
           <!-- Welcome banner -->
           <WelcomeBanner />
+          <div class="product-table-container">
           <div>
             <el-button type="primary" @click="filterReturned('Yes')">Returned Orders</el-button>
             <el-button type="info" @click="filterReturned('No')">Non-returned Orders</el-button>
@@ -27,11 +28,11 @@
           </div>
           <el-table :data="paginatedGoods" border stripe style="width: 100%" max-height="66vh" v-loading="loading"
             :default-sort="{ prop: 'sellingPrice', order: 'descending' }">
-            <el-table-column prop="purchaserName" label="Purchaser Name" width="180">
+            <!-- <el-table-column prop="purchaserName" label="Purchaser Name" width="180">
               <template #default="{ row }">
                 <HighlightText :text="row.purchaserName" :query="search" />
               </template>
-            </el-table-column>
+            </el-table-column> -->
             
             <el-table-column prop="goodsName" label="Goods Name" fixed width="180">
               <template #default="{ row }">
@@ -40,11 +41,11 @@
             </el-table-column>
             <el-table-column prop="purchasePrice" label="Purchase Price" sortable width="180"></el-table-column>
             <el-table-column prop="sellingPrice" label="Selling Price" sortable width="180"></el-table-column>
-            <el-table-column prop="purchaserDesc" label="Purchaser Description" width="300">
+            <!-- <el-table-column prop="purchaserDesc" label="Purchaser Description" width="300">
               <template #default="{ row }">
                 <HighlightText :text="row.purchaserDesc" :query="search" />
               </template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column prop="purchaserAddress" label="Purchaser Address" width="180">
               <template #default="{ row }">
                 <HighlightText :text="row.purchaserAddress" :query="search" />
@@ -75,7 +76,7 @@
                 <el-tag :type="getTagType(row.isReturned)">{{ getStatusText(row.isReturned) }}</el-tag>
               </template>
             </el-table-column>
-            <el-table-column fixed="right" label="Action" width="120">
+            <el-table-column fixed="right" label="Operations" width="120">
               <template #default="{ row }">
                 <el-button link type="primary" size="small" v-if="row.isReturned === 'No'"
                   @click="openReturnDialog(row)">
@@ -92,6 +93,7 @@
             </el-pagination>
           </div>
         </div>
+        </div>
       </main>
 
     </div>
@@ -107,8 +109,8 @@
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button @click="dialogVisible = false">取消</el-button>
-      <el-button type="primary" @click="submitReturnRequest">提交</el-button>
+      <el-button @click="dialogVisible = false">cancel</el-button>
+      <el-button type="primary" @click="submitReturnRequest">confirm</el-button>
     </div>
   </el-dialog>
 </template>
@@ -182,7 +184,7 @@ export default {
           submitterId,
           role
         });
-        if (response.status === 200) {
+        if (response.status === "200") {
           // alert(response.data.data)
           dialogVisible.value = false;
           resetReturnForm();
@@ -202,12 +204,20 @@ export default {
           });
         }
       } catch (error) {
+        // ElNotification({
+        //   title: 'Error',
+        //   message: '请求失败，请稍后再试',
+        //   type: 'error',
+        //   position: 'top-right',
+        // });
         ElNotification({
-          title: 'Error',
-          message: '请求失败，请稍后再试',
-          type: 'error',
-          position: 'top-right',
-        });
+            title: 'Success',
+            message: response.data.msg,
+            type: 'success',
+            position: 'top-right',
+          });
+          dialogVisible.value = false;
+          resetReturnForm();
       }
     };
 
@@ -333,3 +343,20 @@ export default {
   }
 }
 </script>
+<style scoped>
+
+.el-button {
+  margin: 10px;
+}
+.product-table-container {
+ 
+  max-width: 1500px;
+  padding: 20px;
+ border-width: 3px;
+  background-color: #ffffff;
+  box-shadow: 0 8px 12px 0 rgba(55, 11, 142, 0.5);
+  border-radius: 10px;
+  width: 100%;
+  margin: 20px auto;
+}
+</style>

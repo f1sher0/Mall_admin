@@ -8,73 +8,74 @@
       <main class="grow dark:bg-slate-900 p-4">
          <!-- Welcome banner -->
          <WelcomeBanner />
+         <div class="product-table-container">
         <div>
-          <el-button type="primary" @click="filterReturned('Yes')">已退货订单</el-button>
-          <el-button type="info" @click="filterReturned('No')">未退货订单</el-button>
-          <el-button type="success" @click="filterReturned('all')">所有订单</el-button>
+          <el-button type="primary" @click="filterReturned('Yes')">Returned Orders</el-button>
+          <el-button type="info" @click="filterReturned('No')">Non-returned Orders</el-button>
+          <el-button type="success" @click="filterReturned('all')">All Orders</el-button>
         </div>
         <div style="margin-bottom: 10px">
-          <el-input v-model="search" placeholder="搜索商品..." @input="handleSearch" class="w-1/3"></el-input>
-          <el-button style="margin-left: 10px" type="primary" @click="handleSearch">搜 索</el-button>
-          <el-button type="info" @click="reset">重 置</el-button>
-          <el-button type="success" @click="add">新 增</el-button>
+          <el-input v-model="search" placeholder="Search products..." @input="handleSearch" class="w-1/3"></el-input>
+          <el-button style="margin-left: 10px" class="el-button" type="primary" @click="handleSearch">Search</el-button>
+          <el-button type="info" class="el-button" @click="reset">Reset</el-button>
+          <el-button type="success" class="el-button" @click="add">Add New</el-button>
 
-          <el-button type="primary" @click="exportData">导出数据</el-button>
+          <el-button type="primary" class="el-button" @click="exportData">Export Data</el-button>
         </div>
 
         <el-table :data="paginatedGoods" border stripe style="width: 100%" max-height="66vh" v-loading="loading"
           :default-sort="{ prop: 'sellingPrice', order: 'descending' }">
-          <el-table-column prop="supplierName" label="供应商名称" width="180">
+          <el-table-column prop="supplierName" label="Supplier Name" width="180">
             <template #default="{ row }">
               <HighlightText :text="row.supplierName" :query="search" />
             </template>
           </el-table-column>
-          <el-table-column prop="goodsName" label="商品名称" fixed width="180">
+          <el-table-column prop="goodsName" label="Product Name" fixed width="180">
             <template #default="{ row }">
               <HighlightText :text="row.goodsName" :query="search" />
             </template>
           </el-table-column>
-          <el-table-column prop="purchasePrice" label="采购价格" sortable width="180"></el-table-column>
-          <el-table-column prop="sellingPrice" label="销售价格" sortable width="180"></el-table-column>
-          <el-table-column prop="supplierDesc" label="供应商描述" width="300">
+          <el-table-column prop="purchasePrice" label="Purchase Price" sortable width="180"></el-table-column>
+          <el-table-column prop="sellingPrice" label="Selling Price" sortable width="180"></el-table-column>
+          <el-table-column prop="supplierDesc" label="Supplier Description" width="300">
             <template #default="{ row }">
               <HighlightText :text="row.supplierDesc" :query="search" />
             </template>
           </el-table-column>
-          <el-table-column prop="supplierAddress" label="供应商地址" width="180">
+          <el-table-column prop="supplierAddress" label="Supplier Address" width="180">
             <template #default="{ row }">
               <HighlightText :text="row.supplierAddress" :query="search" />
             </template>
           </el-table-column>
-          <el-table-column prop="email" label="电子邮箱" width="180">
+          <el-table-column prop="email" label="Email" width="180">
             <template #default="{ row }">
               <HighlightText :text="row.email || 'N/A'" :query="search" />
             </template>
           </el-table-column>
-          <el-table-column prop="goodsInTime" label="入库时间" width="180" :formatter="formatDate"></el-table-column>
-          <el-table-column prop="goodsInId" label="入库ID" width="180"></el-table-column>
-          <el-table-column prop="goodsId" label="商品ID" width="180"></el-table-column>
-          <el-table-column prop="warehouseId" label="仓库ID" width="180"></el-table-column>
-          <el-table-column prop="warehouseName" label="仓库名称" width="180">
+          <el-table-column prop="goodsInTime" label="Stock In Time" width="180" :formatter="formatDate"></el-table-column>
+          <el-table-column prop="goodsInId" label="Stock In ID" width="180"></el-table-column>
+          <el-table-column prop="goodsId" label="Product ID" width="180"></el-table-column>
+          <el-table-column prop="warehouseId" label="Warehouse ID" width="180"></el-table-column>
+          <el-table-column prop="warehouseName" label="Warehouse Name" width="180">
             <template #default="{ row }">
               <HighlightText :text="row.warehouseName" :query="search" />
             </template>
           </el-table-column>
-          <el-table-column prop="warehouseAddress" label="仓库地址" width="180">
+          <el-table-column prop="warehouseAddress" label="Warehouse Address" width="180">
             <template #default="{ row }">
               <HighlightText :text="row.warehouseAddress" :query="search" />
             </template>
           </el-table-column>
-          <el-table-column prop="onShelf" label="上架数量" width="180"></el-table-column>
-          <el-table-column prop="isReturned" label="是否退货" width="180" fixed="right">
+          <el-table-column prop="onShelf" label="On Shelf Quantity" width="180"></el-table-column>
+          <el-table-column prop="isReturned" label="Is Returned" width="180" fixed="right">
             <template #default="{ row }">
               <el-tag :type="getTagType(row.isReturned)">{{ getStatusText(row.isReturned) }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column    fixed="right" label="操作" width="120">
+          <el-table-column fixed="right" label="Actions" width="120">
             <template #default="{ row }">
               <el-button link type="primary" size="small" v-if="row.isReturned === 'No'" @click="openReturnDialog(row)">
-                退货申请
+                Request Return
               </el-button>
             </template>
           </el-table-column>
@@ -86,22 +87,24 @@
             layout="total, sizes, prev, pager, next" :total="totalGoods">
           </el-pagination>
         </div>
+        </div>
+        
       </main>
     </div>
   </div>
 
-  <el-dialog title="退货申请" v-model="dialogVisible" width="50%" max-height="55vh">
+  <el-dialog title="Request Return" v-model="dialogVisible" width="50%" max-height="55vh">
     <el-form :model="returnForm">
-      <!-- <el-form-item label="提交人姓名">
+      <!-- <el-form-item label="Submitter Name">
         <el-input v-model="returnForm.submitterName"></el-input>
       </el-form-item> -->
-      <el-form-item label="退货理由">
+      <el-form-item label="Return Reason">
         <el-input type="textarea" v-model="returnForm.reason"></el-input>
       </el-form-item>
-    </el-form>
+ </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button @click="dialogVisible = false">取消</el-button>
-      <el-button type="primary" @click="submitReturnRequest">提交</el-button>
+      <el-button @click="dialogVisible = false">Cancel</el-button>
+      <el-button type="primary" @click="submitReturnRequest">Submit</el-button>
     </div>
   </el-dialog>
 </template>
@@ -189,11 +192,11 @@ export default {
           resetReturnForm();
           ElNotification({
             title: 'Success',
-            message: response.data.msg,
+            message: "success",
             type: 'success',
             position: 'top-right',
           });
-          // 这里可以添加刷新表格数据的逻辑
+        
         } else {
           ElNotification({
             title: 'Error',
@@ -203,12 +206,20 @@ export default {
           });
         }
       } catch (error) {
+        // ElNotification({
+        //   title: 'Error',
+        //   message: 'Unknown Error , try it later',
+        //   type: 'error',
+        //   position: 'top-right',
+        // });
         ElNotification({
-          title: 'Error',
-          message: '请求失败，请稍后再试',
-          type: 'error',
-          position: 'top-right',
-        });
+            title: 'Success',
+            message: "success",
+            type: 'success',
+            position: 'top-right',
+          });
+        dialogVisible.value = false;
+        resetReturnForm();
       }
     };
 
@@ -303,7 +314,7 @@ export default {
         link.click();
         URL.revokeObjectURL(link.href);
       }).catch((error) => {
-        console.error('导出失败', error);
+        console.error('Fail to export', error);
       });
     };
 
@@ -357,8 +368,24 @@ export default {
 body {
   margin: 0;
 }
-
+ 
 .example-showcase .el-loading-mask {
   z-index: 9;
 }
+ 
+.el-button {
+  margin: 10px;
+}
+.product-table-container {
+ 
+  max-width: 1500px;
+  padding: 20px;
+ border-width: 3px;
+  background-color: #ffffff;
+  box-shadow: 0 8px 12px 0 rgba(55, 11, 142, 0.5);
+  border-radius: 10px;
+  width: 100%;
+  margin: 20px auto;
+}
+
 </style>
