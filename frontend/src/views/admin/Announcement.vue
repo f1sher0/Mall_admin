@@ -142,6 +142,7 @@ export default {
         // 在这里可以根据后端返回的数据执行进一步的操作，如更新界面等
       } catch (error) {
         console.error('Error creating new announcement:', error);
+        alert(2)
       } finally {
         dialogVisible = false;
       }

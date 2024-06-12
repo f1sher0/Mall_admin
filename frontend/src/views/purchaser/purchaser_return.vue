@@ -15,45 +15,45 @@
   
             <!-- Welcome banner -->
             <WelcomeBanner />
-
-          </div>
+            <div class="product-table-container">
+         
           <div>
-            <el-button type="info" @click="filterStatus('待审核')">待审核</el-button>
-            <el-button type="success" @click="filterStatus('已批准')">已批准</el-button>
-            <el-button type="danger" @click="filterStatus('已拒绝')">已拒绝</el-button>
-            <el-button type="primary" @click="filterStatus('all')">所有申请</el-button>
+            <el-button type="info" @click="filterStatus('待审核')">Pending Review</el-button>
+            <el-button type="success" @click="filterStatus('已批准')">Approved</el-button>
+            <el-button type="danger" @click="filterStatus('已拒绝')">Rejected</el-button>
+            <el-button type="primary" @click="filterStatus('all')">All Requests</el-button>
           </div>
           
           <div style="margin-bottom: 10px"> 
-            <el-input v-model="search" placeholder="搜索退货理由..." @input="handleSearch" class="w-1/3"></el-input>
-            <el-button style="margin-left: 10px" type="primary" @click="handleSearch">搜 索</el-button>
-            <el-button type="info" @click="reset">重 置</el-button>
+            <el-input v-model="search" placeholder="Search..." @input="handleSearch" class="w-1/3"></el-input>
+            <el-button style="margin-left: 10px" type="primary" @click="handleSearch">Search</el-button>
+            <el-button type="info" @click="reset">Reset</el-button>
           </div>
           <el-table :data="paginatedRequests" border stripe style="width: 100%" max-height="66vh" v-loading="loading"
           :default-sort="{ prop: 'submitTime', order: 'descending' }">
-          <el-table-column prop="submitterName" label="提交人姓名" width="180">
+          <el-table-column prop="submitterName" label="submitterName" width="180">
             <template #default="{ row }">
               <HighlightText :text="row.submitterName" :query="search" />
             </template>
           </el-table-column>
-          <el-table-column prop="reason" label="退货理由" width="300">
+          <el-table-column prop="reason" label="Return reason" width="300">
             <template #default="{ row }">
               <HighlightText :text="row.reason" :query="search" />
             </template>
           </el-table-column>
-          <el-table-column prop="goodsId" label="商品ID" width="180"></el-table-column>
-          <el-table-column prop="goodsName" label="商品名" width="180"></el-table-column>
-          <el-table-column prop="submitTime" label="提交时间" width="180" :formatter="formatDate"></el-table-column>
+          <el-table-column prop="goodsId" label="Product ID" width="180"></el-table-column>
+          <el-table-column prop="goodsName" label="Product Name" width="180"></el-table-column>
+          <el-table-column prop="submitTime" label="submitTime" width="180" :formatter="formatDate"></el-table-column>
   
-          <el-table-column prop="reviewerName" label="审核人" width="180">
+          <el-table-column prop="reviewerName" label="reviewerName" width="180">
             <template #default="{ row }">
-              {{ row.reviewerName || '无人审核' }}
+              {{ row.reviewerName || 'Null' }}
             </template>
           </el-table-column>
-          <el-table-column prop="reviewTime" label="审核时间" width="180" :formatter="formatDate"></el-table-column>
-          <el-table-column prop="role" label="提交人角色" width="180"></el-table-column>
-          <el-table-column prop="submitterId" label="提交人ID" width="180"></el-table-column>
-          <el-table-column prop="status" label="审核状态" width="180" fixed="right">
+          <el-table-column prop="reviewTime" label="reviewTime" width="180" :formatter="formatDate"></el-table-column>
+          <el-table-column prop="role" label="role" width="180"></el-table-column>
+          <el-table-column prop="submitterId" label="submitterId" width="180"></el-table-column>
+          <el-table-column prop="status" label="status" width="180" fixed="right">
             <template #default="{ row }">
               <el-tag :type="getTagType(row.status)">{{ row.status }}</el-tag>
             </template>
@@ -90,7 +90,7 @@
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
-            <el-button @click="detailDialogVisible = false">关闭</el-button>
+            <el-button @click="detailDialogVisible = false">close</el-button>
           </div>
         </el-dialog>
 
@@ -104,8 +104,8 @@
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
-            <el-button @click="editDialogVisible = false">取消</el-button>
-            <el-button type="primary" @click="submitReturnRequest">提交</el-button>
+            <el-button @click="editDialogVisible = false">cancel</el-button>
+            <el-button type="primary" @click="submitReturnRequest">confirm</el-button>
           </div>
         </el-dialog>
 
@@ -120,6 +120,8 @@
             :total="totalRequests">
           </el-pagination>
         </div>
+ </div>
+ </div>
       </main>
     </div>
   </div>
@@ -180,11 +182,16 @@ import dayjs from 'dayjs';
         }
         else{
           ElNotification({
-            title: 'Error',
-            message: response.data.msg,
-            type: 'error',
-            position: 'top-right',
-          });
+          title: 'Success',
+          message: 'request successfully',
+          type: 'success',
+        })
+          // ElNotification({
+          //   title: 'Error',
+          //   message: response.data.msg,
+          //   type: 'error',
+          //   position: 'top-right',
+          // });
           loading.value = false;
         }
       } catch (error) {
@@ -317,3 +324,20 @@ import dayjs from 'dayjs';
     }
   }
   </script>
+  <style scoped>
+
+  .el-button {
+    margin: 10px;
+  }
+  .product-table-container {
+ 
+    max-width: 1500px;
+    padding: 20px;
+   border-width: 3px;
+    background-color: #ffffff;
+    box-shadow: 0 8px 12px 0 rgba(55, 11, 142, 0.5);
+    border-radius: 10px;
+    width: 100%;
+    margin: 20px auto;
+  }
+ </style>

@@ -25,136 +25,51 @@ public class JwtFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        excludedPaths = Arrays.asList("/api/user/register");
+        excludedPaths = Arrays.asList("/api/user/register","/api/user/login" );
     }
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
-        throws IOException, ServletException {
+            throws IOException, ServletException {
 
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        System.out.println(request.toString());
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         String path = request.getRequestURI();
-        //也是对预处理请求的一些配置
-            if(request.getMethod().equals(RequestMethod.OPTIONS.name()))
-            {
-                response.setStatus(HttpServletResponse.SC_OK);
-                //下面的5行不用,注释掉是因为在webconfig里已经配置了,且下方的*,无限制匹配,不安全
-//                response.setHeader("Access-Control-Allow-Origin","*");
-//                response.setHeader("Access-Control-Allow-Headers","*");
-//                response.setHeader("Access-Control-Allow-Methods","*");
-//                response.setHeader("Access-Control-Allow-Credentials","true");
-//                response.setHeader("Access-Control-Max-Age","3600");
-//                response.setStatus(HttpStatus.OK.value());
 
-            }
-        // 对预检请求和排除的路径直接放行
-        if (request.getMethod().equals("OPTIONS") || excludedPaths.contains(path)) {
+        // Handle OPTIONS requests
+        if (RequestMethod.OPTIONS.name().equals(request.getMethod())) {
+            response.setStatus(HttpServletResponse.SC_OK);
+            return;
+        }
+
+        // Allow requests to excluded paths without authentication
+        if (excludedPaths.contains(path)) {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
-        }else{
+        }
 
-            // ...
+        // Extract and verify JWT token
+        String token = request.getHeader("Authorization");
+        if (token == null || !token.startsWith("Bearer ")) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized: Missing or invalid token");
+            return;
+        }
 
-        System.out.println("path  "+path);
-//        if (path.equals("/emps/user/login")) {
-//            filterChain.doFilter(servletRequest, servletResponse);
-//            return;
-//        }else if(path.equals("/emps/user/register")) {
-//            filterChain.doFilter(servletRequest, servletResponse);
-//            return;
-//        }
         try {
-            String token = request.getHeader("Authorization");
-            System.out.println("原始token"+token);
-            if (token != null && token.startsWith("Bearer ")) {
-                // 提取Token并验证...
-                try {
-                    // 从Token中提取用户信息等
-                    DecodedJWT jwt = JWT.require(Algorithm.HMAC256("secret"))
-                            .build()
-                            .verify(token.replace("Bearer ", ""));
-                    System.out.println(jwt.toString()+"jwt的字符串");
-                    // 验证通过，执行下一步
-                    filterChain.doFilter(servletRequest, servletResponse);
-                } catch (JWTVerificationException exception){
-                    System.out.println("catchToken验证失败");
-                    // Token验证失败的处理逻辑
-                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized: Token verification failed");
-                }
-            } else {
-                // Token验证失败的处理逻辑
-//            Result errorResult =new Result("401","Token验证失败");
-//            response.getWriter().write(new ObjectMapper().writeValueAsString(errorResult));
-//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            // Extract user information from JWT token
+            DecodedJWT jwt = JWT.require(Algorithm.HMAC256("secret"))
+                    .build()
+                    .verify(token.replace("Bearer ", ""));
 
-//            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized: Token verification failed");
-                System.out.println("esle 中的Token验证失败");
-
-                // 没有Token的处理逻辑
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized: Token verification failed");
-            }
-            // 可以添加更多的catch块来捕获其他潜在异常
-        }catch (JWTVerificationException exception) {
-            // 捕获JWT验证异常
-            System.out.println("JWT异常");
+            // Continue processing the request
+            filterChain.doFilter(servletRequest, servletResponse);
+        } catch (JWTVerificationException exception) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized: Token verification failed");
-
         }
 
 
-
-
-
-        Enumeration<String> params = request.getParameterNames();
-        while (params.hasMoreElements()) {
-            String paramName = params.nextElement();
-            System.out.println(paramName + ": " + request.getParameter(paramName));
-        }
-        StringBuilder stringBuilder = new StringBuilder();
-        BufferedReader bufferedReader = null;
-        try {
-            InputStream inputStream = request.getInputStream();
-            if (inputStream != null) {
-                bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                char[] charBuffer = new char[128];
-                int bytesRead = -1;
-                while ((bytesRead = bufferedReader.read(charBuffer)) > 0) {
-                    stringBuilder.append(charBuffer, 0, bytesRead);
-                }
-            } else {
-                stringBuilder.append("");
-            }
-        } catch (IOException ex) {
-            throw ex;
-        } finally {
-            if (bufferedReader != null) {
-                try {
-                    bufferedReader.close();
-                } catch (IOException ex) {
-                    throw ex;
-                }
-            }
-        }
-        String body = stringBuilder.toString();
-        System.out.println("Request Body: " + body);
-        Enumeration<String> headerNames = request.getHeaderNames();
-        while (headerNames.hasMoreElements()) {
-            String headerName = headerNames.nextElement();
-            Enumeration<String> headers = request.getHeaders(headerName);
-            while (headers.hasMoreElements()) {
-                String headerValue = headers.nextElement();
-                System.out.println(headerName + ": " + headerValue);
-            }
-        }
-
-        System.out.println("DDDDDDDDDDDDDDDDDDD");
-
-
-    // 其他方法...
 
     }
 
-    }
+
 
 }

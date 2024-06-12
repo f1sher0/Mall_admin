@@ -45,7 +45,7 @@
               </li>
             </ul>
           </div>
-
+          <div class="product-table-container">
           <el-table :data="tableData" style="width: 100%">
             <el-table-column prop="supplierName" label="SupplierName" width="250" />
             <el-table-column prop="address" label="Address" width="350" />
@@ -65,7 +65,7 @@
             </el-table-column>
           </el-table>
 
-
+</div>
         </div>
       </main>
 
@@ -235,5 +235,17 @@ export default {
   }
 }
 </script>
-
-<style></style>
+  <style scoped>
+  .product-table-container {
+ 
+    max-width: 1500px;
+    padding: 20px;
+   border-width: 3px;
+    background-color: #ffffff;
+    box-shadow: 0 8px 12px 0 rgba(55, 11, 142, 0.5);
+    border-radius: 10px;
+    width: 100%;
+    margin: 20px auto;
+  }
+ 
+ </style>

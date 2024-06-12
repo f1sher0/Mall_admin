@@ -10,6 +10,7 @@
       
       <main class="grow dark:bg-slate-900 p-4">
         <WelcomeBanner />
+        <div class="product-table-container">
         <div>
           <el-button type="primary" @click="filterOnshelf(1)">待售商品</el-button>
           <el-button type="info" @click="filterOnshelf(0)">已售商品</el-button>
@@ -101,6 +102,7 @@
             layout="total, sizes, prev, pager, next"
             :total="totalGoods">
           </el-pagination>
+        </div>
         </div>
       </main>
     </div>
@@ -282,5 +284,19 @@ body {
 
 .example-showcase .el-loading-mask {
   z-index: 9;
+}
+.el-button {
+  margin: 10px;
+}
+.product-table-container {
+ 
+  max-width: 1500px;
+  padding: 20px;
+ border-width: 3px;
+  background-color: #ffffff;
+  box-shadow: 0 8px 12px 0 rgba(55, 11, 142, 0.5);
+  border-radius: 10px;
+  width: 100%;
+  margin: 20px auto;
 }
 </style>
