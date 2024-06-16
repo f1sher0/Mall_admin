@@ -38,6 +38,7 @@ public class JwtFilter implements Filter {
         // Handle OPTIONS requests
         if (RequestMethod.OPTIONS.name().equals(request.getMethod())) {
             response.setStatus(HttpServletResponse.SC_OK);
+            addCorsHeaders(response);
             return;
         }
 
@@ -71,5 +72,10 @@ public class JwtFilter implements Filter {
     }
 
 
-
+    private void addCorsHeaders(HttpServletResponse response) {
+        response.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
+        response.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, OPTIONS");
+        response.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type, X-Requested-With, accept, Origin, Access-Control-Request-Method, Access-Control-Request-Headers");
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+    }
 }

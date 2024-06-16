@@ -45,7 +45,7 @@
               </template>
               {{ item.content }}
               <template #footer>
-                {{ formate(item.updateTime) }}
+                {{ formatDate(item.updateTime) }}
               </template>
             </el-card>
           </div>
@@ -98,7 +98,7 @@ export default {
     Sidebar_admin,
     Header,
     SearchForm,
-  },
+    },
   setup() {
     let sourceData = ref([]);
     let DataNum = ref(0);
