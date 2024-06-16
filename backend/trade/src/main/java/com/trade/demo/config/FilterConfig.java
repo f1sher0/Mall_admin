@@ -12,10 +12,6 @@ public class FilterConfig {
     public FilterRegistrationBean<JwtFilter> registrationBean() {
         FilterRegistrationBean<JwtFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new JwtFilter());
-//        registrationBean.addUrlPatterns("/emps/*", "/manages/*", "/medicines/*",
-//                "/customers/*","/database/*" ,"/outIns/*","/sales/*",
-//                "/storages/*","/stores/*","/suppliers/*"); // 以此类推
-        // 指定过滤器适用的URL模式
 
         return registrationBean;
     }

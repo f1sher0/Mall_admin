@@ -6,6 +6,7 @@ import { ElMessage, ElMessageBox ,ElNotification} from 'element-plus'
 const instance = (router) => {
   const instance = axios.create({
     baseURL: 'http://localhost:5052/api', // 在这里设置你的后端请求路径
+    withCredentials: true, // 允许携带cookie
   });
 
 // 可以在实例中自定义其他配置，例如设置请求头或拦截器等
